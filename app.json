@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Particle BLE Setup - Ref App",
-    "slug": "ble-setup",
+    "slug": "bindicator-wifi-setup",
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,7 +28,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "io.particle.blesetup",
+      "bundleIdentifier": "bindicator-439415.ue.r.appspot.com",
       "infoPlist": {
         "NSBluetoothAlwaysUsageDescription": "This app uses Bluetooth to setup Particle devices"
       }
@@ -38,7 +38,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#08223d"
       },
-      "package": "io.particle.blesetup",
+      "package": "com.bbakkala.bindicatorwifisetup",
       "versionCode": 1,
       "permissions": [
         "android.permission.BLUETOOTH",
@@ -51,8 +51,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "93c56541-4f0d-4034-b346-c1472d925078"
+        "projectId": "cd49e7aa-b8c5-4ab8-9878-4aeaef0fff25"
       }
-    }
+    },
+    "owner": "bbakkala"
   }
 }
