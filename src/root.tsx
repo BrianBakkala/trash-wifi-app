@@ -11,19 +11,22 @@ import { WiFiCredentials } from './views/wifi-credentials';
 import { JoinWiFi } from './views/join-wifi';
 import { ErrorModal } from './views/error-modal';
 import { Style } from './styles';
+import { HomeScreen } from './views/home-screen';
  
 
 export enum SetupStep {
+	HomeScreen,
 	EnterDeviceDetails,
 	LookForDevice,
 	ConnectToDevice,
 	WiFiList,
 	WiFiCredentials,
-	JoinWiFi
+	JoinWiFi,
+	UpdateSettings
 }
 
 export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
-	defaultCurrentStep = SetupStep.EnterDeviceDetails
+	defaultCurrentStep = SetupStep.HomeScreen
 }) => {
 
 	const scheme = useColorScheme();
@@ -39,7 +42,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	// Go to the beginning if we encounter any errors like disconnection
 	useEffect(() => {
 		if (!device && error) {
-			setCurrentStep(SetupStep.EnterDeviceDetails);
+			setCurrentStep(SetupStep.HomeScreen);
 		}
 	}, [device, error]);
 
@@ -61,9 +64,16 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 
 	// Rudimentary routing
 	let step;
+	// Step 0: Select a saved device
+	if (currentStep === SetupStep.HomeScreen) {
+		step = <HomeScreen
+			 
+			onContinue={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
+		/>;
+	
 	// Step 1: Enter the device setup code and mobile secret
 	// This data should be retreived from the backend
-	if (currentStep === SetupStep.EnterDeviceDetails) {
+	}else if  (currentStep === SetupStep.EnterDeviceDetails) {
 		step = <DeviceDetails
 			setupCode="052BF8"
 			// setupCode={setupCode}
@@ -109,7 +119,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 		/>;
 	} else if (currentStep === SetupStep.JoinWiFi) {
 		step = <JoinWiFi
-			onContinue={async () => {
+			onStartOver={async () => {
 				await disconnect();
 				setSelectedNetwork(undefined);
 				setWifiPassword(undefined);

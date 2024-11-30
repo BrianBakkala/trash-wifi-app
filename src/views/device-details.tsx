@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Image, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Style } from '../styles';
-import Svg, { Circle, Rect, RNSVGCircle } from 'react-native-svg';
 
 export interface DeviceDetailsArguments {
 	setupCode: string,
@@ -31,12 +30,8 @@ export const DeviceDetails = ({ setupCode, setSetupCode, mobileSecret, setMobile
 
 					<View>
 
-						<Text style={Style.paragraph}>Please enter the setup code found on the label on the back of the Bindicator.</Text>
-
-						<Svg height="50%" width="50%" viewBox="0 0 100 100"  >
-      <Circle cx="50" cy="50" r="45" stroke="blue" strokeWidth="2.5" fill="green" />
-      <Rect x="15" y="15" width="70" height="70" stroke="red" strokeWidth="2" fill="yellow" />
-    </Svg>
+						<Text style={Style.paragraph}>Please enter the setup code found on the label on the back of the BBBBB.</Text>
+ 
 					</View>
 
 					<View>
@@ -61,7 +56,7 @@ export const DeviceDetails = ({ setupCode, setSetupCode, mobileSecret, setMobile
 								setMobileSecret(mobileSecret);  
 								onContinue();   
 							}}>
-							<Text style={Style.buttonText}>Continue</Text>
+							<Text style={Style.buttonText}>Continue</Text><Text style={Style.buttonIconSm}>→</Text>
 						</Pressable>
 					</View>
 				</View>

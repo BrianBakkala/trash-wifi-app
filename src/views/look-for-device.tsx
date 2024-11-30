@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, View, Text, Pressable } from 'react-native';
 import { useBLESetup } from '@particle/react-native-ble-setup-library';
 import { Style } from '../styles';
-import Svg, { Circle, Rect } from 'react-native-svg';
 
 export interface LookForDeviceArguments {
 	setupCode: string,
@@ -30,15 +29,15 @@ export const LookForDevice = ({ setupCode, onBack, onContinue }: LookForDeviceAr
 		return (
 			<View style={Style.vertical}> 
 				<Text style={Style.indicatorIcons}>✓</Text>
-				<Text style={Style.h2}>Found Bindicator {setupCode}!</Text>
+				<Text style={Style.h2}>Found BBBBB {setupCode}!</Text>
 				<View>
 					<Pressable style={Style.button} onPress={onContinue}>
-						<Text style={Style.buttonIcon}>🔗</Text><Text style={Style.buttonText}>Connect</Text>
+						<Text style={Style.buttonIconMd}>⎋</Text><Text style={Style.buttonText}>Connect</Text>
 					</Pressable>
 				</View>
-				<View style={Style.nav}>
-					<Pressable style={Style.button} onPress={onBack}>
-					<Text style={Style.buttonIcon}>←</Text><Text style={Style.buttonText}>Back</Text>
+				<View style={Style.leftNav}>
+					<Pressable style={Style.buttonSecondary} onPress={onBack}>
+					<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
 					</Pressable>
 				
 				</View>
@@ -54,9 +53,9 @@ export const LookForDevice = ({ setupCode, onBack, onContinue }: LookForDeviceAr
 						<Text style={Style.buttonIcon}>⟳</Text><Text style={Style.buttonText}>Try again</Text>
 					</Pressable>
 				</View>
-				<View style={Style.nav}>
-					<Pressable style={Style.button} onPress={onBack}>
-						<Text style={Style.buttonIcon}>←</Text><Text style={Style.buttonText}>Back</Text>
+				<View style={Style.leftNav}>
+					<Pressable style={Style.buttonSecondary} onPress={onBack}>
+						<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
 					</Pressable>
 				</View>
 			</View>

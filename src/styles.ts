@@ -7,13 +7,14 @@ export const Style = StyleSheet.create({
 		alignItems: 'center',
 		padding: 20
 	},
+
 	vertical: {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'column',
 		width: '100%',
-		backgroundColor:'black',
+		backgroundColor:'gray',
 		color:'white'
 	},
 	modalBackground: {
@@ -50,6 +51,17 @@ export const Style = StyleSheet.create({
 		alignItems: 'center',
 		flexDirection: 'row',
 	},
+	leftNav: {
+		bottom: 20,
+		position: 'absolute',
+		display:'flex',
+		flexDirection:'row',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+
+		padding: 20,
+		width:'100%'
+	},
 	button: {
 		display:'flex',
 		flexDirection: 'row',
@@ -64,11 +76,43 @@ export const Style = StyleSheet.create({
 		backgroundColor: '#0090b0',
 		color: 'white'
 	},
+	buttonSecondary: {
+		display:'flex',
+		flexDirection: 'row',
+		gap:10,
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingVertical: 12,
+		paddingHorizontal: 16,
+		marginHorizontal: 8,
+		borderRadius: 4,
+		elevation: 3,
+		backgroundColor: 'black',
+		color: 'white'
+	},
 	buttonIcon: {
+		fontSize:35,
+		lineHeight:30,
+		color: 'white'
+	},
+	buttonIconLg: {
 		fontSize:30,
 		color: 'white'
 	},
+	buttonIconMd: {
+		fontSize:25,
+		lineHeight:30,
+		color: 'white'
+	},
+	buttonIconSm: {
+		fontSize:20,
+		lineHeight:30,
+		color: 'white'
+	},
 	buttonDisabled: {
+		display:'flex',
+		flexDirection: 'row',
+		gap:10,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingVertical: 12,
@@ -129,17 +173,26 @@ export const Style = StyleSheet.create({
 		color: 'white'
 	},
 	listItem: {
+		display:'flex',
+		flexDirection:'row',
+		justifyContent:'center',
+		alignItems:'center',
 		padding: 10,
 		fontSize: 18,
 		color: 'white'
 	},
 	listItemSelected: {
+		display:'flex',
+		flexDirection:'row',
+		justifyContent:'center',
+		alignItems:'center',
 		padding: 10,
 		fontSize: 18,
-		backgroundColor: 'black',
-		borderRadius: 4
+		borderRadius:4,
+		backgroundColor: '#005c70',
+		color:'white',
 	},
-	listItemTextSelected: {
+	listItemText: {
 		color: 'white'
 	},
 	displayNone:{

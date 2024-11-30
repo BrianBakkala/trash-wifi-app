@@ -59,7 +59,7 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 		return (
 			<View style={Style.vertical}>
 				<Text style={Style.indicatorIcons}>✓<ActivityIndicator size="large" color="#ffffff" /></Text>
-				<Text style={Style.h2}>Connecting to Bindicator {setupCode}...</Text>
+				<Text style={Style.h2}>Connecting to BBBBB {setupCode}...</Text>
 			</View>
 		);
 	}
@@ -67,15 +67,15 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 	return (
 		<View style={Style.vertical}>
 			<Text style={Style.indicatorIcons}>✓✓</Text>
-			<Text style={Style.h2}>Connected to Bindicator {setupCode}!</Text>
+			<Text style={Style.h2}>Connected to BBBBB {setupCode}!</Text>
 			<View>
 				<Pressable style={Style.button} onPress={onContinue}>
-					<Text style={Style.buttonText}>Continue</Text>
+					<Text style={Style.buttonText}>Continue</Text><Text style={Style.buttonIconSm}>→</Text>
 				</Pressable>
 			</View>
-			<View style={Style.nav}>
-				<Pressable style={Style.button} onPress={onBack}>
-					<Text style={Style.buttonText}>Back</Text>
+			<View style={Style.leftNav}>
+				<Pressable style={Style.buttonSecondary} onPress={onBack}>
+						<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
 				</Pressable>
 			</View>
 		</View>
