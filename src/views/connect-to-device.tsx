@@ -68,12 +68,14 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 		<View style={Style.vertical}>
 			<Text style={Style.indicatorIcons}>✓✓</Text>
 			<Text style={Style.h2}>Connected to Bindicator {setupCode}!</Text>
+			<View>
+				<Pressable style={Style.button} onPress={onContinue}>
+					<Text style={Style.buttonText}>Continue</Text>
+				</Pressable>
+			</View>
 			<View style={Style.nav}>
 				<Pressable style={Style.button} onPress={onBack}>
 					<Text style={Style.buttonText}>Back</Text>
-				</Pressable>
-				<Pressable style={Style.button} onPress={onContinue}>
-					<Text style={Style.buttonText}>Continue</Text>
 				</Pressable>
 			</View>
 		</View>

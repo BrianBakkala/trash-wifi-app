@@ -51,6 +51,9 @@ export const Style = StyleSheet.create({
 		flexDirection: 'row',
 	},
 	button: {
+		display:'flex',
+		flexDirection: 'row',
+		gap:10,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingVertical: 12,
@@ -59,6 +62,10 @@ export const Style = StyleSheet.create({
 		borderRadius: 4,
 		elevation: 3,
 		backgroundColor: '#0090b0',
+		color: 'white'
+	},
+	buttonIcon: {
+		fontSize:30,
 		color: 'white'
 	},
 	buttonDisabled: {
