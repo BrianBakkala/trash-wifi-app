@@ -62,9 +62,10 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	// This data should be retreived from the backend
 	if (currentStep === SetupStep.EnterDeviceDetails) {
 		step = <DeviceDetails
-			setupCode={setupCode}
+			setupCode="052BF8"
+			// setupCode={setupCode}
 			setSetupCode={setSetupCode}
-			mobileSecret={mobileSecret}
+			mobileSecret="AAAAAAAAAAAAAAA"
 			setMobileSecret={setMobileSecret}
 			onContinue={() => setCurrentStep(SetupStep.LookForDevice)}
 		/>;
@@ -72,14 +73,15 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	// we specified.
 	} else if (currentStep === SetupStep.LookForDevice) {
 		step = <LookForDevice
-			setupCode={setupCode}
+			setupCode="052BF8"
+			// setupCode={setupCode}
 			onBack={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
 			onContinue={() => setCurrentStep(SetupStep.ConnectToDevice)}
 		/>;
 	// Step 3: Connect to the device, handshake and establish secure connection
 	} else if (currentStep === SetupStep.ConnectToDevice) {
 		step = <ConnectToDevice
-			mobileSecret={mobileSecret}
+			mobileSecret="AAAAAAAAAAAAAAA"
 			onBack={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
 			onContinue={() => setCurrentStep(SetupStep.WiFiList)}
 		/>;

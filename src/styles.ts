@@ -113,5 +113,8 @@ export const Style = StyleSheet.create({
 	},
 	listItemTextSelected: {
 		color: 'white'
+	},
+	displayNone:{
+		display:'none'
 	}
 });

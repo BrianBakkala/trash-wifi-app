@@ -28,8 +28,8 @@ export const DeviceDetails = ({ setupCode, setSetupCode, mobileSecret, setMobile
 							value={setupCode}
 						/>
 					</View>
-					<View>
-						<Text>Mobile secret</Text>
+					<View style={Style.displayNone}>
+						<Text>Mobile seecret</Text>
 						<TextInput
 							style={Style.input}
 							onChangeText={setMobileSecret}
