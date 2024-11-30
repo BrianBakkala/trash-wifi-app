@@ -1,6 +1,11 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "jsx": "react", // or "react-jsx" for React 17+
+    "strict": true, // (optional) Enable all strict type-checking options
+    "moduleResolution": "node", // (optional) Resolves modules the same way Node.js does
+    "esModuleInterop": true, // (optional) Ensures compatibility with CommonJS modules
+    "skipLibCheck": true // (optional) Skips type checking of declaration files
   }
 }

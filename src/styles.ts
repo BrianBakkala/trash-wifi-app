@@ -12,7 +12,9 @@ export const Style = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'column',
-		width: '100%'
+		width: '100%',
+		backgroundColor:'black',
+		color:'white'
 	},
 	modalBackground: {
 		flex: 1,
@@ -56,7 +58,7 @@ export const Style = StyleSheet.create({
 		marginHorizontal: 8,
 		borderRadius: 4,
 		elevation: 3,
-		backgroundColor: 'black',
+		backgroundColor: '#0090b0',
 		color: 'white'
 	},
 	buttonDisabled: {
@@ -84,26 +86,45 @@ export const Style = StyleSheet.create({
 		borderWidth: 1,
 		borderRadius: 4,
 		padding: 10,
+		color:'white',
+		borderColor:'white',
+	},
+	paragraph: {
+		color:'white', 
+		marginBottom: 30,
+		marginTop: 30,
+
+	},
+	label: {
+		color:'white', 
 	},
 	h2: {
-		fontSize: 16,
-		lineHeight: 21,
-		fontWeight: 'bold',
-		marginBottom: 20
+		color:'white',
+		fontSize: 22,
+		lineHeight: 30,
+		marginTop: 20,
+		fontWeight:'bold',
+		marginBottom: 20,
 	},
 	emoji: {
 		fontSize: 96,
 		marginBottom: 20
 	},
+	indicatorIcons: {
+		fontSize:40, 
+		color:'white'
+	},
 	list: {
 		flex: 1,
 		alignSelf: 'stretch',
 		margin: 20,
-		marginBottom: 85
+		marginBottom: 85,
+		color: 'white'
 	},
 	listItem: {
 		padding: 10,
-		fontSize: 18
+		fontSize: 18,
+		color: 'white'
 	},
 	listItemSelected: {
 		padding: 10,
@@ -116,5 +137,10 @@ export const Style = StyleSheet.create({
 	},
 	displayNone:{
 		display:'none'
+	},
+	image:{
+		height:400,
+		width:170,
+		margin:10
 	}
 });

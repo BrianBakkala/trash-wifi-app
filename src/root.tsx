@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { SafeAreaView, Text, View, useColorScheme } from 'react-native';
 
 import { useBLESetup, BLEStatus, INetwork } from '@particle/react-native-ble-setup-library';
 
@@ -11,6 +11,7 @@ import { WiFiCredentials } from './views/wifi-credentials';
 import { JoinWiFi } from './views/join-wifi';
 import { ErrorModal } from './views/error-modal';
 import { Style } from './styles';
+ 
 
 export enum SetupStep {
 	EnterDeviceDetails,
@@ -24,6 +25,8 @@ export enum SetupStep {
 export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	defaultCurrentStep = SetupStep.EnterDeviceDetails
 }) => {
+
+	const scheme = useColorScheme();
 	const [setupCode, setSetupCode] = useState<string>('');
 	const [mobileSecret, setMobileSecret] = useState<string>('');
 	const [currentStep, setCurrentStep] = useState<SetupStep>(defaultCurrentStep);
@@ -73,8 +76,8 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	// we specified.
 	} else if (currentStep === SetupStep.LookForDevice) {
 		step = <LookForDevice
-			setupCode="052BF8"
-			// setupCode={setupCode}
+			// setupCode="052BF8"
+			setupCode={setupCode}
 			onBack={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
 			onContinue={() => setCurrentStep(SetupStep.ConnectToDevice)}
 		/>;
@@ -82,6 +85,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	} else if (currentStep === SetupStep.ConnectToDevice) {
 		step = <ConnectToDevice
 			mobileSecret="AAAAAAAAAAAAAAA"
+			setupCode={setupCode}
 			onBack={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
 			onContinue={() => setCurrentStep(SetupStep.WiFiList)}
 		/>;

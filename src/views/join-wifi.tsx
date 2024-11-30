@@ -22,7 +22,7 @@ export const JoinWiFi = ({ onContinue, selectedNetwork, wifiPassword }: JoinWiFi
 	if (isJoiningWiFiNetwork) {
 		return (
 			<View style={Style.vertical}>
-				<ActivityIndicator size="large" color="#000000" />
+				<ActivityIndicator size="large" color="#ffffff" />
 				<Text style={Style.h2}>Joining the {selectedNetwork?.ssid} network...</Text>
 			</View>
 		);

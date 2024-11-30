@@ -24,7 +24,7 @@
           ],
           "isBackgroundEnabled": true
         }
-      ]
+      ] 
     ],
     "ios": {
       "supportsTablet": true,

@@ -51,7 +51,7 @@ export const WiFiList = ({ onBack, onContinue, selectedNetwork, setSelectedNetwo
 	const content = isScanningWiFiNetworks ?
 		(
 			<View style={Style.vertical}>
-				<ActivityIndicator size="large" color="#000000" />
+				<Text style={Style.indicatorIcons}>✓✓<ActivityIndicator size="large" color="#ffffff" /></Text>
 				<Text style={Style.h2}>Scanning for networks...</Text>
 			</View>
 		)
