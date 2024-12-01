@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
+import { View, Image, Text, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { Style } from '../styles';
 import { apiFetch } from '../util/utility'; // Adjust the path if necessary
 
@@ -41,16 +41,21 @@ const BindicatorList: React.FC<BindicatorListProps> = ({ bData }) =>
 
 	return (
 		<View style={Style.bList}>
+
 			{data.map((item, index) => (
 
-
-				<Text key={index} style={Style.bListItem}>
-					{item.photon_id} {/* Ensure you are using the correct key name */}
-				</Text>
-
-
+				<View key={index} style={Style.bListItem}>
+					<Image
+						source={require('../../assets/bindicator_censored.png')}
+						style={Style.smallBBBBBImage}
+					/>
+					<Text style={Style.bListItemText}>
+						{item.photon_id} {/* Ensure you are using the correct key name */}
+					</Text>
+				</View>
 
 			))}
+
 		</View>
 	);
 };
@@ -78,7 +83,7 @@ export const HomeScreen = ({ deviceUUID, onContinue }: HomeScreenArguments): Rea
 				<Text style={Style.h2}>My BBBBBs</Text>
 			</View>
 
-			{loading && <ActivityIndicator size="large" color="#0000ff" />}
+			{loading && <ActivityIndicator size="large" color="#ffffff" />}
 			{error && <Text style={styles.errorText}>{error}</Text>}
 
 			{bindicatorData && (

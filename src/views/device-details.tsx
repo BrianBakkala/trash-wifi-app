@@ -25,7 +25,7 @@ export const DeviceDetails = ({ setupCode, setSetupCode, mobileSecret, setMobile
 
 					<Image
 						source={require('../../assets/bindicator_censored.png')}
-						style={Style.image}
+						style={Style.mainBBBBBImage}
 					/> 
 
 					<View>

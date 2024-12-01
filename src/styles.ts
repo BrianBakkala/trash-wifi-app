@@ -14,7 +14,7 @@ export const Style = StyleSheet.create({
 		alignItems: 'center',
 		flexDirection: 'column',
 		width: '100%',
-		backgroundColor: 'black',
+		backgroundColor: 'gray',
 		color: 'white'
 	},
 
@@ -230,15 +230,23 @@ export const Style = StyleSheet.create({
 	bList: {
 		display: 'flex',
 		flexDirection: 'column',
-		gap: 10,
+		gap: 20,
 		alignContent: 'center',
 		justifyContent: 'center',
 	},
 	bListItem: {
+		display: 'flex',
+		flexDirection: 'row',
+		gap: 10,
+		alignItems: 'center',
 		color: 'white',
 		borderRadius: 4,
-		padding:10,
+		padding: 10,
 		backgroundColor: '#222222'
+	},
+
+	bListItemText: {
+		color: 'white',
 	},
 
 
@@ -246,9 +254,14 @@ export const Style = StyleSheet.create({
 	displayNone: {
 		display: 'none'
 	},
-	image: {
-		height: 400,
-		width: 170,
-		margin: 10
+	mainBBBBBImage: {
+		height: 100,
+		margin: 10,
+		resizeMode: 'contain'
+	},
+	smallBBBBBImage: {
+		height: 30,
+		width: 30,
+		resizeMode: 'contain'
 	}
 });
