@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { SafeAreaView, Text, View, useColorScheme } from 'react-native';
 
-import { useBLESetup, BLEStatus, INetwork } from '@particle/react-native-ble-setup-library';
+import { useBLESetup, BLEStatus } from '@particle/react-native-ble-setup-library';
+import { INetwork } from '@particle/device-control-ble-setup-library';
 
 import { DeviceDetails } from './views/device-details';
 import { LookForDevice } from './views/look-for-device';
@@ -11,24 +12,35 @@ import { WiFiCredentials } from './views/wifi-credentials';
 import { JoinWiFi } from './views/join-wifi';
 import { ErrorModal } from './views/error-modal';
 import { Style } from './styles';
+import { HomeScreen } from './views/home-screen';
+import * as SecureStore from 'expo-secure-store';
+import { v4 as uuidv4 } from 'uuid';
+ 
 
 export enum SetupStep {
+	HomeScreen,
 	EnterDeviceDetails,
 	LookForDevice,
 	ConnectToDevice,
 	WiFiList,
 	WiFiCredentials,
-	JoinWiFi
+	JoinWiFi,
+	UpdateSettings
 }
 
 export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
-	defaultCurrentStep = SetupStep.EnterDeviceDetails
+	defaultCurrentStep = SetupStep.HomeScreen
 }) => {
+
+	const scheme = useColorScheme();
 	const [setupCode, setSetupCode] = useState<string>('');
 	const [mobileSecret, setMobileSecret] = useState<string>('');
 	const [currentStep, setCurrentStep] = useState<SetupStep>(defaultCurrentStep);
 	const [selectedNetwork, setSelectedNetwork] = useState<INetwork | undefined>(undefined);
-	const [wifiPassword, setWifiPassword] = useState<string | undefined>(undefined);
+	const [wifiPassword, setWifiPassword] = useState<string | undefined>(undefined); 
+
+
+
 
 	// Get the status from the setup context
 	const { status, device, disconnect, error, clearLastError } = useBLESetup();
@@ -36,7 +48,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	// Go to the beginning if we encounter any errors like disconnection
 	useEffect(() => {
 		if (!device && error) {
-			setCurrentStep(SetupStep.EnterDeviceDetails);
+			setCurrentStep(SetupStep.HomeScreen);
 		}
 	}, [device, error]);
 
@@ -55,16 +67,27 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 			</View>
 		);
 	}
+ 
+
+
 
 	// Rudimentary routing
 	let step;
+	// Step 0: Select a saved device
+	if (currentStep === SetupStep.HomeScreen) {
+		step = <HomeScreen
+			 
+			onContinue={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
+		/>;
+	
 	// Step 1: Enter the device setup code and mobile secret
 	// This data should be retreived from the backend
-	if (currentStep === SetupStep.EnterDeviceDetails) {
+	}else if  (currentStep === SetupStep.EnterDeviceDetails) {
 		step = <DeviceDetails
-			setupCode={setupCode}
+			setupCode="052BF8"
+			// setupCode={setupCode}
 			setSetupCode={setSetupCode}
-			mobileSecret={mobileSecret}
+			mobileSecret="AAAAAAAAAAAAAAA"
 			setMobileSecret={setMobileSecret}
 			onContinue={() => setCurrentStep(SetupStep.LookForDevice)}
 		/>;
@@ -72,6 +95,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	// we specified.
 	} else if (currentStep === SetupStep.LookForDevice) {
 		step = <LookForDevice
+			// setupCode="052BF8"
 			setupCode={setupCode}
 			onBack={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
 			onContinue={() => setCurrentStep(SetupStep.ConnectToDevice)}
@@ -79,7 +103,8 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	// Step 3: Connect to the device, handshake and establish secure connection
 	} else if (currentStep === SetupStep.ConnectToDevice) {
 		step = <ConnectToDevice
-			mobileSecret={mobileSecret}
+			mobileSecret="AAAAAAAAAAAAAAA"
+			setupCode={setupCode}
 			onBack={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
 			onContinue={() => setCurrentStep(SetupStep.WiFiList)}
 		/>;
@@ -103,7 +128,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 		/>;
 	} else if (currentStep === SetupStep.JoinWiFi) {
 		step = <JoinWiFi
-			onContinue={async () => {
+			onStartOver={async () => {
 				await disconnect();
 				setSelectedNetwork(undefined);
 				setWifiPassword(undefined);

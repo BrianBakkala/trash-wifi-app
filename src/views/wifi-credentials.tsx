@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { INetwork } from '@particle/react-native-ble-setup-library';
+import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
 
 export interface WiFiCredentialsArguments {
@@ -39,27 +39,29 @@ export const WiFiCredentials = ({ onBack, onContinue, selectedNetwork, wifiPassw
 			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
 			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 				<View style={Style.vertical}>
-					<Text style={Style.emoji}>🙈️</Text>
-					<Text style={Style.h2}>Credentials for {selectedNetwork.ssid}</Text>
+					<Text style={Style.h2}>Password for: {selectedNetwork.ssid}</Text>
 					<View>
-						<Text>{humanReadableSecurity[selectedNetwork.security]} Password</Text>
+						<Text style={Style.label}>Password ({humanReadableSecurity[selectedNetwork.security]})</Text>
 						<TextInput
 							style={Style.input}
 							secureTextEntry={true}
 							onChangeText={setWifiPassword}
 							value={wifiPassword}
-						/>
+						/>	
 					</View>
-					<View style={Style.nav}>
-						<Pressable style={Style.button} onPress={onBack}>
-							<Text style={Style.buttonText}>Back</Text>
-						</Pressable>
+					<View>
 						<Pressable
 							style={passwordGoodEnough ? Style.button : Style.buttonDisabled}
 							onPress={onContinue}
 							disabled={!passwordGoodEnough}>
-							<Text style={Style.buttonText}>Save</Text>
+							<Text style={Style.buttonText}>Save</Text><Text style={Style.buttonIconMd}>✓</Text>
 						</Pressable>
+							
+					</View>
+					<View style={Style.leftNav}>
+						<Pressable style={Style.buttonSecondary} onPress={onBack}>
+							<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
+						</Pressable> 
 					</View>
 				</View>
 			</TouchableWithoutFeedback>

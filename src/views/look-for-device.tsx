@@ -21,36 +21,41 @@ export const LookForDevice = ({ setupCode, onBack, onContinue }: LookForDeviceAr
 	if (isSearchingDevices) {
 		return (
 			<View style={Style.vertical}>
-				<ActivityIndicator size="large" color="#000000" />
+				<ActivityIndicator size="large" color="#ffffff" />
 				<Text style={Style.h2}>Looking for {setupCode}...</Text>
 			</View>
 		);
 	} else if (device) {
 		return (
-			<View style={Style.vertical}>
-				<Text style={Style.emoji}>🎉</Text>
-				<Text style={Style.h2}>Found {device.name}!</Text>
-				<View style={Style.nav}>
-					<Pressable style={Style.button} onPress={onBack}>
-						<Text style={Style.buttonText}>Back</Text>
-					</Pressable>
+			<View style={Style.vertical}> 
+				<Text style={Style.indicatorIcons}>✓</Text>
+				<Text style={Style.h2}>Found BBBBB {setupCode}!</Text>
+				<View>
 					<Pressable style={Style.button} onPress={onContinue}>
-						<Text style={Style.buttonText}>Continue</Text>
+						<Text style={Style.buttonIconMd}>⎋</Text><Text style={Style.buttonText}>Connect</Text>
 					</Pressable>
+				</View>
+				<View style={Style.leftNav}>
+					<Pressable style={Style.buttonSecondary} onPress={onBack}>
+					<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
+					</Pressable>
+				
 				</View>
 			</View>
 		);
 	} else {
 		return (
 			<View style={Style.vertical}>
-				<Text style={Style.emoji}>😔</Text>
+				<Text style={Style.indicatorIcons}>𐄂</Text>
 				<Text style={Style.h2}>{setupCode} not found</Text>
-				<View style={Style.nav}>
-					<Pressable style={Style.button} onPress={onBack}>
-						<Text style={Style.buttonText}>Back</Text>
-					</Pressable>
+				<View>
 					<Pressable style={Style.button} onPress={retry}>
-						<Text style={Style.buttonText}>Try again</Text>
+						<Text style={Style.buttonIcon}>⟳</Text><Text style={Style.buttonText}>Try again</Text>
+					</Pressable>
+				</View>
+				<View style={Style.leftNav}>
+					<Pressable style={Style.buttonSecondary} onPress={onBack}>
+						<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
 					</Pressable>
 				</View>
 			</View>

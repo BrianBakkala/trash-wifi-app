@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, View, Text, Pressable, FlatList, TouchableOpacity } from 'react-native';
-import { useBLESetup, INetwork } from '@particle/react-native-ble-setup-library';
+import { useBLESetup } from '@particle/react-native-ble-setup-library';
+import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
 
 export interface ListNetworksArguments {
@@ -18,13 +19,27 @@ export interface RenderNetworkThunkArguments {
 export const renderNetworkThunk = ({ selectedNetwork, setSelectedNetwork }: RenderNetworkThunkArguments) => {
 	return ({ item }: { item: INetwork}): React.ReactElement<INetwork> => {
 		const isSelected = item.ssid === selectedNetwork?.ssid;
+		const getSignalStrength = function (rssi: number) {
+			if (rssi > -50) {
+				return "Strong";
+			} else if (rssi > -60) {
+				return "Good";
+			} else if (rssi > -70) {
+				return "Weak";
+			} else if (rssi > -80) {
+				return "Poor";
+			} else {
+				return "Very Poor";
+			}
+		}
 
 		return (
 			<TouchableOpacity
-				style={isSelected ? Style.listItemSelected : Style.listItem}
+			style={isSelected ? Style.listItemSelected : Style.listItem}
 				testID='button'
 				onPress={() => setSelectedNetwork(item)}>
-				<Text style={isSelected ? Style.listItemTextSelected : undefined}>{ `${item.ssid} (${item.rssi}dB)` }</Text>
+				<Text style={[{ fontWeight: 'bold' }, Style.listItemText]}>{ `${item.ssid}` }</Text> 
+				<Text style={Style.listItemText}>{ `: ${getSignalStrength(item.rssi)}` }</Text>
 			</TouchableOpacity>
 		);
 	};
@@ -51,7 +66,7 @@ export const WiFiList = ({ onBack, onContinue, selectedNetwork, setSelectedNetwo
 	const content = isScanningWiFiNetworks ?
 		(
 			<View style={Style.vertical}>
-				<ActivityIndicator size="large" color="#000000" />
+				<Text style={Style.indicatorIcons}>✓✓<ActivityIndicator size="large" color="#ffffff" /></Text>
 				<Text style={Style.h2}>Scanning for networks...</Text>
 			</View>
 		)
@@ -70,23 +85,22 @@ export const WiFiList = ({ onBack, onContinue, selectedNetwork, setSelectedNetwo
 
 	return (
 		<View style={Style.vertical}>
-			<Text style={Style.emoji}>📶️</Text>
 			{content}
 			<View style={Style.nav}>
-				<Pressable style={Style.button} onPress={onBack}>
-					<Text style={Style.buttonText}>Back</Text>
+				<Pressable style={Style.buttonSecondary} onPress={onBack}>
+					<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
 				</Pressable>
 				<Pressable
 					style={isScanningWiFiNetworks ? Style.buttonDisabled : Style.button}
 					onPress={scan}
 					disabled={isScanningWiFiNetworks}>
-					<Text style={Style.buttonText}>Rescan</Text>
+					<Text style={Style.buttonIcon}>⟳</Text><Text style={Style.buttonText}>Rescan</Text>
 				</Pressable>
 				<Pressable
 					style={selectedNetwork ? Style.button : Style.buttonDisabled}
 					onPress={onContinue}
 					disabled={!selectedNetwork} >
-					<Text style={Style.buttonText}>Continue</Text>
+					<Text style={Style.buttonText}>Continue</Text><Text style={Style.buttonIconSm}>→</Text>
 				</Pressable>
 			</View>
 		</View>
