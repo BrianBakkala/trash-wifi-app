@@ -24,7 +24,8 @@
           ],
           "isBackgroundEnabled": true
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "ios": {
       "supportsTablet": true,
