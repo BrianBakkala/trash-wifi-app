@@ -38,7 +38,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#08223d"
       },
-      "package": "bindicator-439415.ue.r.appspot.com",
+      "package": "com.bbakkala.bindicatorwifisetup",
       "versionCode": 1,
       "permissions": [
         "android.permission.BLUETOOTH",
