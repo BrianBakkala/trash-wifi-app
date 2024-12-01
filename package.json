@@ -11,7 +11,8 @@
   "dependencies": {
     "@config-plugins/react-native-ble-plx": "^6.0.0",
     "@particle/react-native-ble-setup-library": "^0.2.1",
-    "expo": "^51.0.0",
+    "expo": "50.0",
+    "expo-asset": "8.11",
     "expo-crypto": "~13.0.2",
     "expo-dev-client": "~4.0.29",
     "expo-random": "~14.0.1",
