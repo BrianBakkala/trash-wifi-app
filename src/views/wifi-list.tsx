@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, View, Text, Pressable, FlatList, TouchableOpacity } from 'react-native';
-import { useBLESetup, INetwork } from '@particle/react-native-ble-setup-library';
+import { useBLESetup } from '@particle/react-native-ble-setup-library';
+import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
 
 export interface ListNetworksArguments {

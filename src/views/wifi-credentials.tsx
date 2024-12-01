@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { INetwork } from '@particle/react-native-ble-setup-library';
+import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
 
 export interface WiFiCredentialsArguments {
@@ -41,7 +41,7 @@ export const WiFiCredentials = ({ onBack, onContinue, selectedNetwork, wifiPassw
 				<View style={Style.vertical}>
 					<Text style={Style.h2}>Password for: {selectedNetwork.ssid}</Text>
 					<View>
-						<Text style={Style.label}>{humanReadableSecurity[selectedNetwork.security]} Password</Text>
+						<Text style={Style.label}>Password ({humanReadableSecurity[selectedNetwork.security]})</Text>
 						<TextInput
 							style={Style.input}
 							secureTextEntry={true}
