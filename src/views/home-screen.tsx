@@ -1,49 +1,99 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { Style } from '../styles';
+import { apiFetch } from '../util/utility'; // Adjust the path if necessary
 
-export interface HomeScreenArguments {
+export interface HomeScreenArguments
+{
+	deviceUUID: string; // Change this from a function to a value
 	onContinue: () => void;
+
 }
 
-export const HomeScreen = ({}: HomeScreenArguments): React.ReactElement => {
-	// State to store the fetched data
-	const [data, setData] = useState(null);
+
+interface BindicatorListProps
+{
+	bData: BindicatorGroup; // Explicitly type bData as an array of strings
+}
+
+interface BindicatorGroup
+{
+	count: number;
+	bindicators: Bobject[];
+}
+
+interface Bobject
+{
+	photon_id: string;
+	household_id: string;
+}
+
+
+
+const BindicatorList: React.FC<BindicatorListProps> = ({ bData }) =>
+{
+	const data = bData.bindicators;
+	if (!Array.isArray(data))
+	{
+		return null; // Optionally render an error message or fallback
+	}
+
+
+	return (
+		<View style={Style.bList}>
+			{data.map((item, index) => (
+
+
+				<Text key={index} style={Style.bListItem}>
+					{item.photon_id} {/* Ensure you are using the correct key name */}
+				</Text>
+
+
+
+			))}
+		</View>
+	);
+};
+
+export const HomeScreen = ({ deviceUUID, onContinue }: HomeScreenArguments): React.ReactElement =>
+{
+	const [bindicatorData, setBindicatorData] = useState<BindicatorGroup | null>(null);
 	const [loading, setLoading] = useState(false); // Initially not loading
 	const [error, setError] = useState<string | null>(null);
 
-	// Fetch data from the API
-	const fetchData = async () => {
-		setLoading(true); // Start loading
-		setError(null); // Reset error state
-		try {
-			const response = await fetch('https://bindicator-439415.ue.r.appspot.com/test');
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
+	useEffect(() =>
+	{
+		const response = apiFetch('get-bindicators-for-household',
+			{
+				"household_id": deviceUUID
 			}
-			const result = await response.json();
-			setData(result);
-		} catch (err: any) {
-			setError(err.message);
-		} finally {
-			setLoading(false); // Stop loading
-		}
-	};
+			, setBindicatorData, setLoading, setError);
+	}, []);
+
 
 	return (
-		<View style={styles.container}>
-			<Pressable style={styles.button} onPress={fetchData}>
-				<Text style={styles.buttonText}>Fetch Data</Text>
-			</Pressable>
+		<View style={Style.vertical}>
+
+			<View>
+				<Text style={Style.h2}>My BBBBBs</Text>
+			</View>
 
 			{loading && <ActivityIndicator size="large" color="#0000ff" />}
 			{error && <Text style={styles.errorText}>{error}</Text>}
-			{data && (
+
+			{bindicatorData && (
+
 				<View>
-					<Text style={styles.title}>Fetched Data:</Text>
-					<Text>{JSON.stringify(data, null, 2)}</Text>
+					<BindicatorList bData={bindicatorData} />
 				</View>
+
 			)}
+
+			<View style={Style.rightNav}>
+				<Pressable style={Style.button} onPress={onContinue}>
+					<Text style={Style.buttonIconSm}>+</Text><Text style={Style.buttonText}>Add BBBB</Text>
+				</Pressable>
+			</View>
 		</View>
 	);
 };

@@ -14,9 +14,12 @@ export const Style = StyleSheet.create({
 		alignItems: 'center',
 		flexDirection: 'column',
 		width: '100%',
-		backgroundColor:'gray',
-		color:'white'
+		backgroundColor: 'black',
+		color: 'white'
 	},
+
+
+
 	modalBackground: {
 		flex: 1,
 		justifyContent: 'center',
@@ -43,6 +46,9 @@ export const Style = StyleSheet.create({
 		marginBottom: 20,
 		textAlign: 'center'
 	},
+
+
+
 	nav: {
 		bottom: 20,
 		position: 'absolute',
@@ -54,18 +60,34 @@ export const Style = StyleSheet.create({
 	leftNav: {
 		bottom: 20,
 		position: 'absolute',
-		display:'flex',
-		flexDirection:'row',
+		display: 'flex',
+		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
 
 		padding: 20,
-		width:'100%'
+		width: '100%'
 	},
-	button: {
-		display:'flex',
+	rightNav: {
+		bottom: 20,
+		position: 'absolute',
+		display: 'flex',
 		flexDirection: 'row',
-		gap:10,
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+
+		padding: 20,
+		width: '100%'
+	},
+
+
+
+
+
+	button: {
+		display: 'flex',
+		flexDirection: 'row',
+		gap: 10,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingVertical: 12,
@@ -77,9 +99,9 @@ export const Style = StyleSheet.create({
 		color: 'white'
 	},
 	buttonSecondary: {
-		display:'flex',
+		display: 'flex',
 		flexDirection: 'row',
-		gap:10,
+		gap: 10,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingVertical: 12,
@@ -91,28 +113,28 @@ export const Style = StyleSheet.create({
 		color: 'white'
 	},
 	buttonIcon: {
-		fontSize:35,
-		lineHeight:30,
+		fontSize: 35,
+		lineHeight: 30,
 		color: 'white'
 	},
 	buttonIconLg: {
-		fontSize:30,
+		fontSize: 30,
 		color: 'white'
 	},
 	buttonIconMd: {
-		fontSize:25,
-		lineHeight:30,
+		fontSize: 25,
+		lineHeight: 30,
 		color: 'white'
 	},
 	buttonIconSm: {
-		fontSize:20,
-		lineHeight:30,
+		fontSize: 20,
+		lineHeight: 30,
 		color: 'white'
 	},
 	buttonDisabled: {
-		display:'flex',
+		display: 'flex',
 		flexDirection: 'row',
-		gap:10,
+		gap: 10,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingVertical: 12,
@@ -130,6 +152,9 @@ export const Style = StyleSheet.create({
 		letterSpacing: 0.25,
 		color: 'white',
 	},
+
+
+
 	input: {
 		height: 40,
 		width: 200,
@@ -137,34 +162,40 @@ export const Style = StyleSheet.create({
 		borderWidth: 1,
 		borderRadius: 4,
 		padding: 10,
-		color:'white',
-		borderColor:'white',
+		color: 'white',
+		borderColor: 'white',
 	},
 	paragraph: {
-		color:'white', 
+		color: 'white',
 		marginBottom: 30,
 		marginTop: 30,
 
 	},
 	label: {
-		color:'white', 
+		color: 'white',
 	},
 	h2: {
-		color:'white',
+		color: 'white',
 		fontSize: 22,
 		lineHeight: 30,
 		marginTop: 20,
-		fontWeight:'bold',
+		fontWeight: 'bold',
 		marginBottom: 20,
 	},
+
+
+
 	emoji: {
 		fontSize: 96,
 		marginBottom: 20
 	},
 	indicatorIcons: {
-		fontSize:40, 
-		color:'white'
+		fontSize: 40,
+		color: 'white'
 	},
+
+
+
 	list: {
 		flex: 1,
 		alignSelf: 'stretch',
@@ -173,34 +204,51 @@ export const Style = StyleSheet.create({
 		color: 'white'
 	},
 	listItem: {
-		display:'flex',
-		flexDirection:'row',
-		justifyContent:'center',
-		alignItems:'center',
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
 		padding: 10,
 		fontSize: 18,
 		color: 'white'
 	},
 	listItemSelected: {
-		display:'flex',
-		flexDirection:'row',
-		justifyContent:'center',
-		alignItems:'center',
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
 		padding: 10,
 		fontSize: 18,
-		borderRadius:4,
+		borderRadius: 4,
 		backgroundColor: '#005c70',
-		color:'white',
+		color: 'white',
 	},
 	listItemText: {
 		color: 'white'
 	},
-	displayNone:{
-		display:'none'
+
+	bList: {
+		display: 'flex',
+		flexDirection: 'column',
+		gap: 10,
+		alignContent: 'center',
+		justifyContent: 'center',
 	},
-	image:{
-		height:400,
-		width:170,
-		margin:10
+	bListItem: {
+		color: 'white',
+		borderRadius: 4,
+		padding:10,
+		backgroundColor: '#222222'
+	},
+
+
+
+	displayNone: {
+		display: 'none'
+	},
+	image: {
+		height: 400,
+		width: 170,
+		margin: 10
 	}
 });

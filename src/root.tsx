@@ -14,7 +14,6 @@ import { ErrorModal } from './views/error-modal';
 import { Style } from './styles';
 import { HomeScreen } from './views/home-screen';
 import * as SecureStore from 'expo-secure-store';
-import { v4 as uuidv4 } from 'uuid';
  
 
 export enum SetupStep {
@@ -28,6 +27,31 @@ export enum SetupStep {
 	UpdateSettings
 }
 
+
+const generateCustomUUID = () => {
+	const timestamp = Date.now(); // Get the current time in milliseconds
+	const randomValue = Math.random().toString(36).substring(2, 15); // Generate a random string
+	return `${timestamp}-${randomValue}`; // Combine them to form a "UUID"
+};
+
+
+const getOrCreateUUID = async () => {
+	try {
+		let deviceUUID = await SecureStore.getItemAsync('device_uuid');
+		
+		if (!deviceUUID) {
+		// If UUID is not found, generate a new one
+		deviceUUID = generateCustomUUID();
+		await SecureStore.setItemAsync('device_uuid', deviceUUID); // Store it securely
+		}
+		
+		return deviceUUID;
+	} catch (error) {
+		console.error('Error retrieving or creating UUID', error);
+		return ""; 
+	}
+};
+
 export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	defaultCurrentStep = SetupStep.HomeScreen
 }) => {
@@ -38,8 +62,17 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	const [currentStep, setCurrentStep] = useState<SetupStep>(defaultCurrentStep);
 	const [selectedNetwork, setSelectedNetwork] = useState<INetwork | undefined>(undefined);
 	const [wifiPassword, setWifiPassword] = useState<string | undefined>(undefined); 
+	const [deviceUUID, setUUID] = useState<string>('');
 
 
+	  useEffect(() => {
+		const fetchUUID = async () => {
+		  const deviceUUID = await getOrCreateUUID();
+		  setUUID(deviceUUID); // Store it in state to display
+		};
+		
+		fetchUUID();
+	  }, []);
 
 
 	// Get the status from the setup context
@@ -67,8 +100,6 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 			</View>
 		);
 	}
- 
-
 
 
 	// Rudimentary routing
@@ -76,7 +107,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	// Step 0: Select a saved device
 	if (currentStep === SetupStep.HomeScreen) {
 		step = <HomeScreen
-			 
+			deviceUUID={deviceUUID}
 			onContinue={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
 		/>;
 	

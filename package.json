@@ -24,7 +24,8 @@
     "react": "18.2.0",
     "react-native": "0.73.6",
     "react-native-ble-plx": "^2.0.3",
-    "react-native-randombytes": "^3.6.1"
+    "react-native-randombytes": "^3.6.1",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
