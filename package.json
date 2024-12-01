@@ -12,7 +12,7 @@
     "@config-plugins/react-native-ble-plx": "^6.0.0",
     "@particle/react-native-ble-setup-library": "^0.2.1",
     "eas-cli": "^3.12.0",
-    "expo": "^49.0.0",
+    "expo": "^51.0.0",
     "expo-crypto": "~12.4.1",
     "expo-dev-client": "~2.4.11",
     "expo-random": "~13.2.0",
