@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
+import { View, Image, Text, ActivityIndicator, Pressable, StyleSheet, GestureResponderEvent } from 'react-native';
 import { Style } from '../styles';
 import ProgressDiagram, { apiFetch } from '../util/utility';
+import { bbbbbIdentifier } from './device-prefs';
 
 export interface HomeScreenArguments
 {
 	deviceUUID: string;
 	onContinue: () => void;
-
+	onNavigateToDevicePrefs: (identifier: bbbbbIdentifier) => void;
 }
 
 
 interface BindicatorListProps
 {
 	bData: BindicatorGroup; // Explicitly type bData as an array of strings
+	onNavigateToDevicePrefs: (identifier: bbbbbIdentifier) => void;
+
+
 }
 
 interface BindicatorGroup
@@ -26,11 +30,12 @@ interface Bobject
 {
 	device_name: string;
 	household_id: string;
+	monitoring_uuid: string;
 }
 
 
 
-const BindicatorList: React.FC<BindicatorListProps> = ({ bData }) =>
+const BindicatorList: React.FC<BindicatorListProps> = ({ bData, onNavigateToDevicePrefs }) =>
 {
 	const data = bData.bindicators;
 	if (!Array.isArray(data))
@@ -38,29 +43,40 @@ const BindicatorList: React.FC<BindicatorListProps> = ({ bData }) =>
 		return null; // Optionally render an error message or fallback
 	}
 
-
 	return (
 		<View style={Style.bList}>
 
-			{data.map((item, index) => (
+			{data.map((item, index) =>
+			{
 
-				<View key={index} style={Style.bListItem}>
-					<Image
-						source={require('../../assets/bindicator_censored.png')}
-						style={Style.smallBBBBBImage}
-					/>
-					<Text style={Style.bListItemText}>
-						{item.device_name} {/* Ensure you are using the correct key name */}
-					</Text>
-				</View>
 
-			))}
+				const identifier = { "monitoring_uuid": item.monitoring_uuid };
 
-		</View>
+
+				return (
+
+
+					<View key={index}  >
+						<Pressable  style={Style.bListItem} onPress={() => onNavigateToDevicePrefs(identifier)}>
+							<Image
+								source={require('../../assets/bindicator_censored.png')}
+								style={Style.smallBBBBBImage}
+							/>
+							<Text style={Style.bListItemText}>
+								{item.device_name} {/* Ensure you are using the correct key name */}
+							</Text>
+						</Pressable>
+					</View>
+
+				)
+			})
+			}
+
+		</View >
 	);
 };
 
-export const HomeScreen = ({ deviceUUID, onContinue }: HomeScreenArguments): React.ReactElement =>
+export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: HomeScreenArguments): React.ReactElement =>
 {
 	const [bindicatorData, setBindicatorData] = useState<BindicatorGroup | null>(null);
 	const [loading, setLoading] = useState(false); // Initially not loading
@@ -90,7 +106,7 @@ export const HomeScreen = ({ deviceUUID, onContinue }: HomeScreenArguments): Rea
 			{bindicatorData && (
 
 				<View>
-					<BindicatorList bData={bindicatorData} />
+					<BindicatorList bData={bindicatorData} onNavigateToDevicePrefs={onNavigateToDevicePrefs} />
 				</View>
 
 			)}

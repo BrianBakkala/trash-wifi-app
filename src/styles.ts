@@ -14,7 +14,7 @@ export const Style = StyleSheet.create({
 		alignItems: 'center',
 		flexDirection: 'column',
 		width: '100%',
-		backgroundColor: 'gray',
+		backgroundColor: 'black',
 		color: 'white'
 	},
 

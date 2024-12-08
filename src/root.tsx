@@ -13,11 +13,13 @@ import { JoinWiFi } from './views/join-wifi';
 import { ErrorModal } from './views/error-modal';
 import { Style } from './styles';
 import { HomeScreen } from './views/home-screen';
+import { DevicePrefs, bbbbbIdentifier } from './views/device-prefs';
 import * as SecureStore from 'expo-secure-store';
 
 
 export enum SetupStep
 {
+	DevicePrefs,
 	HomeScreen,
 	EnterDeviceDetails,
 	LookForDevice,
@@ -70,6 +72,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	const [selectedNetwork, setSelectedNetwork] = useState<INetwork | undefined>(undefined);
 	const [wifiPassword, setWifiPassword] = useState<string | undefined>(undefined);
 	const [deviceUUID, setUUID] = useState<string>('');
+	const [deviceIdentifierObject, setDeviceIdentifierObject] = useState<bbbbbIdentifier>();
 
 
 
@@ -115,16 +118,32 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 		);
 	}
 
-	// console.log("Device UUID: " + deviceUUID)
+	const navigateToDevicePrefs = (identifier: bbbbbIdentifier) =>
+	{
+		setDeviceIdentifierObject(identifier); // Set the identifier for DevicePrefs
+		setCurrentStep(SetupStep.DevicePrefs); // Navigate to the DevicePrefs step
+	};
+
 
 	// Rudimentary routing
 	let step;
-	// Step 0: Select a saved device
-	if (currentStep === SetupStep.HomeScreen)
+	// Step -1: Device Settings
+	if (currentStep === SetupStep.DevicePrefs)
+	{
+		step = <DevicePrefs
+			deviceIdentifier={deviceIdentifierObject}
+			onBack={() => setCurrentStep(SetupStep.HomeScreen)}
+
+		/>;
+
+
+		// Step 0: Home
+	} else if (currentStep === SetupStep.HomeScreen)
 	{
 		step = <HomeScreen
 			deviceUUID={deviceUUID}
 			onContinue={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
+			onNavigateToDevicePrefs={navigateToDevicePrefs}
 		/>;
 
 		// Step 1: Enter the device setup code and mobile secret
