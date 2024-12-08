@@ -1,15 +1,30 @@
-/*
 
-// State to store the fetched data
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(false); // Initially not loading
-    const [error, setError] = useState<string | null>(null);
 
-    const response = apiFetch('get-bindicators-for-household', {data:"hello"}, setData, setLoading, setError);
+import { View, Text, ActivityIndicator } from 'react-native';
+import { Style } from '../styles';
 
-*/
 const VERIFICATION_KEY_DELIMITER = ":: ::";
 
+const ProgressDiagram = ({ numChecks = 0, showLoader = false }) =>
+{
+    const checkmarks = Array.from({ length: numChecks });
+    return (
+        <View style={Style.simpleFlexRow}>
+            {checkmarks.map((_, index) => (
+                <Text
+                    key={index} // Use a unique key for each item
+                    style={Style.progressDiagramText}
+                >
+                    ✓
+                </Text>
+            ))}
+            {showLoader && <ActivityIndicator size={32} color={"white"} />}
+        </View>
+    );
+};
+
+
+export default ProgressDiagram;
 
 
 export const apiFetch = async (path: string, body: Object, setData: Function, setLoading: Function, setError: Function) =>
@@ -18,10 +33,13 @@ export const apiFetch = async (path: string, body: Object, setData: Function, se
     setError(null); // Reset error state
     try
     {
-        const response = await fetch('https://bindicator-439415.ue.r.appspot.com/hooks/' + path,
+        const response = await fetch(process.env.EXPO_PUBLIC_API_ENDPOINT + '/hooks/' + path,
             {
                 'method': 'POST',
-                'headers': { 'Content-Type': 'application/json', },
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + btoa(process.env.EXPO_PUBLIC_BASIC_AUTH_USER + ':' + process.env.EXPO_PUBLIC_BASIC_AUTH_PASSWORD)
+                },
                 'body': JSON.stringify(body)
             }
         );
@@ -41,11 +59,13 @@ export const apiFetch = async (path: string, body: Object, setData: Function, se
     }
 };
 
+
+
 export function createVerificationKey(ssid: string | null | undefined, setupCode: string)
 {
     if (typeof ssid == "string")
     {
-        return btoa(btoa(ssid) + VERIFICATION_KEY_DELIMITER + btoa(setupCode));
+        return btoa(btoa(setupCode.toLowerCase()) + VERIFICATION_KEY_DELIMITER + btoa(ssid));
     }
 
     return "";

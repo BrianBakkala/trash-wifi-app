@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
 import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
 
@@ -24,6 +24,7 @@ const humanReadableSecurity: { [key: number]: string } = {
 export const WiFiCredentials = ({ onBack, onContinue, selectedNetwork, wifiPassword, setWifiPassword }: WiFiCredentialsArguments): React.ReactElement =>
 {
 	const passwordGoodEnough = wifiPassword && wifiPassword.length >= 8;
+	const [isPasswordVisible, setPasswordVisible] = useState(false);
 
 	if (!selectedNetwork || typeof selectedNetwork.security === 'undefined')
 	{
@@ -43,27 +44,43 @@ export const WiFiCredentials = ({ onBack, onContinue, selectedNetwork, wifiPassw
 			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 				<View style={Style.vertical}>
 					<Text style={Style.h2}>Password for: {selectedNetwork.ssid}</Text>
+
 					<View>
-						<Text style={Style.label}>Password ({humanReadableSecurity[selectedNetwork.security]})</Text>
-						<TextInput
-							style={Style.input}
-							secureTextEntry={true}
-							onChangeText={setWifiPassword}
-							value={wifiPassword}
-						/>
+						<View style={Style.simpleFlexRow}>
+
+							<TextInput
+								style={Style.inputNoMargin}
+
+								value={wifiPassword}
+								onChangeText={setWifiPassword}
+								secureTextEntry={!isPasswordVisible} // Toggles password visibility
+
+								placeholder="Password"
+								placeholderTextColor="#aaa"
+							/>
+
+
+							<Pressable style={Style.toggleVisibilityButton} onPress={() => setPasswordVisible(!isPasswordVisible)}  >
+								<Image source={require('../../assets/visible.png')} style={[(isPasswordVisible ? { display: 'none' } : { display: 'flex' }), Style.visibilityIcon]} />
+								<Image source={require('../../assets/invisible.png')} style={[(isPasswordVisible ? { display: 'flex' } : { display: 'none' }), Style.visibilityIcon]} />
+							</Pressable>
+
+
+						</View>
+
+						<View>
+							<Text style={Style.label}>(Security: {humanReadableSecurity[selectedNetwork.security]})</Text>
+						</View>
 					</View>
-					<View>
+					<View style={Style.navSpace}>
+						<Pressable style={Style.buttonSecondary} onPress={onBack}>
+							<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
+						</Pressable>
 						<Pressable
 							style={passwordGoodEnough ? Style.button : Style.buttonDisabled}
 							onPress={onContinue}
 							disabled={!passwordGoodEnough}>
-							<Text style={Style.buttonIconMd}>⎋</Text><Text style={Style.buttonText}>Connect</Text>
-						</Pressable>
-
-					</View>
-					<View style={Style.leftNav}>
-						<Pressable style={Style.buttonSecondary} onPress={onBack}>
-							<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
+							<Text style={Style.buttonText}>Connect</Text><Text style={Style.buttonIconSm}>→</Text>
 						</Pressable>
 					</View>
 				</View>

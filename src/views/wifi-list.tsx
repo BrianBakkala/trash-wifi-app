@@ -3,59 +3,75 @@ import { ActivityIndicator, View, Text, Pressable, FlatList, TouchableOpacity } 
 import { useBLESetup } from '@particle/react-native-ble-setup-library';
 import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
+import ProgressDiagram, { apiFetch } from '../util/utility';
 
-export interface ListNetworksArguments {
+
+export interface ListNetworksArguments
+{
 	onBack: () => void,
 	onContinue: () => void,
 	selectedNetwork?: INetwork,
-	setSelectedNetwork: React.Dispatch<INetwork|undefined>
+	setSelectedNetwork: React.Dispatch<INetwork | undefined>
 }
 
-export interface RenderNetworkThunkArguments {
+export interface RenderNetworkThunkArguments
+{
 	selectedNetwork?: INetwork,
-	setSelectedNetwork: React.Dispatch<INetwork|undefined>
+	setSelectedNetwork: React.Dispatch<INetwork | undefined>
 }
 
-export const renderNetworkThunk = ({ selectedNetwork, setSelectedNetwork }: RenderNetworkThunkArguments) => {
-	return ({ item }: { item: INetwork}): React.ReactElement<INetwork> => {
+export const renderNetworkThunk = ({ selectedNetwork, setSelectedNetwork }: RenderNetworkThunkArguments) =>
+{
+	return ({ item }: { item: INetwork }): React.ReactElement<INetwork> =>
+	{
 		const isSelected = item.ssid === selectedNetwork?.ssid;
-		const getSignalStrength = function (rssi: number) {
-			if (rssi > -50) {
+		const getSignalStrength = function (rssi: number)
+		{
+			if (rssi > -50)
+			{
 				return "Strong";
-			} else if (rssi > -60) {
+			} else if (rssi > -60)
+			{
 				return "Good";
-			} else if (rssi > -70) {
+			} else if (rssi > -70)
+			{
 				return "Weak";
-			} else if (rssi > -80) {
+			} else if (rssi > -80)
+			{
 				return "Poor";
-			} else {
+			} else
+			{
 				return "Very Poor";
 			}
 		}
 
 		return (
 			<TouchableOpacity
-			style={isSelected ? Style.listItemSelected : Style.listItem}
+				style={isSelected ? Style.listItemSelected : Style.listItem}
 				testID='button'
 				onPress={() => setSelectedNetwork(item)}>
-				<Text style={[{ fontWeight: 'bold' }, Style.listItemText]}>{ `${item.ssid}` }</Text> 
-				<Text style={Style.listItemText}>{ `: ${getSignalStrength(item.rssi)}` }</Text>
+				<Text style={[{ fontWeight: 'bold' }, Style.listItemText]}>{`${item.ssid}`}</Text>
+				<Text style={Style.listItemText}>{`: ${getSignalStrength(item.rssi)}`}</Text>
 			</TouchableOpacity>
 		);
 	};
 };
 
 // eslint-disable-next-line
-export const WiFiList = ({ onBack, onContinue, selectedNetwork, setSelectedNetwork }: ListNetworksArguments): React.ReactElement => {
+export const WiFiList = ({ onBack, onContinue, selectedNetwork, setSelectedNetwork }: ListNetworksArguments): React.ReactElement =>
+{
 	const { scanForWiFiNetworks, isScanningWiFiNetworks, foundWiFiNetworks } = useBLESetup();
 
-	const scan = () => {
+	const scan = () =>
+	{
 		setSelectedNetwork(undefined);
 		scanForWiFiNetworks();
 	};
 
-	useEffect(() => {
-		if (!isScanningWiFiNetworks) {
+	useEffect(() =>
+	{
+		if (!isScanningWiFiNetworks)
+		{
 			scan();
 		}
 	}, []);
@@ -66,7 +82,7 @@ export const WiFiList = ({ onBack, onContinue, selectedNetwork, setSelectedNetwo
 	const content = isScanningWiFiNetworks ?
 		(
 			<View style={Style.vertical}>
-				<Text style={Style.indicatorIcons}>✓✓<ActivityIndicator size="large" color="#ffffff" /></Text>
+				<ProgressDiagram showLoader={true} numChecks={2} />
 				<Text style={Style.h2}>Scanning for networks...</Text>
 			</View>
 		)
@@ -86,7 +102,7 @@ export const WiFiList = ({ onBack, onContinue, selectedNetwork, setSelectedNetwo
 	return (
 		<View style={Style.vertical}>
 			{content}
-			<View style={Style.nav}>
+			<View style={Style.navSpace}>
 				<Pressable style={Style.buttonSecondary} onPress={onBack}>
 					<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
 				</Pressable>

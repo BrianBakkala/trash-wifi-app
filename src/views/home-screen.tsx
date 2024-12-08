@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, Text, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { Style } from '../styles';
-import { apiFetch } from '../util/utility'; // Adjust the path if necessary
+import ProgressDiagram, { apiFetch } from '../util/utility';
 
 export interface HomeScreenArguments
 {
-	deviceUUID: string; 
+	deviceUUID: string;
 	onContinue: () => void;
 
 }
@@ -24,7 +24,7 @@ interface BindicatorGroup
 
 interface Bobject
 {
-	photon_id: string;
+	device_name: string;
 	household_id: string;
 }
 
@@ -50,7 +50,7 @@ const BindicatorList: React.FC<BindicatorListProps> = ({ bData }) =>
 						style={Style.smallBBBBBImage}
 					/>
 					<Text style={Style.bListItemText}>
-						{item.photon_id} {/* Ensure you are using the correct key name */}
+						{item.device_name} {/* Ensure you are using the correct key name */}
 					</Text>
 				</View>
 
@@ -76,6 +76,7 @@ export const HomeScreen = ({ deviceUUID, onContinue }: HomeScreenArguments): Rea
 	}, []);
 
 
+	const isPasswordVisible = true;
 	return (
 		<View style={Style.vertical}>
 
@@ -94,12 +95,12 @@ export const HomeScreen = ({ deviceUUID, onContinue }: HomeScreenArguments): Rea
 
 			)}
 
-			<View style={Style.rightNav}>
+			<View style={Style.navRight}>
 				<Pressable style={Style.button} onPress={onContinue}>
 					<Text style={Style.buttonIconSm}>+</Text><Text style={Style.buttonText}>Add BBBB</Text>
 				</Pressable>
 			</View>
-		</View>
+		</View >
 	);
 };
 

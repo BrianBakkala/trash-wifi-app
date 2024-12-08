@@ -3,7 +3,7 @@ import { ActivityIndicator, View, Text, Pressable } from 'react-native';
 import { useBLESetup } from '@particle/react-native-ble-setup-library';
 import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
-import { apiFetch, createVerificationKey } from '../util/utility';
+import ProgressDiagram, { apiFetch, createVerificationKey } from '../util/utility';
 
 export interface JoinWiFiArguments
 {
@@ -37,11 +37,14 @@ export const JoinWiFi = ({ deviceUUID, setupCode, onStartOver, selectedNetwork, 
 		if (!isJoiningWiFiNetwork && selectedNetwork && !hasJoined)
 		{
 			setHasJoined(true);
+
+			console.log("#", "Initiating fetch...")
+
 			apiFetch(
 				'post-provision',
 				{
 					device_uuid: deviceUUID,
-					verification_key: createVerificationKey(selectedNetwork?.ssid, setupCode),
+					verification_key: createVerificationKey(selectedNetwork.ssid, setupCode),
 				},
 				setResponseData,
 				setLoading,
@@ -54,9 +57,7 @@ export const JoinWiFi = ({ deviceUUID, setupCode, onStartOver, selectedNetwork, 
 	{
 		return (
 			<View style={Style.vertical}>
-				<Text style={Style.indicatorIcons}>
-					✓✓✓✓<ActivityIndicator size="large" color="#ffffff" />
-				</Text>
+				<ProgressDiagram showLoader={true} numChecks={4} />
 				<Text style={Style.h2}>Joining: {selectedNetwork?.ssid} </Text>
 			</View>
 		);
@@ -64,10 +65,11 @@ export const JoinWiFi = ({ deviceUUID, setupCode, onStartOver, selectedNetwork, 
 
 	return (
 		<View style={Style.vertical}>
-			<Text style={Style.indicatorIcons}>✓✓✓✓✓</Text>
+			<ProgressDiagram numChecks={5} />
 			<Text style={Style.h2}>Successfully joined {selectedNetwork?.ssid}!</Text>
+			<Text style={Style.paragraph}>!{JSON.stringify(responseData)}!</Text>
 			<View style={Style.nav}>
-				<Pressable style={Style.button} onPress={onStartOver}>
+				<Pressable style={Style.buttonSecondary} onPress={onStartOver}>
 					<Text style={Style.buttonIconSm}>←</Text>
 					<Text style={Style.buttonText}>Start over</Text>
 				</Pressable>

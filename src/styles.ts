@@ -49,15 +49,40 @@ export const Style = StyleSheet.create({
 
 
 
+
 	nav: {
 		bottom: 20,
 		position: 'absolute',
-		flex: 1,
+		display: 'flex',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		flexDirection: 'row',
+		width: '100%'
+
+	},
+
+	navSpace: {
+		bottom: 20,
+		position: 'absolute',
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		flexDirection: 'row',
+		width: '100%'
+
+	},
+
+	navCenter: {
+		bottom: 20,
+		position: 'absolute',
+		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row',
+		width: '100%'
+
 	},
-	leftNav: {
+	navLeft: {
 		bottom: 20,
 		position: 'absolute',
 		display: 'flex',
@@ -68,7 +93,7 @@ export const Style = StyleSheet.create({
 		padding: 20,
 		width: '100%'
 	},
-	rightNav: {
+	navRight: {
 		bottom: 20,
 		position: 'absolute',
 		display: 'flex',
@@ -109,7 +134,7 @@ export const Style = StyleSheet.create({
 		marginHorizontal: 8,
 		borderRadius: 4,
 		elevation: 3,
-		backgroundColor: 'black',
+		backgroundColor: 'transparent',
 		color: 'white'
 	},
 	buttonIcon: {
@@ -154,6 +179,31 @@ export const Style = StyleSheet.create({
 	},
 
 
+	toggleVisibilityButton: {
+		display: 'flex',
+		flexDirection: 'row',
+		gap: 10,
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingVertical: 12,
+		paddingHorizontal: 16,
+		marginHorizontal: 8,
+		borderRadius: 4,
+		elevation: 3,
+		backgroundColor: 'transparent',
+		color: 'white'
+	},
+
+
+
+	visibilityIcon: {
+		width: 33,
+		height: 20,
+	},
+
+
+
+
 
 	input: {
 		height: 40,
@@ -165,6 +215,23 @@ export const Style = StyleSheet.create({
 		color: 'white',
 		borderColor: 'white',
 	},
+
+
+
+
+	inputNoMargin: {
+		height: 40,
+		width: 200,
+		borderWidth: 1,
+		borderRadius: 4,
+		padding: 10,
+		color: 'white',
+		borderColor: 'white',
+	},
+
+
+
+
 	paragraph: {
 		color: 'white',
 		marginBottom: 30,
@@ -185,13 +252,27 @@ export const Style = StyleSheet.create({
 
 
 
+	progressDiagramText: {
+		fontSize: 40,
+		color: 'white'
+	},
+
+
+	simpleFlexRow: {
+		display: 'flex',
+		flexDirection: 'row',
+		gap: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+
+
+
+
 	emoji: {
 		fontSize: 96,
 		marginBottom: 20
-	},
-	indicatorIcons: {
-		fontSize: 40,
-		color: 'white'
 	},
 
 
