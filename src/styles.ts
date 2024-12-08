@@ -116,9 +116,9 @@ export const Style = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingVertical: 12,
-		paddingHorizontal: 16,
 		marginHorizontal: 8,
-		borderRadius: 4,
+		paddingHorizontal: 20,
+		borderRadius: 50,
 		elevation: 3,
 		backgroundColor: '#0090b0',
 		color: 'white'
@@ -130,9 +130,8 @@ export const Style = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingVertical: 12,
-		paddingHorizontal: 16,
 		marginHorizontal: 8,
-		borderRadius: 4,
+		paddingHorizontal: 20,
 		elevation: 3,
 		backgroundColor: 'transparent',
 		color: 'white'
@@ -163,9 +162,9 @@ export const Style = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingVertical: 12,
-		paddingHorizontal: 16,
+		paddingHorizontal: 20,
 		marginHorizontal: 8,
-		borderRadius: 4,
+		borderRadius: 50,
 		elevation: 3,
 		backgroundColor: '#ccc',
 		color: 'white'
@@ -251,11 +250,6 @@ export const Style = StyleSheet.create({
 	},
 
 
-
-	progressDiagramText: {
-		fontSize: 40,
-		color: 'white'
-	},
 
 
 	simpleFlexRow: {

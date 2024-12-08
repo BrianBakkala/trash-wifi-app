@@ -1,11 +1,12 @@
 
 
-import { View, Text, ActivityIndicator } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import { Style } from '../styles';
 
 const VERIFICATION_KEY_DELIMITER = ":: ::";
 
-const ProgressDiagram = ({ numChecks = 0, showLoader = false }) =>
+export const ProgressDiagram = ({ numChecks = 0, showLoader = false }) =>
 {
     const checkmarks = Array.from({ length: numChecks });
     return (
@@ -13,7 +14,7 @@ const ProgressDiagram = ({ numChecks = 0, showLoader = false }) =>
             {checkmarks.map((_, index) => (
                 <Text
                     key={index} // Use a unique key for each item
-                    style={Style.progressDiagramText}
+                    style={styles.progressDiagramText}
                 >
                     ✓
                 </Text>
@@ -23,8 +24,48 @@ const ProgressDiagram = ({ numChecks = 0, showLoader = false }) =>
     );
 };
 
+interface WeekdayPickerProps
+{
+    locked: string; // The currently selected weekday
+    onWeekdaySelect?: (selectedDay: string) => void; // Callback to handle weekday selection
+}
 
-export default ProgressDiagram;
+export const WeekdayPicker: React.FC<WeekdayPickerProps> = ({ locked, onWeekdaySelect }) =>
+{
+    const weekdays = ["Su", "M", "T", "W", "Th", "F", "Sa"]
+
+    const [selectedDay, setSelectedDay] = useState<string>(locked);
+
+    const handlePress = (day: string) =>
+    {
+        console.log(locked, day)
+        setSelectedDay(day);
+        if (onWeekdaySelect)
+        {
+            onWeekdaySelect(day);
+        }
+    };
+
+    return (
+        <View style={styles.container}>
+            {weekdays.map((day) => (
+                <TouchableOpacity
+                    key={day}
+                    style={[
+                        styles.weekdayButton,
+                        locked === day && styles.lockedButton,
+                        selectedDay === day && styles.selectedButton,
+                    ]}
+                    onPress={() => handlePress(day)}
+                >
+                    <Text style={styles.weekdayText}>{day}</Text>
+                </TouchableOpacity>
+            ))}
+        </View>
+    );
+};
+
+export default { ProgressDiagram, WeekdayPicker };
 
 
 export const apiFetch = async (path: string, body: Object, setData: Function, setLoading: Function, setError: Function) =>
@@ -48,7 +89,11 @@ export const apiFetch = async (path: string, body: Object, setData: Function, se
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const result = await response.json();
+        let result = await response.json();
+        if (result.result)
+        {
+            result = result.result;
+        }
         setData(result);
 
     } catch (err: any)
@@ -80,3 +125,43 @@ function parseVerificationKey(verificationKey: string)
 
     return { ssid, setup_code };
 }
+
+
+
+const styles = StyleSheet.create({
+
+
+
+
+    progressDiagramText: {
+        fontSize: 40,
+        color: 'white'
+    },
+
+
+    container: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        marginVertical: 10,
+    },
+    weekdayButton: {
+        padding: 10,
+        margin: 5,
+        borderRadius: 5,
+        backgroundColor: "#f0f0f0",
+        borderWidth: 1,
+        borderColor: "#ccc",
+    },
+    lockedButton: {
+        backgroundColor: "red",
+        borderColor: "blue",
+    },
+    selectedButton: {
+        backgroundColor: "#4CAF50",
+        borderColor: "#4CAF50",
+    },
+    weekdayText: {
+        color: "#000",
+    },
+});
