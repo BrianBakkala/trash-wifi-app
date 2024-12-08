@@ -3,7 +3,8 @@ import { ActivityIndicator, View, Text, Pressable } from 'react-native';
 import { useBLESetup, ConnectionStatus } from '@particle/react-native-ble-setup-library';
 import { Style } from '../styles';
 
-export interface ConnectToDeviceArguments {
+export interface ConnectToDeviceArguments
+{
 	mobileSecret: string,
 	setupCode: string,
 	onBack: () => void,
@@ -11,23 +12,29 @@ export interface ConnectToDeviceArguments {
 }
 
 // eslint-disable-next-line
-export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }: ConnectToDeviceArguments): React.ReactElement => {
+export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }: ConnectToDeviceArguments): React.ReactElement =>
+{
 	const { device, connectionStatus, connect } = useBLESetup();
 
-	useEffect(() => {
-		if (!device) {
+	useEffect(() =>
+	{
+		if (!device)
+		{
 			onBack();
 		}
 	}, [device]);
 
-	useEffect(() => {
-		if (connectionStatus === ConnectionStatus.Disconnected) {
+	useEffect(() =>
+	{
+		if (connectionStatus === ConnectionStatus.Disconnected)
+		{
 			connect(mobileSecret);
 		}
 	}, []);
 
 
-	if (!device) {
+	if (!device)
+	{
 		return (
 			<View style={Style.vertical}>
 				<Text style={Style.emoji}>🤔️</Text>
@@ -41,7 +48,8 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 		);
 	}
 
-	if (connectionStatus === ConnectionStatus.Disconnected) {
+	if (connectionStatus === ConnectionStatus.Disconnected)
+	{
 		return (
 			<View style={Style.vertical}>
 				<Text style={Style.emoji}></Text>
@@ -55,7 +63,8 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 		);
 	}
 
-	if (connectionStatus === ConnectionStatus.Connecting) {
+	if (connectionStatus === ConnectionStatus.Connecting)
+	{
 		return (
 			<View style={Style.vertical}>
 				<Text style={Style.indicatorIcons}>✓<ActivityIndicator size="large" color="#ffffff" /></Text>
@@ -63,6 +72,7 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 			</View>
 		);
 	}
+
 
 	return (
 		<View style={Style.vertical}>
@@ -75,7 +85,7 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 			</View>
 			<View style={Style.leftNav}>
 				<Pressable style={Style.buttonSecondary} onPress={onBack}>
-						<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
+					<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
 				</Pressable>
 			</View>
 		</View>

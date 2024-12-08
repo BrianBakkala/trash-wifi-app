@@ -3,15 +3,16 @@ import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, Touch
 import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
 
-export interface WiFiCredentialsArguments {
+export interface WiFiCredentialsArguments
+{
 	onBack: () => void,
 	onContinue: () => void,
 	selectedNetwork?: INetwork,
 	wifiPassword?: string,
-	setWifiPassword: React.Dispatch<string|undefined>
+	setWifiPassword: React.Dispatch<string | undefined>
 }
 
-const humanReadableSecurity: {[key: number]: string} = {
+const humanReadableSecurity: { [key: number]: string } = {
 	0: 'No security',
 	1: 'WEP',
 	2: 'WPA PSK',
@@ -20,10 +21,12 @@ const humanReadableSecurity: {[key: number]: string} = {
 };
 
 // eslint-disable-next-line
-export const WiFiCredentials = ({ onBack, onContinue, selectedNetwork, wifiPassword, setWifiPassword }: WiFiCredentialsArguments): React.ReactElement => {
+export const WiFiCredentials = ({ onBack, onContinue, selectedNetwork, wifiPassword, setWifiPassword }: WiFiCredentialsArguments): React.ReactElement =>
+{
 	const passwordGoodEnough = wifiPassword && wifiPassword.length >= 8;
 
-	if (!selectedNetwork || typeof selectedNetwork.security === 'undefined') {
+	if (!selectedNetwork || typeof selectedNetwork.security === 'undefined')
+	{
 		return (
 			<View style={Style.nav}>
 				<Pressable style={Style.button} onPress={onBack}>
@@ -47,21 +50,21 @@ export const WiFiCredentials = ({ onBack, onContinue, selectedNetwork, wifiPassw
 							secureTextEntry={true}
 							onChangeText={setWifiPassword}
 							value={wifiPassword}
-						/>	
+						/>
 					</View>
 					<View>
 						<Pressable
 							style={passwordGoodEnough ? Style.button : Style.buttonDisabled}
 							onPress={onContinue}
 							disabled={!passwordGoodEnough}>
-							<Text style={Style.buttonText}>Save</Text><Text style={Style.buttonIconMd}>✓</Text>
+							<Text style={Style.buttonIconMd}>⎋</Text><Text style={Style.buttonText}>Connect</Text>
 						</Pressable>
-							
+
 					</View>
 					<View style={Style.leftNav}>
 						<Pressable style={Style.buttonSecondary} onPress={onBack}>
 							<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
-						</Pressable> 
+						</Pressable>
 					</View>
 				</View>
 			</TouchableWithoutFeedback>

@@ -263,5 +263,10 @@ export const Style = StyleSheet.create({
 		height: 30,
 		width: 30,
 		resizeMode: 'contain'
-	}
+	},
+
+	error: {
+		color: 'red'
+	},
+
 });

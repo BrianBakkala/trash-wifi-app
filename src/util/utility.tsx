@@ -8,6 +8,10 @@
     const response = apiFetch('get-bindicators-for-household', {data:"hello"}, setData, setLoading, setError);
 
 */
+const VERIFICATION_KEY_DELIMITER = ":: ::";
+
+
+
 export const apiFetch = async (path: string, body: Object, setData: Function, setLoading: Function, setError: Function) =>
 {
     setLoading(true); // Start loading
@@ -36,3 +40,22 @@ export const apiFetch = async (path: string, body: Object, setData: Function, se
         setLoading(false); // Stop loading
     }
 };
+
+export function createVerificationKey(ssid: string | null | undefined, setupCode: string)
+{
+    if (typeof ssid == "string")
+    {
+        return btoa(btoa(ssid) + VERIFICATION_KEY_DELIMITER + btoa(setupCode));
+    }
+
+    return "";
+
+}
+
+function parseVerificationKey(verificationKey: string)
+{
+    const [ssid, setup_code] = atob(verificationKey).split(VERIFICATION_KEY_DELIMITER)
+        .map(x => atob(x));
+
+    return { ssid, setup_code };
+}

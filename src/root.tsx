@@ -14,9 +14,10 @@ import { ErrorModal } from './views/error-modal';
 import { Style } from './styles';
 import { HomeScreen } from './views/home-screen';
 import * as SecureStore from 'expo-secure-store';
- 
 
-export enum SetupStep {
+
+export enum SetupStep
+{
 	HomeScreen,
 	EnterDeviceDetails,
 	LookForDevice,
@@ -28,65 +29,78 @@ export enum SetupStep {
 }
 
 
-const generateCustomUUID = () => {
+const generateCustomUUID = () =>
+{
 	const timestamp = Date.now(); // Get the current time in milliseconds
 	const randomValue = Math.random().toString(36).substring(2, 15); // Generate a random string
 	return `${timestamp}-${randomValue}`; // Combine them to form a "UUID"
 };
 
 
-const getOrCreateUUID = async () => {
-	try {
+const getOrCreateUUID = async () =>
+{
+	try
+	{
 		let deviceUUID = await SecureStore.getItemAsync('device_uuid');
-		
-		if (!deviceUUID) {
-		// If UUID is not found, generate a new one
-		deviceUUID = generateCustomUUID();
-		await SecureStore.setItemAsync('device_uuid', deviceUUID); // Store it securely
+
+		if (!deviceUUID)
+		{
+			// If UUID is not found, generate a new one
+			deviceUUID = generateCustomUUID();
+			await SecureStore.setItemAsync('device_uuid', deviceUUID); // Store it securely
 		}
-		
+
 		return deviceUUID;
-	} catch (error) {
+	} catch (error)
+	{
 		console.error('Error retrieving or creating UUID', error);
-		return ""; 
+		return "";
 	}
 };
 
 export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	defaultCurrentStep = SetupStep.HomeScreen
-}) => {
+}) =>
+{
 
 	const scheme = useColorScheme();
 	const [setupCode, setSetupCode] = useState<string>('');
 	const [mobileSecret, setMobileSecret] = useState<string>('');
 	const [currentStep, setCurrentStep] = useState<SetupStep>(defaultCurrentStep);
 	const [selectedNetwork, setSelectedNetwork] = useState<INetwork | undefined>(undefined);
-	const [wifiPassword, setWifiPassword] = useState<string | undefined>(undefined); 
+	const [wifiPassword, setWifiPassword] = useState<string | undefined>(undefined);
 	const [deviceUUID, setUUID] = useState<string>('');
 
 
-	  useEffect(() => {
-		const fetchUUID = async () => {
-		  const deviceUUID = await getOrCreateUUID();
-		  setUUID(deviceUUID); // Store it in state to display
+
+
+	useEffect(() =>
+	{
+		const fetchUUID = async () =>
+		{
+			const deviceUUID = await getOrCreateUUID();
+			setUUID(deviceUUID); // Store it in state to display
 		};
-		
+
 		fetchUUID();
-	  }, []);
+	}, []);
 
 
 	// Get the status from the setup context
 	const { status, device, disconnect, error, clearLastError } = useBLESetup();
 
 	// Go to the beginning if we encounter any errors like disconnection
-	useEffect(() => {
-		if (!device && error) {
+	useEffect(() =>
+	{
+		if (!device && error)
+		{
 			setCurrentStep(SetupStep.HomeScreen);
 		}
 	}, [device, error]);
 
 	// Make sure we can use BLE
-	if (status !== BLEStatus.PoweredOn) {
+	if (status !== BLEStatus.PoweredOn)
+	{
 		const messages = {
 			[BLEStatus.Unknown]: 'Initializing BLE',
 			[BLEStatus.Unsupported]: 'BLE is not supported',
@@ -96,24 +110,27 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 		};
 		return (
 			<View style={Style.centered}>
-				<Text>{ messages[status] }</Text>
+				<Text>{messages[status]}</Text>
 			</View>
 		);
 	}
 
+	// console.log("Device UUID: " + deviceUUID)
 
 	// Rudimentary routing
 	let step;
 	// Step 0: Select a saved device
-	if (currentStep === SetupStep.HomeScreen) {
+	if (currentStep === SetupStep.HomeScreen)
+	{
 		step = <HomeScreen
 			deviceUUID={deviceUUID}
 			onContinue={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
 		/>;
-	
-	// Step 1: Enter the device setup code and mobile secret
-	// This data should be retreived from the backend
-	}else if  (currentStep === SetupStep.EnterDeviceDetails) {
+
+		// Step 1: Enter the device setup code and mobile secret
+		// This data should be retreived from the backend
+	} else if (currentStep === SetupStep.EnterDeviceDetails)
+	{
 		step = <DeviceDetails
 			setupCode="052BF8"
 			// setupCode={setupCode}
@@ -122,34 +139,38 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 			setMobileSecret={setMobileSecret}
 			onContinue={() => setCurrentStep(SetupStep.LookForDevice)}
 		/>;
-	// Step 2: Search for BLE devices in provisioning mode, matching UUIDs
-	// we specified.
-	} else if (currentStep === SetupStep.LookForDevice) {
+		// Step 2: Search for BLE devices in provisioning mode, matching UUIDs
+		// we specified.
+	} else if (currentStep === SetupStep.LookForDevice)
+	{
 		step = <LookForDevice
 			// setupCode="052BF8"
 			setupCode={setupCode}
 			onBack={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
 			onContinue={() => setCurrentStep(SetupStep.ConnectToDevice)}
 		/>;
-	// Step 3: Connect to the device, handshake and establish secure connection
-	} else if (currentStep === SetupStep.ConnectToDevice) {
+		// Step 3: Connect to the device, handshake and establish secure connection
+	} else if (currentStep === SetupStep.ConnectToDevice)
+	{
 		step = <ConnectToDevice
 			mobileSecret="AAAAAAAAAAAAAAA"
 			setupCode={setupCode}
 			onBack={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
 			onContinue={() => setCurrentStep(SetupStep.WiFiList)}
 		/>;
-	// Step 4: Request a list of available WiFi networks and present it
-	// to the user.
-	} else if (currentStep === SetupStep.WiFiList) {
+		// Step 4: Request a list of available WiFi networks and present it
+		// to the user.
+	} else if (currentStep === SetupStep.WiFiList)
+	{
 		step = <WiFiList
 			onBack={() => setCurrentStep(SetupStep.ConnectToDevice)}
 			onContinue={() => setCurrentStep(SetupStep.WiFiCredentials)}
 			selectedNetwork={selectedNetwork}
 			setSelectedNetwork={setSelectedNetwork}
 		/>;
-	// (optional) Step 5: Enter credentials for WiFi network
-	} else if (currentStep === SetupStep.WiFiCredentials) {
+		// (optional) Step 5: Enter credentials for WiFi network
+	} else if (currentStep === SetupStep.WiFiCredentials)
+	{
 		step = <WiFiCredentials
 			onBack={() => setCurrentStep(SetupStep.WiFiList)}
 			onContinue={() => setCurrentStep(SetupStep.JoinWiFi)}
@@ -157,9 +178,13 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 			wifiPassword={wifiPassword}
 			setWifiPassword={setWifiPassword}
 		/>;
-	} else if (currentStep === SetupStep.JoinWiFi) {
+	} else if (currentStep === SetupStep.JoinWiFi)
+	{
 		step = <JoinWiFi
-			onStartOver={async () => {
+			setupCode={setupCode}
+			deviceUUID={deviceUUID}
+			onStartOver={async () =>
+			{
 				await disconnect();
 				setSelectedNetwork(undefined);
 				setWifiPassword(undefined);
@@ -171,7 +196,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	}
 	return (
 		<SafeAreaView style={Style.centered}>
-			{ step }
+			{step}
 			<ErrorModal visible={!!error} error={error} onClose={clearLastError} />
 		</SafeAreaView>
 	);

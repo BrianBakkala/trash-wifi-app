@@ -5,7 +5,7 @@ import { apiFetch } from '../util/utility'; // Adjust the path if necessary
 
 export interface HomeScreenArguments
 {
-	deviceUUID: string; // Change this from a function to a value
+	deviceUUID: string; 
 	onContinue: () => void;
 
 }
