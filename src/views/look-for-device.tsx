@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, View, Text, Pressable } from 'react-native';
 import { useBLESetup } from '@particle/react-native-ble-setup-library';
 import { Style } from '../styles';
-import ProgressDiagram from '../util/utility';
+import { ProgressDiagram } from '../util/utility';
 
 
 export interface LookForDeviceArguments

@@ -237,6 +237,12 @@ export const Style = StyleSheet.create({
 		marginTop: 30,
 
 	},
+	headerParagraph: {
+		color: 'white',
+		marginBottom: 30,
+	},
+
+
 	label: {
 		color: 'white',
 	},

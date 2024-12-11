@@ -3,7 +3,7 @@ import { ActivityIndicator, View, Text, Pressable, FlatList, TouchableOpacity } 
 import { useBLESetup } from '@particle/react-native-ble-setup-library';
 import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
-import ProgressDiagram, { apiFetch } from '../util/utility';
+import { ProgressDiagram, apiFetch } from '../util/utility';
 
 
 export interface ListNetworksArguments

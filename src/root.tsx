@@ -14,11 +14,13 @@ import { ErrorModal } from './views/error-modal';
 import { Style } from './styles';
 import { HomeScreen } from './views/home-screen';
 import { DevicePrefs, bbbbbIdentifier } from './views/device-prefs';
+import { HolidaySetup } from './views/holiday-setup';
 import * as SecureStore from 'expo-secure-store';
 
 
 export enum SetupStep
 {
+	HolidaySetup,
 	DevicePrefs,
 	HomeScreen,
 	EnterDeviceDetails,
@@ -127,15 +129,25 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 
 	// Rudimentary routing
 	let step;
-	// Step -1: Device Settings
-	if (currentStep === SetupStep.DevicePrefs)
+	// Step -2: Holiday Setup
+	if (currentStep === SetupStep.HolidaySetup)
 	{
-		step = <DevicePrefs
-			deviceIdentifier={deviceIdentifierObject}
-			onBack={() => setCurrentStep(SetupStep.HomeScreen)}
-
+		step = <HolidaySetup
+			deviceUUID={deviceUUID}
+			onBack={() => setCurrentStep(SetupStep.DevicePrefs)}
 		/>;
 
+
+		// Step -1: Device Settings
+	} else if (currentStep === SetupStep.DevicePrefs)
+	{
+		step = <DevicePrefs
+			deviceUUID={deviceUUID}
+			deviceIdentifier={deviceIdentifierObject}
+			onBack={() => setCurrentStep(SetupStep.HomeScreen)}
+			navigateToHolidaySetup={() => setCurrentStep(SetupStep.HolidaySetup)}
+
+		/>;
 
 		// Step 0: Home
 	} else if (currentStep === SetupStep.HomeScreen)

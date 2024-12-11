@@ -1,7 +1,7 @@
 
 
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { Style } from '../styles';
 
 const VERIFICATION_KEY_DELIMITER = ":: ::";
@@ -24,54 +24,21 @@ export const ProgressDiagram = ({ numChecks = 0, showLoader = false }) =>
     );
 };
 
-interface WeekdayPickerProps
+
+
+
+
+export const apiFetch = async (path: string, body: Object, setData?: Function, setLoading?: Function, setError?: Function) =>
 {
-    locked: string; // The currently selected weekday
-    onWeekdaySelect?: (selectedDay: string) => void; // Callback to handle weekday selection
-}
-
-export const WeekdayPicker: React.FC<WeekdayPickerProps> = ({ locked, onWeekdaySelect }) =>
-{
-    const weekdays = ["Su", "M", "T", "W", "Th", "F", "Sa"]
-
-    const [selectedDay, setSelectedDay] = useState<string>(locked);
-
-    const handlePress = (day: string) =>
+    if (setLoading)
     {
-        console.log(locked, day)
-        setSelectedDay(day);
-        if (onWeekdaySelect)
-        {
-            onWeekdaySelect(day);
-        }
-    };
+        setLoading(true); // Start loading
+    }
+    if (setError)
+    {
+        setError(null); // Reset error state
+    }
 
-    return (
-        <View style={styles.container}>
-            {weekdays.map((day) => (
-                <TouchableOpacity
-                    key={day}
-                    style={[
-                        styles.weekdayButton,
-                        locked === day && styles.lockedButton,
-                        selectedDay === day && styles.selectedButton,
-                    ]}
-                    onPress={() => handlePress(day)}
-                >
-                    <Text style={styles.weekdayText}>{day}</Text>
-                </TouchableOpacity>
-            ))}
-        </View>
-    );
-};
-
-export default { ProgressDiagram, WeekdayPicker };
-
-
-export const apiFetch = async (path: string, body: Object, setData: Function, setLoading: Function, setError: Function) =>
-{
-    setLoading(true); // Start loading
-    setError(null); // Reset error state
     try
     {
         const response = await fetch(process.env.EXPO_PUBLIC_API_ENDPOINT + '/hooks/' + path,
@@ -94,14 +61,25 @@ export const apiFetch = async (path: string, body: Object, setData: Function, se
         {
             result = result.result;
         }
-        setData(result);
+
+        // console.log(result)  
+        if (setData)
+        {
+            setData(result);
+        }
 
     } catch (err: any)
     {
-        setError(err.message);
+        if (setError)
+        {
+            setError(err.message);
+        }
     } finally
     {
-        setLoading(false); // Stop loading
+        if (setLoading)
+        {
+            setLoading(false); // Stop loading
+        }
     }
 };
 
@@ -126,6 +104,11 @@ function parseVerificationKey(verificationKey: string)
     return { ssid, setup_code };
 }
 
+export function capitalize(str: string)
+{
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 
 
 const styles = StyleSheet.create({
@@ -139,29 +122,5 @@ const styles = StyleSheet.create({
     },
 
 
-    container: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        marginVertical: 10,
-    },
-    weekdayButton: {
-        padding: 10,
-        margin: 5,
-        borderRadius: 5,
-        backgroundColor: "#f0f0f0",
-        borderWidth: 1,
-        borderColor: "#ccc",
-    },
-    lockedButton: {
-        backgroundColor: "red",
-        borderColor: "blue",
-    },
-    selectedButton: {
-        backgroundColor: "#4CAF50",
-        borderColor: "#4CAF50",
-    },
-    weekdayText: {
-        color: "#000",
-    },
+
 });

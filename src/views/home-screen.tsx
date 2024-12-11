@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, Text, ActivityIndicator, Pressable, StyleSheet, GestureResponderEvent } from 'react-native';
 import { Style } from '../styles';
-import ProgressDiagram, { apiFetch } from '../util/utility';
+import { apiFetch } from '../util/utility';
 import { bbbbbIdentifier } from './device-prefs';
 
 export interface HomeScreenArguments
@@ -57,7 +57,7 @@ const BindicatorList: React.FC<BindicatorListProps> = ({ bData, onNavigateToDevi
 
 
 					<View key={index}  >
-						<Pressable  style={Style.bListItem} onPress={() => onNavigateToDevicePrefs(identifier)}>
+						<Pressable style={Style.bListItem} onPress={() => onNavigateToDevicePrefs(identifier)}>
 							<Image
 								source={require('../../assets/bindicator_censored.png')}
 								style={Style.smallBBBBBImage}
@@ -81,6 +81,8 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: 
 	const [bindicatorData, setBindicatorData] = useState<BindicatorGroup | null>(null);
 	const [loading, setLoading] = useState(false); // Initially not loading
 	const [error, setError] = useState<string | null>(null);
+	const [refreshKey, setRefreshKey] = useState(0); // New state to control re-running the effect
+
 
 	useEffect(() =>
 	{
@@ -89,7 +91,7 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: 
 				"household_id": deviceUUID
 			}
 			, setBindicatorData, setLoading, setError);
-	}, []);
+	}, [refreshKey]);
 
 
 	const isPasswordVisible = true;
@@ -106,7 +108,14 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: 
 			{bindicatorData && (
 
 				<View>
-					<BindicatorList bData={bindicatorData} onNavigateToDevicePrefs={onNavigateToDevicePrefs} />
+					<View>
+						<BindicatorList bData={bindicatorData} onNavigateToDevicePrefs={onNavigateToDevicePrefs} />
+					</View>
+					<View style={[Style.simpleFlexRow, { marginTop: 35 }]}>
+						<Pressable style={Style.button} onPress={() => setRefreshKey(prev => prev + 1)}>
+							<Text style={Style.buttonIcon}>⟳</Text>
+						</Pressable>
+					</View>
 				</View>
 
 			)}
