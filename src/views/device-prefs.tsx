@@ -204,59 +204,19 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack }: DevicePref
     const [error, setError] = useState<string | null>(null);
 
 
-    const [pulledSettings, setPulledSettings] = useState(false);
-
-    const [previewLoading, setPreviewLoading] = useState(false); // Initially not loading
-    const [previewDays, setPreviewDays] = useState<previewDaysObj | null | undefined>(null);
-
-    const [selectedTrashDay, setSelectedTrashDay] = useState("W");
-    const [selectedTrashScheme, setSelectedTrashScheme] = useState("weekly");
-    const [selectedTrashStartOption, setSelectedTrashStartOption] = useState<string>("this"); // For biweekly options
-
-    const [selectedRecycleDay, setSelectedRecycleDay] = useState("W");
-    const [selectedRecycleScheme, setSelectedRecycleScheme] = useState("weekly");
-    const [selectedRecycleStartOption, setSelectedRecycleStartOption] = useState<string>("this"); // For biweekly options
-
-
-    useEffect(() =>
-    {
-        if (deviceUUID && !pulledSettings)
-        {
-            console.log("#", "Pulling current settings", {
-                household_id: deviceUUID,
-            })
-            const response = apiFetch('get-global-settings',
-                {
-                    household_id: deviceUUID,
-                }
-                , setBindicatorDeviceData, setDeviceLoading, setError);
-            setPulledSettings(true)
-
-        }
-
-    }, []);
-
     useEffect(() =>
     {
         if (deviceIdentifier)
         {
             const body = {
-                device_uuid: deviceUUID,
-
-                trash_day: selectedTrashDay,
-                trash_scheme: selectedTrashScheme,
-                trash_start_option: selectedTrashStartOption,
-                recycle_day: selectedRecycleDay,
-                recycle_scheme: selectedRecycleScheme,
-                recycle_start_option: selectedRecycleStartOption,
+                ...deviceIdentifier
             }
-            console.log("#", "Saving settings", body)
+            console.log("#", "Pulling Bindicator data", body)
+            const response = apiFetch('get-bindicator-data', body, setBindicatorDeviceData, setDeviceLoading, setError);
 
-            const response = apiFetch('save-settings', body
-                , setPreviewDays, setPreviewLoading, setError);
         }
 
-    }, [selectedTrashDay, selectedTrashScheme, selectedTrashStartOption, selectedRecycleDay, selectedRecycleScheme, selectedRecycleStartOption]);
+    }, []);
 
     if (!bindicatorDeviceData)
     {
@@ -279,30 +239,7 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack }: DevicePref
             {error && <Text style={Style.error}>{error}</Text>}
 
 
-            <SettingsChunk
-                name="Trash"
-                displayName="Trash"
-                color="#1475f5"
-                bindicatorDeviceData={bindicatorDeviceData}
-                previewDays={previewDays}
-                setSelectedCollectionDay={setSelectedTrashDay}
-                setSelectedCollectionScheme={setSelectedTrashScheme}
-                setSelectedCollectionStartOption={setSelectedTrashStartOption}
-
-            />
-            <SettingsChunk
-                name="Recycle"
-                displayName="Recycling"
-                color="#4caf50"
-                bindicatorDeviceData={bindicatorDeviceData}
-                previewDays={previewDays}
-                setSelectedCollectionDay={setSelectedRecycleDay}
-                setSelectedCollectionScheme={setSelectedRecycleScheme}
-                setSelectedCollectionStartOption={setSelectedRecycleStartOption}
-
-            />
-
-
+            <Text style={Style.paragraph}>{JSON.stringify(bindicatorDeviceData)}</Text>
 
 
 
