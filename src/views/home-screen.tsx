@@ -12,13 +12,6 @@ export interface HomeScreenArguments
 	onNavigateToGlobalPrefs: () => void;
 }
 
-
-interface BindicatorListProps
-{
-	bData: BindicatorGroup; // Explicitly type bData as an array of strings
-	onNavigateToDevicePrefs: (identifier: bindicatorIdentifier) => void;
-}
-
 interface BindicatorGroup
 {
 	count: number;
@@ -86,8 +79,6 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs, on
 							{
 								const identifier = { "monitoring_uuid": item.monitoring_uuid };
 								return (
-
-
 									<View key={index}  >
 										<Pressable style={styles.bListItem} onPress={() => onNavigateToDevicePrefs(identifier)}>
 											<Image
@@ -95,8 +86,9 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs, on
 												style={Style.smallBindicatorImage}
 											/>
 											<Text style={styles.bListItemText}>
-												{item.bindicator_name} {/* Ensure you are using the correct key name */}
+												{item.bindicator_name}
 											</Text>
+											<Text style={Style.buttonIconSm}>→</Text>
 										</Pressable>
 									</View>
 
@@ -146,6 +138,7 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'row',
 		gap: 10,
+		justifyContent: 'space-between',
 		alignItems: 'center',
 		color: 'white',
 		borderRadius: 4,
