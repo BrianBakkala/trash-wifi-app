@@ -51,7 +51,6 @@ export const renderNetworkThunk = ({ selectedNetwork, setSelectedNetwork }: Rend
 				testID='button'
 				onPress={() => setSelectedNetwork(item)}>
 				<Text style={[{ fontWeight: 'bold' }, Style.listItemText]}>{`${item.ssid}`}</Text>
-				<Text style={Style.listItemText}>{`: ${getSignalStrength(item.rssi)}`}</Text>
 			</TouchableOpacity>
 		);
 	};

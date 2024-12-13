@@ -3,11 +3,11 @@ import { View, Image, TouchableOpacity, Text, ActivityIndicator, Pressable, Styl
 import { Style } from '../styles';
 import { apiFetch } from '../util/utility';
 
-export interface DevicePrefsArguments
+export interface GlobalPrefsArguments
 {
     deviceUUID: string | undefined;
-    deviceIdentifier: bindicatorIdentifier | undefined;
     onBack: () => void;
+    navigateToHolidaySetup: () => void;
 }
 
 export interface bindicatorIdentifier
@@ -169,7 +169,7 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
     const days = previewDays ? previewDays[lowerName + '_days'] : [];
 
     return (
-        <View>
+        <View style={styles.settingsChunk}>
             <Text style={styles.settingHeader}>{displayName}</Text>
             <WeekdayPicker
                 locked={bindicatorDeviceData.trash_schedule}
@@ -197,7 +197,7 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
 
 
 
-export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack }: DevicePrefsArguments): React.ReactElement => 
+export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: GlobalPrefsArguments): React.ReactElement => 
 {
     const [bindicatorDeviceData, setBindicatorDeviceData] = useState<bindicatorFirebaseDocument | null>(null);
     const [deviceLoading, setDeviceLoading] = useState(false); // Initially not loading
@@ -238,7 +238,7 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack }: DevicePref
 
     useEffect(() =>
     {
-        if (deviceIdentifier)
+        if (deviceUUID)
         {
             const body = {
                 device_uuid: deviceUUID,
@@ -303,6 +303,12 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack }: DevicePref
             />
 
 
+            <View style={[{ marginTop: 30 }, { marginBottom: 30 }]}>
+                <Pressable style={Style.button} onPress={() => navigateToHolidaySetup()}>
+                    <Text style={Style.buttonText}>Manage Holidays</Text>
+                    <Text style={Style.buttonIconSm}>→</Text>
+                </Pressable>
+            </View>
 
 
 
@@ -327,6 +333,10 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         backgroundColor: "#f0f0f0",
+    },
+    settingsChunk: {
+        borderBottomWidth: 1,
+        borderColor: 'white',
     },
 
     weekdayText: {

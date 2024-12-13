@@ -10,11 +10,12 @@ export interface JoinWiFiArguments
 	deviceUUID: string,
 	setupCode: string,
 	onStartOver: () => void,
+	onContinue: () => void,
 	selectedNetwork?: INetwork,
 	wifiPassword?: string
 }
 
-export const JoinWiFi = ({ deviceUUID, setupCode, onStartOver, selectedNetwork, wifiPassword }: JoinWiFiArguments): React.ReactElement =>
+export const JoinWiFi = ({ deviceUUID, setupCode, onStartOver, onContinue, selectedNetwork, wifiPassword }: JoinWiFiArguments): React.ReactElement =>
 {
 	const { isJoiningWiFiNetwork, joinWiFiNetwork } = useBLESetup();
 	const [hasJoined, setHasJoined] = useState(false);
@@ -67,11 +68,14 @@ export const JoinWiFi = ({ deviceUUID, setupCode, onStartOver, selectedNetwork, 
 		<View style={Style.vertical}>
 			<ProgressDiagram numChecks={5} />
 			<Text style={Style.h2}>Successfully joined {selectedNetwork?.ssid}!</Text>
-			<Text style={Style.paragraph}>!{JSON.stringify(responseData)}!</Text>
-			<View style={Style.nav}>
+			{/* <Text style={Style.paragraph}>!{JSON.stringify(responseData)}!</Text> */}
+			<View style={Style.navCenterSplit}>
 				<Pressable style={Style.buttonSecondary} onPress={onStartOver}>
 					<Text style={Style.buttonIconSm}>←</Text>
 					<Text style={Style.buttonText}>Start over</Text>
+				</Pressable>
+				<Pressable style={Style.button} onPress={onContinue}>
+					<Text style={Style.buttonText}>Set up schedule</Text><Text style={Style.buttonIconSm}>→</Text>
 				</Pressable>
 			</View>
 		</View>

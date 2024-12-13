@@ -245,7 +245,13 @@ export const Style = StyleSheet.create({
 		color: 'white',
 		marginBottom: 30,
 		marginTop: 30,
+		textAlign: 'center',
 		width: '85%',
+
+	},
+	paragraphText: {
+		color: 'white',
+		textAlign: 'center'
 
 	},
 	headerParagraph: {

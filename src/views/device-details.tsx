@@ -9,10 +9,11 @@ export interface DeviceDetailsArguments
 	mobileSecret: string,
 	setMobileSecret: React.Dispatch<React.SetStateAction<string>>,
 	onContinue: () => void
+	onBack: () => void
 }
 
 // eslint-disable-next-line
-export const DeviceDetails = ({ setupCode, setSetupCode, mobileSecret, setMobileSecret, onContinue }: DeviceDetailsArguments): React.ReactElement =>
+export const DeviceDetails = ({ setupCode, setSetupCode, mobileSecret, setMobileSecret, onContinue, onBack }: DeviceDetailsArguments): React.ReactElement =>
 {
 
 	return (
@@ -30,9 +31,9 @@ export const DeviceDetails = ({ setupCode, setSetupCode, mobileSecret, setMobile
 						style={Style.mainBindicatorImage}
 					/>
 
-					<View>
+					<View style={Style.paragraph}>
 
-						<Text style={Style.paragraph}>Please enter the setup code found on the label on the back of the Bindicator.</Text>
+						<Text style={Style.paragraphText}>Please enter the setup code found on the label on the back of the Bindicator.</Text>
 
 					</View>
 
@@ -52,7 +53,10 @@ export const DeviceDetails = ({ setupCode, setSetupCode, mobileSecret, setMobile
 							value={mobileSecret}
 						/>
 					</View>
-					<View style={Style.navCenter}>
+					<View style={Style.navCenterSplit}>
+						<Pressable style={Style.buttonSecondary} onPress={onBack}>
+							<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
+						</Pressable>
 						<Pressable style={Style.button} onPress={() =>
 						{
 							setSetupCode(setupCode);

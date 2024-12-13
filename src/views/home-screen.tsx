@@ -9,6 +9,7 @@ export interface HomeScreenArguments
 	deviceUUID: string;
 	onContinue: () => void;
 	onNavigateToDevicePrefs: (identifier: bindicatorIdentifier) => void;
+	onNavigateToGlobalPrefs: () => void;
 }
 
 
@@ -16,8 +17,6 @@ interface BindicatorListProps
 {
 	bData: BindicatorGroup; // Explicitly type bData as an array of strings
 	onNavigateToDevicePrefs: (identifier: bindicatorIdentifier) => void;
-
-
 }
 
 interface BindicatorGroup
@@ -28,19 +27,20 @@ interface BindicatorGroup
 
 interface Bobject
 {
-	device_name: string;
+	bindicator_name: string;
 	household_id: string;
 	monitoring_uuid: string;
 }
 
 
-export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: HomeScreenArguments): React.ReactElement =>
+export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs, onNavigateToGlobalPrefs }: HomeScreenArguments): React.ReactElement =>
 {
 	const [bindicatorData, setBindicatorData] = useState<BindicatorGroup | null>(null);
 	const [loading, setLoading] = useState(false); // Initially not loading
 	const [error, setError] = useState<string | null>(null);
 	const [refreshKey, setRefreshKey] = useState(0); // New state to control re-running the effect
 	const [monitoringUUID, setMonitoringUUID] = useState<string>(""); // New state to control re-running the effect
+	const [bindicatorCount, setBindicatorCount] = useState<number>(0); // New state to control re-running the effect
 
 	useEffect(() =>
 	{
@@ -52,11 +52,10 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: 
 	}, [refreshKey]);
 	useEffect(() =>
 	{
-
-		console.log(bindicatorData)
 		if (bindicatorData && bindicatorData.bindicators && bindicatorData.bindicators.length > 0)
 		{
 			setMonitoringUUID(bindicatorData.bindicators[0].monitoring_uuid)
+			setBindicatorCount(bindicatorData.count)
 		}
 	}, [bindicatorData]);
 
@@ -69,9 +68,14 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: 
 				<View>
 					<Text style={[{ textAlign: 'center', }, Style.h2]}>My BBBBBs</Text>
 				</View>
+				<View  >
 
-				{loading && <ActivityIndicator size="large" color="#ffffff" />}
-				{error && <Text style={styles.errorText}>{error}</Text>}
+					{loading && <ActivityIndicator size="large" color="#ffffff" />}
+
+					{!loading && bindicatorCount == 0 && <Text style={Style.paragraphText}>No BBBBBs found.</Text>}
+
+					{error && <Text style={styles.errorText}>{error}</Text>}
+				</View>
 
 				{bindicatorData && (
 
@@ -91,7 +95,7 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: 
 												style={Style.smallBindicatorImage}
 											/>
 											<Text style={styles.bListItemText}>
-												{item.device_name} {/* Ensure you are using the correct key name */}
+												{item.bindicator_name} {/* Ensure you are using the correct key name */}
 											</Text>
 										</Pressable>
 									</View>
@@ -99,6 +103,7 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: 
 								)
 							})
 							}
+
 
 						</View >
 						<View style={[Style.simpleFlexRow, { marginTop: 35 }]}>
@@ -111,11 +116,11 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: 
 				)}
 			</View>
 
-			<View style={Style.navCenterSplit}>
+			<View style={(bindicatorCount > 0 ? Style.navCenterSplit : Style.navCenter)}>
 
-				<Pressable style={Style.button} onPress={() => onNavigateToDevicePrefs({ "monitoring_uuid": monitoringUUID })}>
+				{bindicatorCount > 0 && <Pressable style={Style.button} onPress={() => onNavigateToGlobalPrefs()}>
 					<Text style={Style.buttonIconSm}>⚙️</Text><Text style={Style.buttonText}>Settings</Text>
-				</Pressable>
+				</Pressable>}
 				<Pressable style={Style.button} onPress={onContinue}>
 					<Text style={Style.buttonIconSm}>+</Text><Text style={Style.buttonText}>Add BBBBB</Text>
 				</Pressable>

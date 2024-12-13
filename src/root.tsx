@@ -14,6 +14,7 @@ import { ErrorModal } from './views/error-modal';
 import { Style } from './styles';
 import { HomeScreen } from './views/home-screen';
 import { DevicePrefs, bindicatorIdentifier } from './views/device-prefs';
+import { GlobalPrefs } from './views/global-prefs';
 import { HolidaySetup } from './views/holiday-setup';
 import * as SecureStore from 'expo-secure-store';
 
@@ -67,7 +68,6 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	defaultCurrentStep = SetupStep.HomeScreen
 }) =>
 {
-
 	const scheme = useColorScheme();
 	const [setupCode, setSetupCode] = useState<string>('');
 	const [mobileSecret, setMobileSecret] = useState<string>('');
@@ -76,9 +76,6 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	const [wifiPassword, setWifiPassword] = useState<string | undefined>(undefined);
 	const [deviceUUID, setUUID] = useState<string>('');
 	const [deviceIdentifierObject, setDeviceIdentifierObject] = useState<bindicatorIdentifier>();
-
-
-
 
 	useEffect(() =>
 	{
@@ -121,21 +118,15 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 		);
 	}
 
-	const navigateToDevicePrefs = (identifier: bindicatorIdentifier) =>
-	{
-		setDeviceIdentifierObject(identifier); // Set the identifier for DevicePrefs
-		setCurrentStep(SetupStep.DevicePrefs); // Navigate to the DevicePrefs step
-	};
-
-
 	// Rudimentary routing
 	let step;
-	// Step -2: Holiday Setup
+	// Step -3: Global Collection Setup
 	if (currentStep === SetupStep.GlobalPrefs)
 	{
-		step = <HolidaySetup
+		step = <GlobalPrefs
 			deviceUUID={deviceUUID}
-			onBack={() => setCurrentStep(SetupStep.DevicePrefs)}
+			onBack={() => setCurrentStep(SetupStep.HomeScreen)}
+			navigateToHolidaySetup={() => setCurrentStep(SetupStep.HolidaySetup)}
 		/>;
 
 		// Step -2: Holiday Setup
@@ -144,7 +135,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	{
 		step = <HolidaySetup
 			deviceUUID={deviceUUID}
-			onBack={() => setCurrentStep(SetupStep.DevicePrefs)}
+			onBack={() => setCurrentStep(SetupStep.GlobalPrefs)}
 		/>;
 
 
@@ -155,7 +146,6 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 			deviceUUID={deviceUUID}
 			deviceIdentifier={deviceIdentifierObject}
 			onBack={() => setCurrentStep(SetupStep.HomeScreen)}
-			navigateToHolidaySetup={() => setCurrentStep(SetupStep.HolidaySetup)}
 
 		/>;
 
@@ -165,7 +155,12 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 		step = <HomeScreen
 			deviceUUID={deviceUUID}
 			onContinue={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
-			onNavigateToDevicePrefs={navigateToDevicePrefs}
+			onNavigateToDevicePrefs={(identifier: bindicatorIdentifier) =>
+			{
+				setDeviceIdentifierObject(identifier);
+				setCurrentStep(SetupStep.DevicePrefs); // Navigate 
+			}}
+			onNavigateToGlobalPrefs={() => { setCurrentStep(SetupStep.GlobalPrefs); }}
 		/>;
 
 		// Step 1: Enter the device setup code and mobile secret
@@ -175,6 +170,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 		step = <DeviceDetails
 			setupCode="052BF8"
 			// setupCode={setupCode}
+			onBack={() => setCurrentStep(SetupStep.HomeScreen)}
 			setSetupCode={setSetupCode}
 			mobileSecret="AAAAAAAAAAAAAAA"
 			setMobileSecret={setMobileSecret}
@@ -224,6 +220,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 		step = <JoinWiFi
 			setupCode={setupCode}
 			deviceUUID={deviceUUID}
+			onContinue={() => { setCurrentStep(SetupStep.GlobalPrefs); }}
 			onStartOver={async () =>
 			{
 				await disconnect();
