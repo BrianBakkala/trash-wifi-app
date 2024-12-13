@@ -219,8 +219,6 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack }: DevicePref
     }, []);
 
 
-    // joinWiFiNetworkThunk;;p
-
     if (!bindicatorDeviceData)
     {
         return (
