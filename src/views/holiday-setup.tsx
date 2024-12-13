@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, TouchableOpacity, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
+import { View, Image, Text, TouchableOpacity, ActivityIndicator, Pressable, StyleSheet, ScrollView } from 'react-native';
 import { Style } from '../styles';
 import { apiFetch } from '../util/utility';
-import { bbbbbIdentifier } from './device-prefs';
+import { bindicatorIdentifier } from './device-prefs';
 
 export interface HolidaySetupArguments
 {
@@ -97,35 +97,45 @@ export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): Rea
 
     }, [holidayData]);
 
+    if (loading)
+    {
+        return (
+            <View style={Style.vertical}>
+                <ActivityIndicator size={32} color={"white"} />
+                <Text style={Style.paragraph}>Loading holidays...</Text>
 
+
+            </View>
+        )
+    }
 
     return (
         <View style={Style.vertical}>
 
-            <Text style={Style.headerParagraph}>Collections will be moved one day later following the selected holidays:</Text>
+            <Text style={Style.paragraph}>Collections will be moved one day later following the selected holidays:</Text>
 
-            {holidayData &&
-                holidayData.holidays.map((holiday, index) =>
-                {
+            <ScrollView style={styles.holidaysList}>
+                {holidayData &&
+                    holidayData.holidays.map((holiday, index) =>
+                    {
+                        return (
+                            <TouchableOpacity
+                                key={index}
+                                style={[
+                                    styles.holidayButton,
+                                    selectedHolidays.includes(holiday.name) && styles.selectedHoliday,
+                                ]}
+                                onPress={() => handlePress(holiday.name)}
+                            >
+                                <Text style={[styles.holidayText, { fontWeight: "bold" }]}>
+                                    {holiday.name}
+                                </Text>
+                                <Text style={styles.holidayText}>{holiday.formatted_date}</Text>
 
-                    return (
-
-                        <TouchableOpacity
-                            key={index}
-                            style={[
-                                styles.holidayButton,
-                                selectedHolidays.includes(holiday.name) && styles.selectedHoliday,
-                            ]}
-                            onPress={() => handlePress(holiday.name)}
-                        >
-                            <Text style={[styles.holidayText, { fontWeight: 'bold' }]}>{holiday.name}</Text>
-                            <Text style={styles.holidayText}>{holiday.formatted_date}</Text>
-                        </TouchableOpacity>
-
-
-                    )
-                })
-            }
+                            </TouchableOpacity>
+                        );
+                    })}
+            </ScrollView>
 
             <View style={Style.navLeft}>
                 <Pressable style={Style.buttonSecondary} onPress={onBack}>
@@ -155,6 +165,12 @@ const styles = StyleSheet.create({
     },
     selectedHoliday: {
         backgroundColor: 'blue'
+    },
+    holidaysList: {
+        display: 'flex',
+        flexDirection: 'column',
+        marginBottom: 100,
+        gap: 5,
     }
 
 

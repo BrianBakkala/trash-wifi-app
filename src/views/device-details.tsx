@@ -23,16 +23,16 @@ export const DeviceDetails = ({ setupCode, setSetupCode, mobileSecret, setMobile
 				<View style={Style.vertical}>
 
 
-					<Text style={Style.h2}>BBBBB WiFi Setup</Text>
+					<Text style={Style.h2}>Bindicator WiFi Setup</Text>
 
 					<Image
 						source={require('../../assets/bindicator_censored.png')}
-						style={Style.mainBBBBBImage}
+						style={Style.mainBindicatorImage}
 					/>
 
 					<View>
 
-						<Text style={Style.paragraph}>Please enter the setup code found on the label on the back of the BBBBB.</Text>
+						<Text style={Style.paragraph}>Please enter the setup code found on the label on the back of the Bindicator.</Text>
 
 					</View>
 

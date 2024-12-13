@@ -82,6 +82,16 @@ export const Style = StyleSheet.create({
 		width: '100%'
 
 	},
+	navCenterSplit: {
+		bottom: 20,
+		position: 'absolute',
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		flexDirection: 'row',
+		width: '100%'
+
+	},
 	navLeft: {
 		bottom: 20,
 		position: 'absolute',
@@ -235,10 +245,12 @@ export const Style = StyleSheet.create({
 		color: 'white',
 		marginBottom: 30,
 		marginTop: 30,
+		width: '85%',
 
 	},
 	headerParagraph: {
 		color: 'white',
+		width: '85%',
 		marginBottom: 30,
 	},
 
@@ -308,39 +320,18 @@ export const Style = StyleSheet.create({
 		color: 'white'
 	},
 
-	bList: {
-		display: 'flex',
-		flexDirection: 'column',
-		gap: 20,
-		alignContent: 'center',
-		justifyContent: 'center',
-	},
-	bListItem: {
-		display: 'flex',
-		flexDirection: 'row',
-		gap: 10,
-		alignItems: 'center',
-		color: 'white',
-		borderRadius: 4,
-		padding: 10,
-		backgroundColor: '#222222'
-	},
-
-	bListItemText: {
-		color: 'white',
-	},
 
 
 
 	displayNone: {
 		display: 'none'
 	},
-	mainBBBBBImage: {
+	mainBindicatorImage: {
 		height: 100,
 		margin: 10,
 		resizeMode: 'contain'
 	},
-	smallBBBBBImage: {
+	smallBindicatorImage: {
 		height: 30,
 		width: 30,
 		resizeMode: 'contain'

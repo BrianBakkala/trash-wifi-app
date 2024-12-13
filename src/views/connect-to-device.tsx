@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, View, Text, Pressable } from 'react-native';
 import { useBLESetup, ConnectionStatus } from '@particle/react-native-ble-setup-library';
 import { Style } from '../styles';
-import {ProgressDiagram} from '../util/utility';
+import { ProgressDiagram } from '../util/utility';
 
 export interface ConnectToDeviceArguments
 {
@@ -69,7 +69,7 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 		return (
 			<View style={Style.vertical}>
 				<ProgressDiagram showLoader={true} numChecks={1} />
-				<Text style={Style.h2}>Connecting to BBBBB {setupCode}...</Text>
+				<Text style={Style.h2}>Connecting to Bindicator {setupCode}...</Text>
 			</View>
 		);
 	}
@@ -78,7 +78,7 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 	return (
 		<View style={Style.vertical}>
 			<ProgressDiagram numChecks={2} />
-			<Text style={Style.h2}>Connected to BBBBB {setupCode}!</Text>
+			<Text style={Style.h2}>Connected to Bindicator {setupCode}!</Text>
 
 			<View style={Style.navSpace}>
 				<Pressable style={Style.buttonSecondary} onPress={onBack}>

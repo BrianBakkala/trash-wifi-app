@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, ActivityIndicator, Pressable, StyleSheet, GestureResponderEvent } from 'react-native';
+import { View, Image, Text, ActivityIndicator, Pressable, StyleSheet, ScrollView } from 'react-native';
 import { Style } from '../styles';
 import { apiFetch } from '../util/utility';
-import { bbbbbIdentifier } from './device-prefs';
+import { bindicatorIdentifier } from './device-prefs';
 
 export interface HomeScreenArguments
 {
 	deviceUUID: string;
 	onContinue: () => void;
-	onNavigateToDevicePrefs: (identifier: bbbbbIdentifier) => void;
+	onNavigateToDevicePrefs: (identifier: bindicatorIdentifier) => void;
 }
 
 
 interface BindicatorListProps
 {
 	bData: BindicatorGroup; // Explicitly type bData as an array of strings
-	onNavigateToDevicePrefs: (identifier: bbbbbIdentifier) => void;
+	onNavigateToDevicePrefs: (identifier: bindicatorIdentifier) => void;
 
 
 }
@@ -34,55 +34,13 @@ interface Bobject
 }
 
 
-
-const BindicatorList: React.FC<BindicatorListProps> = ({ bData, onNavigateToDevicePrefs }) =>
-{
-	const data = bData.bindicators;
-	if (!Array.isArray(data))
-	{
-		return null; // Optionally render an error message or fallback
-	}
-
-	return (
-		<View style={Style.bList}>
-
-			{data.map((item, index) =>
-			{
-
-
-				const identifier = { "monitoring_uuid": item.monitoring_uuid };
-
-
-				return (
-
-
-					<View key={index}  >
-						<Pressable style={Style.bListItem} onPress={() => onNavigateToDevicePrefs(identifier)}>
-							<Image
-								source={require('../../assets/bindicator_censored.png')}
-								style={Style.smallBBBBBImage}
-							/>
-							<Text style={Style.bListItemText}>
-								{item.device_name} {/* Ensure you are using the correct key name */}
-							</Text>
-						</Pressable>
-					</View>
-
-				)
-			})
-			}
-
-		</View >
-	);
-};
-
 export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: HomeScreenArguments): React.ReactElement =>
 {
 	const [bindicatorData, setBindicatorData] = useState<BindicatorGroup | null>(null);
 	const [loading, setLoading] = useState(false); // Initially not loading
 	const [error, setError] = useState<string | null>(null);
 	const [refreshKey, setRefreshKey] = useState(0); // New state to control re-running the effect
-
+	const [monitoringUUID, setMonitoringUUID] = useState<string>(""); // New state to control re-running the effect
 
 	useEffect(() =>
 	{
@@ -92,37 +50,74 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: 
 			}
 			, setBindicatorData, setLoading, setError);
 	}, [refreshKey]);
+	useEffect(() =>
+	{
+
+		console.log(bindicatorData)
+		if (bindicatorData && bindicatorData.bindicators && bindicatorData.bindicators.length > 0)
+		{
+			setMonitoringUUID(bindicatorData.bindicators[0].monitoring_uuid)
+		}
+	}, [bindicatorData]);
 
 
 	const isPasswordVisible = true;
 	return (
 		<View style={Style.vertical}>
 
-			<View>
-				<Text style={Style.h2}>My BBBBBs</Text>
-			</View>
-
-			{loading && <ActivityIndicator size="large" color="#ffffff" />}
-			{error && <Text style={styles.errorText}>{error}</Text>}
-
-			{bindicatorData && (
-
+			<View style={styles.bListWrapper}>
 				<View>
-					<View>
-						<BindicatorList bData={bindicatorData} onNavigateToDevicePrefs={onNavigateToDevicePrefs} />
-					</View>
-					<View style={[Style.simpleFlexRow, { marginTop: 35 }]}>
-						<Pressable style={Style.button} onPress={() => setRefreshKey(prev => prev + 1)}>
-							<Text style={Style.buttonIcon}>⟳</Text>
-						</Pressable>
-					</View>
+					<Text style={[{ textAlign: 'center', }, Style.h2]}>My BBBBBs</Text>
 				</View>
 
-			)}
+				{loading && <ActivityIndicator size="large" color="#ffffff" />}
+				{error && <Text style={styles.errorText}>{error}</Text>}
 
-			<View style={Style.navRight}>
+				{bindicatorData && (
+
+					<ScrollView>
+						<View style={styles.bList}>
+
+							{bindicatorData.bindicators.map((item, index) =>
+							{
+								const identifier = { "monitoring_uuid": item.monitoring_uuid };
+								return (
+
+
+									<View key={index}  >
+										<Pressable style={styles.bListItem} onPress={() => onNavigateToDevicePrefs(identifier)}>
+											<Image
+												source={require('../../assets/bindicator_censored.png')}
+												style={Style.smallBindicatorImage}
+											/>
+											<Text style={styles.bListItemText}>
+												{item.device_name} {/* Ensure you are using the correct key name */}
+											</Text>
+										</Pressable>
+									</View>
+
+								)
+							})
+							}
+
+						</View >
+						<View style={[Style.simpleFlexRow, { marginTop: 35 }]}>
+							<Pressable style={Style.button} onPress={() => setRefreshKey(prev => prev + 1)}>
+								<Text style={Style.buttonIcon}>⟳</Text><Text style={Style.buttonText}>Refresh</Text>
+							</Pressable>
+						</View>
+					</ScrollView>
+
+				)}
+			</View>
+
+			<View style={Style.navCenterSplit}>
+
+				<Pressable style={Style.button} onPress={() => onNavigateToDevicePrefs({ "monitoring_uuid": monitoringUUID })}>
+					<Text style={Style.buttonIconSm}>⚙️</Text><Text style={Style.buttonText}>Settings</Text>
+				</Pressable>
 				<Pressable style={Style.button} onPress={onContinue}>
-					<Text style={Style.buttonIconSm}>+</Text><Text style={Style.buttonText}>Add BBBB</Text>
+					<Text style={Style.buttonIconSm}>+</Text><Text style={Style.buttonText}>Add BBBBB</Text>
 				</Pressable>
 			</View>
 		</View >
@@ -130,6 +125,34 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs }: 
 };
 
 const styles = StyleSheet.create({
+
+	bListWrapper: {
+		marginTop: 40,
+	},
+
+	bList: {
+		display: 'flex',
+		flexDirection: 'column',
+		gap: 20,
+		alignContent: 'center',
+		justifyContent: 'center',
+	},
+	bListItem: {
+		display: 'flex',
+		flexDirection: 'row',
+		gap: 10,
+		alignItems: 'center',
+		color: 'white',
+		borderRadius: 4,
+		padding: 10,
+		backgroundColor: '#222222'
+	},
+
+	bListItemText: {
+		color: 'white',
+	},
+
+
 	container: {
 		flex: 1,
 		justifyContent: 'center',

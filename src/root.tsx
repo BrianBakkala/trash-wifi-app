@@ -13,7 +13,7 @@ import { JoinWiFi } from './views/join-wifi';
 import { ErrorModal } from './views/error-modal';
 import { Style } from './styles';
 import { HomeScreen } from './views/home-screen';
-import { DevicePrefs, bbbbbIdentifier } from './views/device-prefs';
+import { DevicePrefs, bindicatorIdentifier } from './views/device-prefs';
 import { HolidaySetup } from './views/holiday-setup';
 import * as SecureStore from 'expo-secure-store';
 
@@ -21,6 +21,7 @@ import * as SecureStore from 'expo-secure-store';
 export enum SetupStep
 {
 	HolidaySetup,
+	GlobalPrefs,
 	DevicePrefs,
 	HomeScreen,
 	EnterDeviceDetails,
@@ -74,7 +75,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	const [selectedNetwork, setSelectedNetwork] = useState<INetwork | undefined>(undefined);
 	const [wifiPassword, setWifiPassword] = useState<string | undefined>(undefined);
 	const [deviceUUID, setUUID] = useState<string>('');
-	const [deviceIdentifierObject, setDeviceIdentifierObject] = useState<bbbbbIdentifier>();
+	const [deviceIdentifierObject, setDeviceIdentifierObject] = useState<bindicatorIdentifier>();
 
 
 
@@ -120,7 +121,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 		);
 	}
 
-	const navigateToDevicePrefs = (identifier: bbbbbIdentifier) =>
+	const navigateToDevicePrefs = (identifier: bindicatorIdentifier) =>
 	{
 		setDeviceIdentifierObject(identifier); // Set the identifier for DevicePrefs
 		setCurrentStep(SetupStep.DevicePrefs); // Navigate to the DevicePrefs step
@@ -130,7 +131,16 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	// Rudimentary routing
 	let step;
 	// Step -2: Holiday Setup
-	if (currentStep === SetupStep.HolidaySetup)
+	if (currentStep === SetupStep.GlobalPrefs)
+	{
+		step = <HolidaySetup
+			deviceUUID={deviceUUID}
+			onBack={() => setCurrentStep(SetupStep.DevicePrefs)}
+		/>;
+
+		// Step -2: Holiday Setup
+
+	} else if (currentStep === SetupStep.HolidaySetup)
 	{
 		step = <HolidaySetup
 			deviceUUID={deviceUUID}

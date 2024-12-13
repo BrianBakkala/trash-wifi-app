@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, TouchableOpacity, Text, ActivityIndicator, Pressable, StyleSheet, GestureResponderEvent } from 'react-native';
+import { View, Image, TouchableOpacity, Text, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { Style } from '../styles';
 import { apiFetch } from '../util/utility';
 
 export interface DevicePrefsArguments
 {
     deviceUUID: string | undefined;
-    deviceIdentifier: bbbbbIdentifier | undefined;
+    deviceIdentifier: bindicatorIdentifier | undefined;
     onBack: () => void;
     navigateToHolidaySetup: () => void;
 }
 
-export interface bbbbbIdentifier
+export interface bindicatorIdentifier
 {
     photon_id?: string;
     monitoring_uuid?: string;
     verification_key?: string;
 }
-export interface bbbbbFirebaseDocument
+export interface bindicatorFirebaseDocument
 {
     success: string;
 
@@ -153,8 +153,9 @@ export const SchemePicker: React.FC<{
 interface SettingsChunkProps
 {
     name: string,
+    displayName: string,
     color: string,
-    bindicatorDeviceData: bbbbbFirebaseDocument,
+    bindicatorDeviceData: bindicatorFirebaseDocument,
     previewDays: previewDaysObj | null | undefined
     setSelectedCollectionDay: (value: React.SetStateAction<string>) => void
     setSelectedCollectionScheme: (value: React.SetStateAction<string>) => void
@@ -163,14 +164,14 @@ interface SettingsChunkProps
 
 
 
-const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, color, bindicatorDeviceData, previewDays, setSelectedCollectionDay, setSelectedCollectionScheme, setSelectedCollectionStartOption }) =>
+const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color, bindicatorDeviceData, previewDays, setSelectedCollectionDay, setSelectedCollectionScheme, setSelectedCollectionStartOption }) =>
 {
     const lowerName = name.toLowerCase()
     const days = previewDays ? previewDays[lowerName + '_days'] : [];
 
     return (
         <View>
-            <Text style={styles.settingHeader}>{name[0]}</Text>
+            <Text style={styles.settingHeader}>{displayName}</Text>
             <WeekdayPicker
                 locked={bindicatorDeviceData.trash_schedule}
                 color={color}
@@ -199,7 +200,7 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, color, bindicatorDe
 
 export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack, navigateToHolidaySetup }: DevicePrefsArguments): React.ReactElement => 
 {
-    const [bindicatorDeviceData, setBindicatorDeviceData] = useState<bbbbbFirebaseDocument | null>(null);
+    const [bindicatorDeviceData, setBindicatorDeviceData] = useState<bindicatorFirebaseDocument | null>(null);
     const [deviceLoading, setDeviceLoading] = useState(false); // Initially not loading
     const [error, setError] = useState<string | null>(null);
 
@@ -279,6 +280,7 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack, navigateToHo
 
             <SettingsChunk
                 name="Trash"
+                displayName="Trash"
                 color="#1475f5"
                 bindicatorDeviceData={bindicatorDeviceData}
                 previewDays={previewDays}
@@ -289,6 +291,7 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack, navigateToHo
             />
             <SettingsChunk
                 name="Recycle"
+                displayName="Recycling"
                 color="#4caf50"
                 bindicatorDeviceData={bindicatorDeviceData}
                 previewDays={previewDays}
@@ -299,9 +302,9 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack, navigateToHo
             />
 
 
-            <View  >
+            <View style={[{ marginTop: 30 }, { marginBottom: 30 }]}>
                 <Pressable style={Style.button} onPress={() => navigateToHolidaySetup()}>
-                    <Text style={Style.buttonText}>Holiday Setup</Text>
+                    <Text style={Style.buttonText}>Manage Holidays</Text>
                 </Pressable>
             </View>
 
