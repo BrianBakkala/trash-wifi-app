@@ -248,9 +248,9 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack, navigateToHo
                 recycle_scheme: selectedRecycleScheme,
                 recycle_start_option: selectedRecycleStartOption,
             }
-            console.log("#", "Pulling preview days", body)
+            console.log("#", "Saving settings", body)
 
-            const response = apiFetch('get-preview-days', body
+            const response = apiFetch('save-settings', body
                 , setPreviewDays, setPreviewLoading, setError);
         }
 

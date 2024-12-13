@@ -23,10 +23,6 @@ interface Hobject
 }
 
 
-
-
-
-
 export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): React.ReactElement => 
 {
     const [holidayData, setHolidayData] = useState<HolidayList>({ holidays: [] });
@@ -35,9 +31,6 @@ export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): Rea
     const [pulledHolidays, setPulledHolidays] = useState<boolean>(false);
     const [addedCurrentHolidays, setAddedCurrentHolidays] = useState<boolean>(false);
     const [selectedHolidays, setSelectedHolidays] = useState<string[]>([]);
-
-
-
 
     const handlePress = (item: string) =>
     {
@@ -77,9 +70,6 @@ export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): Rea
         if (deviceUUID && !pulledHolidays)
         {
             console.log("#", "Pulling holiday data")
-            console.log({
-                device_uuid: deviceUUID
-            })
             const response = apiFetch('get-holiday-data',
                 {
                     device_uuid: deviceUUID

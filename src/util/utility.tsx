@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { Style } from '../styles';
+import { getAPIAuth, APIAuthProps, getAPIEndpoint } from './auth';
 
 const VERIFICATION_KEY_DELIMITER = ":: ::";
 
@@ -39,47 +40,56 @@ export const apiFetch = async (path: string, body: Object, setData?: Function, s
         setError(null); // Reset error state
     }
 
-    try
+    const apiAuth = await getAPIAuth();
+    const apiEndpoint = await getAPIEndpoint();
+    
+    if (apiAuth)
     {
-        const response = await fetch(process.env.EXPO_PUBLIC_API_ENDPOINT + '/hooks/' + path,
+        try
+        {
+            const response = await fetch(apiEndpoint + '/hooks/' + path,
+                {
+                    'method': 'POST',
+                    'headers': {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Basic ' + btoa(apiAuth.basic_auth_user + ':' + apiAuth.basic_auth_password),
+                        'API-Key-1': apiAuth.api_key_1,
+                        'API-Key-2': apiAuth.api_key_2,
+                    },
+                    'body': JSON.stringify(body)
+                }
+            );
+            if (!response.ok)
             {
-                'method': 'POST',
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Basic ' + btoa(process.env.EXPO_PUBLIC_BASIC_AUTH_USER + ':' + process.env.EXPO_PUBLIC_BASIC_AUTH_PASSWORD)
-                },
-                'body': JSON.stringify(body)
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-        );
-        if (!response.ok)
+
+            let result = await response.json();
+            if (result.result)
+            {
+                result = result.result;
+            }
+
+            // console.log(result)  
+            if (setData)
+            {
+                setData(result);
+            }
+
+        } catch (err: any)
         {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            if (setError)
+            {
+                setError(err.message);
+            }
+        } finally
+        {
+            if (setLoading)
+            {
+                setLoading(false); // Stop loading
+            }
         }
 
-        let result = await response.json();
-        if (result.result)
-        {
-            result = result.result;
-        }
-
-        // console.log(result)  
-        if (setData)
-        {
-            setData(result);
-        }
-
-    } catch (err: any)
-    {
-        if (setError)
-        {
-            setError(err.message);
-        }
-    } finally
-    {
-        if (setLoading)
-        {
-            setLoading(false); // Stop loading
-        }
     }
 };
 
