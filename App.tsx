@@ -1,6 +1,10 @@
 import { BleManager } from 'react-native-ble-plx';
 import { SetupProvider } from '@particle/react-native-ble-setup-library';
+import { useFonts } from 'expo-font';
 import { Root } from './src/root';
+ 
+
+
 
 // Service UUID
 export const SERVICE_UUID = '6e400021-b5a3-f393-e0a9-e50e24dcca9e';
@@ -14,6 +18,12 @@ export const RX_CHAR_UUID = '6e400023-b5a3-f393-e0a9-e50e24dcca9e';
 export default function App() {
   // Instantiate the BLE Manager. There can only be one instance
   // therefore we need to pass it around
+
+  const [loaded, error] = useFonts({
+    'Inter': require('./assets/fonts/Inter.ttf'),
+    'InterItalic': require('./assets/fonts/InterItalic.ttf'),
+  });
+
   const bleManager = new BleManager();
 
   return (

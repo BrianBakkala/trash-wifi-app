@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, TouchableOpacity, Text, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { Style } from '../styles';
 import { apiFetch } from '../util/utility';
+import { getIcon } from '../util/icons';
+import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
+
+const icon = <FontAwesome6 name="comments" />;
 
 export interface DevicePrefsArguments
 {
@@ -228,6 +232,7 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack }: DevicePref
                     <Pressable style={Style.buttonSecondary} onPress={onBack}>
                         <Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Home</Text>
                     </Pressable>
+
                 </View>
             </View>
         )
@@ -244,6 +249,11 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack }: DevicePref
 
             <Text style={Style.paragraph}>{JSON.stringify(bindicatorDeviceData)}</Text>
 
+
+            <View>
+                {icon}
+                {getIcon("check")}
+            </View>
 
 
             <View style={Style.navLeft}>

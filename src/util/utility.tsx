@@ -25,6 +25,24 @@ export const ProgressDiagram = ({ numChecks = 0, showLoader = false }) =>
     );
 };
 
+export const BindicatorButton = ({ numChecks = 0, showLoader = false }) =>
+{
+    const checkmarks = Array.from({ length: numChecks });
+    return (
+        <View style={Style.simpleFlexRow}>
+            {checkmarks.map((_, index) => (
+                <Text
+                    key={index} // Use a unique key for each item
+                    style={styles.progressDiagramText}
+                >
+                    ✓
+                </Text>
+            ))}
+            {showLoader && <ActivityIndicator size={32} color={"white"} />}
+        </View>
+    );
+};
+
 
 
 
@@ -42,7 +60,7 @@ export const apiFetch = async (path: string, body: Object, setData?: Function, s
 
     const apiAuth = await getAPIAuth();
     const apiEndpoint = await getAPIEndpoint();
-    
+
     if (apiAuth)
     {
         try
@@ -52,7 +70,7 @@ export const apiFetch = async (path: string, body: Object, setData?: Function, s
                     'method': 'POST',
                     'headers': {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Basic ' + btoa(apiAuth.basic_auth_user + ':' + apiAuth.basic_auth_password),
+                        'Authorization': 'Basic ' + base64Encode(`${apiAuth.basic_auth_user}:${apiAuth.basic_auth_password}`),
                         'API-Key-1': apiAuth.api_key_1,
                         'API-Key-2': apiAuth.api_key_2,
                     },
@@ -93,13 +111,19 @@ export const apiFetch = async (path: string, body: Object, setData?: Function, s
     }
 };
 
+const base64Encode = (input: string) => Buffer.from(input).toString('base64');
 
 
 export function createVerificationKey(ssid: string | null | undefined, setupCode: string)
 {
     if (typeof ssid == "string")
     {
-        return btoa(btoa(setupCode.toLowerCase()) + VERIFICATION_KEY_DELIMITER + btoa(ssid));
+
+        return base64Encode(
+            base64Encode(setupCode.toLowerCase()) +
+            VERIFICATION_KEY_DELIMITER +
+            base64Encode(ssid)
+        );
     }
 
     return "";

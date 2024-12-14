@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 export const Style = StyleSheet.create({
+
+
 	centered: {
 		flex: 1,
 		justifyContent: 'center',
@@ -14,7 +16,7 @@ export const Style = StyleSheet.create({
 		alignItems: 'center',
 		flexDirection: 'column',
 		width: '100%',
-		backgroundColor: 'black',
+		backgroundColor: 'gray',
 		color: 'white'
 	},
 
@@ -184,6 +186,7 @@ export const Style = StyleSheet.create({
 		lineHeight: 21,
 		fontWeight: 'bold',
 		letterSpacing: 0.25,
+		fontFamily: 'Inter',
 		color: 'white',
 	},
 

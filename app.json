@@ -25,6 +25,18 @@
           "isBackgroundEnabled": true
         }
       ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Inter.ttf",
+            "./assets/fonts/InterItalic.ttf",
+            "./assets/fonts/fa-brands-400.ttf",
+            "./assets/fonts/fa-regular-400.ttf",
+            "./assets/fonts/fa-solid-900.ttf"
+          ]
+        }
+      ],
       "expo-secure-store"
     ],
     "ios": {

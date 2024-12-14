@@ -11,6 +11,8 @@
   "dependencies": {
     "@config-plugins/react-native-ble-plx": "^6.0.0",
     "@particle/react-native-ble-setup-library": "^0.2.1",
+    "@react-native-vector-icons/common": "^11.0.0",
+    "@react-native-vector-icons/fontawesome6": "^6.7.1",
     "expo": "50.0",
     "expo-asset": "~9.0.2",
     "expo-crypto": "~12.8.1",
