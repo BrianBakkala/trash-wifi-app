@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, View, Text, Pressable } from 'react-native';
 import { useBLESetup } from '@particle/react-native-ble-setup-library';
 import { Style } from '../styles';
-import { ProgressDiagram } from '../util/utility';
-
+import { ProgressDiagram, apiFetch, IconButton, BareButton, IconHeading } from '../util/utility';
+import { getIcon } from '../util/icons';
 
 export interface LookForDeviceArguments
 {
@@ -28,7 +28,7 @@ export const LookForDevice = ({ setupCode, onBack, onContinue }: LookForDeviceAr
 		return (
 			<View style={Style.vertical}>
 				<ActivityIndicator size="large" color="#ffffff" />
-				<Text style={Style.h2}>Looking for {setupCode}...</Text>
+				<Text style={Style.h3}>Looking for {setupCode}...</Text>
 			</View>
 		);
 	} else if (device)
@@ -36,14 +36,21 @@ export const LookForDevice = ({ setupCode, onBack, onContinue }: LookForDeviceAr
 		return (
 			<View style={Style.vertical}>
 				<ProgressDiagram numChecks={1} />
-				<Text style={Style.h2}>Found Bindicator {setupCode}!</Text>
+				<Text style={Style.h3}>Found BBBBB {setupCode}!</Text>
 				<View style={Style.navSpace}>
-					<Pressable style={Style.buttonSecondary} onPress={onBack}>
-						<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
-					</Pressable>
-					<Pressable style={Style.button} onPress={onContinue}>
-						<Text style={Style.buttonText}>Connect</Text><Text style={Style.buttonIconSm}>→</Text>
-					</Pressable>
+					<IconButton
+						onPress={onBack}
+						buttonType="secondary"
+						icon="arrow-left"
+						iconStyle="solid"
+						text="Back"
+					/>
+					<IconButton
+						onPress={onContinue}
+						icon="bluetooth-b"
+						iconStyle="brand"
+						text="Connect"
+					/>
 				</View>
 			</View>
 		);
@@ -51,16 +58,24 @@ export const LookForDevice = ({ setupCode, onBack, onContinue }: LookForDeviceAr
 	{
 		return (
 			<View style={Style.vertical}>
-				<Text style={Style.h2}>𐄂 {setupCode} not found</Text>
+				<IconHeading icon="xmark" />
+				<Text style={Style.h3}>  BBBBB {setupCode} not found</Text>
 				<View>
-					<Pressable style={Style.button} onPress={retry}>
-						<Text style={Style.buttonIcon}>⟳</Text><Text style={Style.buttonText}>Try again</Text>
-					</Pressable>
+					<IconButton
+						onPress={retry}
+						icon="arrow-rotate-right"
+						iconStyle="solid"
+						text="Try again"
+					/>
 				</View>
 				<View style={Style.navLeft}>
-					<Pressable style={Style.buttonSecondary} onPress={onBack}>
-						<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
-					</Pressable>
+					<IconButton
+						onPress={onBack}
+						buttonType="secondary"
+						icon="arrow-left"
+						iconStyle="solid"
+						text="Back"
+					/>
 				</View>
 			</View>
 		);

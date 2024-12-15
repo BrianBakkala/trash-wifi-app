@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, Text, ActivityIndicator, Pressable, StyleSheet, ScrollView } from 'react-native';
 import { Style } from '../styles';
-import { apiFetch } from '../util/utility';
+import { apiFetch, IconButton, BareButton } from '../util/utility';
 import { bindicatorIdentifier } from './device-prefs';
 
 export interface HomeScreenArguments
@@ -59,63 +59,78 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs, on
 
 			<View style={styles.bListWrapper}>
 				<View>
-					<Text style={[{ textAlign: 'center', }, Style.h2]}>My BBBBBs</Text>
+					<Text style={[{ textAlign: 'center', fontFamily: 'bold' }, Style.h2]}>My BBBBBs</Text>
 				</View>
-				<View  >
+				<ScrollView>
+					<View  >
 
-					{loading && <ActivityIndicator size="large" color="#ffffff" />}
+						{loading && <ActivityIndicator size="large" color="#ffffff" />}
 
-					{!loading && bindicatorCount == 0 && <Text style={Style.paragraphText}>No BBBBBs found.</Text>}
+						{!loading && bindicatorCount == 0 && <Text style={Style.paragraphText}>No BBBBBs found.</Text>}
 
-					{error && <Text style={styles.errorText}>{error}</Text>}
-				</View>
+						{error && <Text style={styles.errorText}>{error}</Text>}
+					</View>
 
-				{bindicatorData && (
+					{bindicatorData && (
 
-					<ScrollView>
-						<View style={styles.bList}>
+						<View >
+							<View style={styles.bList}>
 
-							{bindicatorData.bindicators.map((item, index) =>
-							{
-								const identifier = { "monitoring_uuid": item.monitoring_uuid };
-								return (
-									<View key={index}  >
-										<Pressable style={styles.bListItem} onPress={() => onNavigateToDevicePrefs(identifier)}>
-											<Image
-												source={require('../../assets/bindicator_censored.png')}
-												style={Style.smallBindicatorImage}
-											/>
-											<Text style={styles.bListItemText}>
-												{item.bindicator_name}
-											</Text>
-											<Text style={Style.buttonIconSm}>→</Text>
-										</Pressable>
-									</View>
+								{bindicatorData.bindicators.map((item, index) =>
+								{
+									const identifier = { "monitoring_uuid": item.monitoring_uuid };
+									return (
+										<View key={index}  >
+											<Pressable style={styles.bListItem} onPress={() => onNavigateToDevicePrefs(identifier)}>
+												<Image
+													source={require('../../assets/bindicator_censored.png')}
+													style={Style.smallBindicatorImage}
+												/>
+												<Text style={styles.bListItemText}>
+													{item.bindicator_name}
+												</Text>
+												<Text  >→</Text>
+											</Pressable>
+										</View>
 
-								)
-							})
-							}
+									)
+								})
+								}
 
 
-						</View >
-						<View style={[Style.simpleFlexRow, { marginTop: 35 }]}>
-							<Pressable style={Style.button} onPress={() => setRefreshKey(prev => prev + 1)}>
-								<Text style={Style.buttonIcon}>⟳</Text><Text style={Style.buttonText}>Refresh</Text>
-							</Pressable>
+							</View >
+							<View style={[Style.simpleFlexRow, { marginTop: 35 }]}>
+
+								<IconButton
+									onPress={() => setRefreshKey(prev => prev + 1)}
+									icon="arrow-rotate-right"
+									iconStyle="solid"
+									text="Refresh"
+								/>
+
+							</View>
 						</View>
-					</ScrollView>
 
-				)}
+					)}
+				</ScrollView>
 			</View>
 
-			<View style={(bindicatorCount > 0 ? Style.navCenterSplit : Style.navCenter)}>
+			<View style={Style.navCenterSplit}>
 
-				{bindicatorCount > 0 && <Pressable style={Style.button} onPress={() => onNavigateToGlobalPrefs()}>
-					<Text style={Style.buttonIconSm}>⚙️</Text><Text style={Style.buttonText}>Settings</Text>
-				</Pressable>}
-				<Pressable style={Style.button} onPress={onContinue}>
-					<Text style={Style.buttonIconSm}>+</Text><Text style={Style.buttonText}>Add BBBBB</Text>
-				</Pressable>
+				<IconButton
+					onPress={() => onNavigateToGlobalPrefs()}
+					icon="calendar-days"
+					buttonType={bindicatorCount > 0 ? "primary" : "disabled"}
+					iconStyle="solid"
+					text="Schedule"
+				/>
+
+				<IconButton
+					onPress={onContinue}
+					icon="plus"
+					iconStyle="solid"
+					text="New BBBBB"
+				/>
 			</View>
 		</View >
 	);
@@ -138,7 +153,7 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'row',
 		gap: 10,
-		justifyContent: 'space-between',
+		justifyContent: 'center',
 		alignItems: 'center',
 		color: 'white',
 		borderRadius: 4,
@@ -164,18 +179,13 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		marginBottom: 20,
 	},
-	buttonText: {
-		color: '#fff',
-		fontSize: 16,
-		fontWeight: 'bold',
-	},
 	errorText: {
 		color: 'red',
 		marginTop: 10,
 	},
 	title: {
 		fontSize: 18,
-		fontWeight: 'bold',
+		fontFamily: 'bold',
 		marginVertical: 10,
 	},
 });

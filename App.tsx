@@ -2,7 +2,7 @@ import { BleManager } from 'react-native-ble-plx';
 import { SetupProvider } from '@particle/react-native-ble-setup-library';
 import { useFonts } from 'expo-font';
 import { Root } from './src/root';
- 
+import 'fastestsmallesttextencoderdecoder';
 
 
 
@@ -15,24 +15,37 @@ export const TX_CHAR_UUID = '6e400022-b5a3-f393-e0a9-e50e24dcca9e';
 // RX characteristic UUID
 export const RX_CHAR_UUID = '6e400023-b5a3-f393-e0a9-e50e24dcca9e';
 
-export default function App() {
-  // Instantiate the BLE Manager. There can only be one instance
-  // therefore we need to pass it around
+export default function App()
+{
 
   const [loaded, error] = useFonts({
-    'Inter': require('./assets/fonts/Inter.ttf'),
+    // 'Inter': require('./assets/fonts/Inter.ttf'),
     'InterItalic': require('./assets/fonts/InterItalic.ttf'),
   });
 
+
+  let [fontsLoaded] = useFonts({
+    regular: 'Inter_400Regular',
+    medium: 'Inter_500Medium',
+    semibold: 'Inter_600SemiBold',
+    bold: 'Inter_700Bold',
+    extra: 'Inter_800ExtraBold',
+    Inter: 'Inter_900Black',
+  })
+
+
+
+  // Instantiate the BLE Manager. There can only be one instance
+  // therefore we need to pass it around
   const bleManager = new BleManager();
 
   return (
     <SetupProvider
-        manager={bleManager}
-        serviceUUID={SERVICE_UUID}
-        versionCharacteristicUUID={VERSION_CHAR_UUID}
-        txCharacteristicUUID={TX_CHAR_UUID}
-        rxCharacteristicUUID={RX_CHAR_UUID}>
+      manager={bleManager}
+      serviceUUID={SERVICE_UUID}
+      versionCharacteristicUUID={VERSION_CHAR_UUID}
+      txCharacteristicUUID={TX_CHAR_UUID}
+      rxCharacteristicUUID={RX_CHAR_UUID}>
       <Root />
     </SetupProvider>
   );

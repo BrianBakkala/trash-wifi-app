@@ -3,8 +3,7 @@ import { ActivityIndicator, View, Text, Pressable, FlatList, TouchableOpacity } 
 import { useBLESetup } from '@particle/react-native-ble-setup-library';
 import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
-import { ProgressDiagram, apiFetch } from '../util/utility';
-
+import { ProgressDiagram, apiFetch, IconButton, BareButton } from '../util/utility';
 
 export interface ListNetworksArguments
 {
@@ -50,7 +49,7 @@ export const renderNetworkThunk = ({ selectedNetwork, setSelectedNetwork }: Rend
 				style={isSelected ? Style.listItemSelected : Style.listItem}
 				testID='button'
 				onPress={() => setSelectedNetwork(item)}>
-				<Text style={[{ fontWeight: 'bold' }, Style.listItemText]}>{`${item.ssid}`}</Text>
+				<Text style={[{ fontFamily: 'bold' }, Style.listItemText]}>{`${item.ssid}`}</Text>
 			</TouchableOpacity>
 		);
 	};
@@ -82,13 +81,13 @@ export const WiFiList = ({ onBack, onContinue, selectedNetwork, setSelectedNetwo
 		(
 			<View style={Style.vertical}>
 				<ProgressDiagram showLoader={true} numChecks={2} />
-				<Text style={Style.h2}>Scanning for networks...</Text>
+				<Text style={Style.h3}>Scanning for networks...</Text>
 			</View>
 		)
 		:
 		(
 			<View style={Style.vertical}>
-				<Text style={Style.h2}>Found networks</Text>
+				<Text style={Style.h3}>Found networks</Text>
 				<FlatList
 					data={foundWiFiNetworks}
 					renderItem={renderNetwork}
@@ -102,21 +101,27 @@ export const WiFiList = ({ onBack, onContinue, selectedNetwork, setSelectedNetwo
 		<View style={Style.vertical}>
 			{content}
 			<View style={Style.navSpace}>
-				<Pressable style={Style.buttonSecondary} onPress={onBack}>
-					<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
-				</Pressable>
-				<Pressable
-					style={isScanningWiFiNetworks ? Style.buttonDisabled : Style.button}
+				<IconButton
+					onPress={onBack}
+					icon="arrow-left"
+					buttonType="secondary"
+					iconStyle="solid"
+					text="Back"
+				/>
+				<IconButton
 					onPress={scan}
-					disabled={isScanningWiFiNetworks}>
-					<Text style={Style.buttonIcon}>⟳</Text><Text style={Style.buttonText}>Rescan</Text>
-				</Pressable>
-				<Pressable
-					style={selectedNetwork ? Style.button : Style.buttonDisabled}
+					icon="arrow-rotate-right"
+					buttonType={!isScanningWiFiNetworks ? "primary" : "disabled"}
+					iconStyle="solid"
+					text="Rescan"
+				/>
+				<IconButton
 					onPress={onContinue}
-					disabled={!selectedNetwork} >
-					<Text style={Style.buttonText}>Continue</Text><Text style={Style.buttonIconSm}>→</Text>
-				</Pressable>
+					icon="key"
+					buttonType={selectedNetwork ? "primary" : "disabled"}
+					iconStyle="solid"
+					text="Connect"
+				/>
 			</View>
 		</View>
 	);

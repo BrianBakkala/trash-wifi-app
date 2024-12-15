@@ -3,7 +3,7 @@ import { ActivityIndicator, View, Text, Pressable } from 'react-native';
 import { useBLESetup } from '@particle/react-native-ble-setup-library';
 import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
-import { ProgressDiagram, apiFetch, createVerificationKey } from '../util/utility';
+import { ProgressDiagram, apiFetch, createVerificationKey, IconButton, BareButton } from '../util/utility';
 
 export interface JoinWiFiArguments
 {
@@ -59,7 +59,7 @@ export const JoinWiFi = ({ deviceUUID, setupCode, onStartOver, onContinue, selec
 		return (
 			<View style={Style.vertical}>
 				<ProgressDiagram showLoader={true} numChecks={4} />
-				<Text style={Style.h2}>Joining: {selectedNetwork?.ssid} </Text>
+				<Text style={Style.h3}>Joining: {selectedNetwork?.ssid} </Text>
 			</View>
 		);
 	}
@@ -67,16 +67,14 @@ export const JoinWiFi = ({ deviceUUID, setupCode, onStartOver, onContinue, selec
 	return (
 		<View style={Style.vertical}>
 			<ProgressDiagram numChecks={5} />
-			<Text style={Style.h2}>Successfully joined {selectedNetwork?.ssid}!</Text>
-			{/* <Text style={Style.paragraph}>!{JSON.stringify(responseData)}!</Text> */}
-			<View style={Style.navCenterSplit}>
-				<Pressable style={Style.buttonSecondary} onPress={onStartOver}>
-					<Text style={Style.buttonIconSm}>←</Text>
-					<Text style={Style.buttonText}>Start over</Text>
-				</Pressable>
-				<Pressable style={Style.button} onPress={onContinue}>
-					<Text style={Style.buttonText}>Set up schedule</Text><Text style={Style.buttonIconSm}>→</Text>
-				</Pressable>
+			<Text style={Style.h3}>Successfully joined {selectedNetwork?.ssid}!</Text>
+			<View style={Style.navRight}>
+				<IconButton
+					onPress={onContinue}
+					icon="calendar-days"
+					iconStyle="solid"
+					text="Set up schedule"
+				/>
 			</View>
 		</View>
 	);

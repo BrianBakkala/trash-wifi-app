@@ -11,12 +11,15 @@ export const Style = StyleSheet.create({
 	},
 
 	vertical: {
+		backgroundColor: 'darkgray',
+
+
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'column',
 		width: '100%',
-		backgroundColor: 'gray',
+		fontFamily: 'Inter',
 		color: 'white'
 	},
 
@@ -120,77 +123,6 @@ export const Style = StyleSheet.create({
 
 
 
-
-	button: {
-		display: 'flex',
-		flexDirection: 'row',
-		gap: 10,
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 12,
-		marginHorizontal: 8,
-		paddingHorizontal: 20,
-		borderRadius: 50,
-		elevation: 3,
-		backgroundColor: '#0090b0',
-		color: 'white'
-	},
-	buttonSecondary: {
-		display: 'flex',
-		flexDirection: 'row',
-		gap: 10,
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 12,
-		marginHorizontal: 8,
-		paddingHorizontal: 20,
-		elevation: 3,
-		backgroundColor: 'transparent',
-		color: 'white'
-	},
-	buttonIcon: {
-		fontSize: 35,
-		lineHeight: 30,
-		color: 'white'
-	},
-	buttonIconLg: {
-		fontSize: 30,
-		color: 'white'
-	},
-	buttonIconMd: {
-		fontSize: 25,
-		lineHeight: 30,
-		color: 'white'
-	},
-	buttonIconSm: {
-		fontSize: 20,
-		lineHeight: 30,
-		color: 'white'
-	},
-	buttonDisabled: {
-		display: 'flex',
-		flexDirection: 'row',
-		gap: 10,
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 12,
-		paddingHorizontal: 20,
-		marginHorizontal: 8,
-		borderRadius: 50,
-		elevation: 3,
-		backgroundColor: '#ccc',
-		color: 'white'
-	},
-	buttonText: {
-		fontSize: 16,
-		lineHeight: 21,
-		fontWeight: 'bold',
-		letterSpacing: 0.25,
-		fontFamily: 'Inter',
-		color: 'white',
-	},
-
-
 	toggleVisibilityButton: {
 		display: 'flex',
 		flexDirection: 'row',
@@ -224,6 +156,7 @@ export const Style = StyleSheet.create({
 		borderWidth: 1,
 		borderRadius: 4,
 		padding: 10,
+		fontSize: 18,
 		color: 'white',
 		borderColor: 'white',
 	},
@@ -247,6 +180,7 @@ export const Style = StyleSheet.create({
 	paragraph: {
 		color: 'white',
 		marginBottom: 30,
+		fontFamily: 'Inter',
 		marginTop: 30,
 		textAlign: 'center',
 		width: '85%',
@@ -254,30 +188,48 @@ export const Style = StyleSheet.create({
 	},
 	paragraphText: {
 		color: 'white',
+		fontFamily: 'Inter',
+		fontSize: 20,
 		textAlign: 'center'
 
 	},
 	headerParagraph: {
 		color: 'white',
+		fontFamily: 'Inter',
 		width: '85%',
 		marginBottom: 30,
 	},
 
 
 	label: {
-		color: 'white',
+		color: '#0090b0',
+		fontSize: 18,
+		fontWeight: 'bold',
+
+
 	},
+
+
+
 	h2: {
-		color: 'white',
-		fontSize: 22,
+		color: '#0090b0',
+		fontSize: 28,
 		lineHeight: 30,
 		marginTop: 20,
+		fontFamily: 'Inter',
 		fontWeight: 'bold',
 		marginBottom: 20,
 	},
 
-
-
+	h3: {
+		color: 'white',
+		fontSize: 24,
+		lineHeight: 30,
+		marginTop: 20,
+		fontFamily: 'Inter',
+		fontWeight: 'bold',
+		marginBottom: 20,
+	},
 
 	simpleFlexRow: {
 		display: 'flex',

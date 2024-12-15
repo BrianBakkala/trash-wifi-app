@@ -1,9 +1,9 @@
-
-
 import React, { useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, Pressable } from 'react-native';
 import { Style } from '../styles';
 import { getAPIAuth, APIAuthProps, getAPIEndpoint } from './auth';
+import { getIcon } from '../util/icons';
+
 
 const VERIFICATION_KEY_DELIMITER = ":: ::";
 
@@ -25,25 +25,80 @@ export const ProgressDiagram = ({ numChecks = 0, showLoader = false }) =>
     );
 };
 
-export const BindicatorButton = ({ numChecks = 0, showLoader = false }) =>
+interface BaseButtonProps
 {
-    const checkmarks = Array.from({ length: numChecks });
+    text: string;  // onPress is a function that doesn't take arguments and returns nothing
+    onPress?: () => void;  // onPress is a function that doesn't take arguments and returns nothing
+    preContent?: JSX.Element;  // preContent is optional, defaulting to a <Text /> element
+    postContent?: JSX.Element; // postContent is optional, defaulting to a <Text /> element
+    buttonType?: "primary" | "secondary" | "disabled"
+}
+
+const deadEle = (<Text style={{ display: 'none' }} />);
+
+const BaseButton = ({ text, onPress, preContent = deadEle, postContent = deadEle, buttonType }: BaseButtonProps) =>
+{
     return (
-        <View style={Style.simpleFlexRow}>
-            {checkmarks.map((_, index) => (
-                <Text
-                    key={index} // Use a unique key for each item
-                    style={styles.progressDiagramText}
-                >
-                    ✓
-                </Text>
-            ))}
-            {showLoader && <ActivityIndicator size={32} color={"white"} />}
-        </View>
+        <Pressable style={
+            buttonType === "secondary"
+                ? buttonStyles.buttonSecondary
+                : buttonType === "disabled"
+                    ? buttonStyles.buttonDisabled
+                    : buttonStyles.button
+        }
+
+            onPress={buttonType !== "disabled" ? onPress : undefined}
+        >
+
+                {preContent}
+                <Text style={buttonStyles.buttonText}>{text}</Text>
+
+        </Pressable>
+    );
+};
+
+export const BareButton = ({ text, onPress = () => { }, buttonType }: BaseButtonProps) =>
+{
+    return <BaseButton
+        buttonType={buttonType}
+        text={text}
+        onPress={onPress}
+    />;
+};
+
+
+
+interface IconButtonProps extends BaseButtonProps
+{
+    text: string;
+    icon: string;
+    iconStyle?: "regular" | "solid" | "brand" | undefined;
+}
+
+export const IconButton = (
+    { text, icon, iconStyle = "regular",  onPress, buttonType }: IconButtonProps) =>
+{
+    return (
+        <BaseButton
+            buttonType={buttonType}
+            text={text}
+            onPress={onPress}
+            preContent={getIcon(icon, 12, iconStyle)}
+        />
     );
 };
 
 
+export const IconHeading = ({ icon }: { icon: string }) =>
+{
+    return (
+        <View>
+            <Text style={styles.iconWrapper}>
+                {getIcon(icon, 50)}
+            </Text>
+        </View>
+    );
+};
 
 
 
@@ -144,11 +199,96 @@ export function capitalize(str: string)
 }
 
 
+const buttonStyles = StyleSheet.create({
+
+    button: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 8,
+        paddingVertical: 12,
+        paddingHorizontal: 18,
+        borderRadius: 40,
+        elevation: 3,
+        backgroundColor: '#0090b0',
+        color: 'white',
+        textAlign: 'center'
+    },
+    buttonSecondary: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        marginHorizontal: 8,
+        paddingHorizontal: 20,
+        elevation: 3,
+        backgroundColor: 'transparent',
+        color: 'white'
+    },
+    buttonIcon: {
+        fontSize: 35,
+        lineHeight: 30,
+        color: 'white'
+    },
+    buttonIconLg: {
+        fontSize: 30,
+        color: 'white'
+    },
+    buttonIconMd: {
+        fontSize: 25,
+        lineHeight: 30,
+        color: 'white'
+    },
+    buttonIconSm: {
+        fontSize: 20,
+        lineHeight: 30,
+        color: 'white'
+    },
+    buttonDisabled: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        marginHorizontal: 8,
+        borderRadius: 50,
+        elevation: 3,
+        backgroundColor: '#ccc',
+        color: 'white'
+    },
+    buttonText: {
+        fontSize: 20,
+        lineHeight: 21,
+        fontFamily: 'Inter',
+        color: 'white',
+    },
+    buttonTextWrapper: {
+        fontSize: 20,
+        lineHeight: 21,
+        fontFamily: 'Inter',
+        color: 'white',
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 15,
+    },
+
+
+})
+
 
 const styles = StyleSheet.create({
 
 
-
+    iconWrapper: {
+        fontSize: 50,
+        lineHeight: 50
+    },
 
     progressDiagramText: {
         fontSize: 40,

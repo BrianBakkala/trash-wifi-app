@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, Text, TouchableOpacity, ActivityIndicator, Pressable, StyleSheet, ScrollView } from 'react-native';
 import { Style } from '../styles';
-import { apiFetch } from '../util/utility';
+import { apiFetch, IconButton, BareButton } from '../util/utility';
 import { bindicatorIdentifier } from './device-prefs';
 
 export interface HolidaySetupArguments
@@ -102,7 +102,7 @@ export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): Rea
         return (
             <View style={Style.vertical}>
                 <ActivityIndicator size={32} color={"white"} />
-                <Text style={Style.paragraph}>Loading holidays...</Text>
+                <Text style={[{ fontSize: 20 }, Style.paragraph]}>Loading holidays...</Text>
 
 
             </View>
@@ -112,7 +112,7 @@ export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): Rea
     return (
         <View style={Style.vertical}>
 
-            <Text style={Style.paragraph}>Collections will be moved one day later following the selected holidays:</Text>
+            <Text style={[{ fontSize: 20 }, Style.paragraph]}>Collections will be moved one day later following the selected holidays:</Text>
 
             <ScrollView style={styles.holidaysList}>
                 {holidayData &&
@@ -138,10 +138,13 @@ export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): Rea
             </ScrollView>
 
             <View style={Style.navLeft}>
-                <Pressable style={Style.buttonSecondary} onPress={onBack}>
-                    <Text style={Style.buttonIconSm}>←</Text>
-                    <Text style={Style.buttonText}>Back</Text>
-                </Pressable>
+                <IconButton
+                    onPress={onBack}
+                    icon="arrow-left"
+                    iconStyle="solid"
+                    buttonType="secondary"
+                    text="Back"
+                />
             </View>
 
 

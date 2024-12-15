@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, TouchableOpacity, Text, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { Style } from '../styles';
-import { apiFetch } from '../util/utility';
+import { apiFetch, IconButton, BareButton } from '../util/utility';
+import { getIcon } from '../util/icons';
 
 export interface GlobalPrefsArguments
 {
@@ -166,11 +167,16 @@ interface SettingsChunkProps
 const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color, bindicatorDeviceData, previewDays, setSelectedCollectionDay, setSelectedCollectionScheme, setSelectedCollectionStartOption }) =>
 {
     const lowerName = name.toLowerCase()
+    const iconName = lowerName == "trash" ? "trash-can" : lowerName
     const days = previewDays ? previewDays[lowerName + '_days'] : [];
 
     return (
         <View style={styles.settingsChunk}>
-            <Text style={styles.settingHeader}>{displayName}</Text>
+
+            <View style={styles.settingHeader}>
+                <Text style={styles.settingHeaderText}>{displayName}</Text>
+                <Text>{getIcon(iconName, 20,'solid',color)}</Text>
+            </View>
             <WeekdayPicker
                 locked={bindicatorDeviceData.trash_schedule}
                 color={color}
@@ -188,7 +194,10 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
                     setSelectedCollectionStartOption(startOption);
                 }}
             />
-            {previewDays && <Text style={Style.paragraph}>{(days ? days : []).join(", ")}, ...</Text>}
+            {previewDays && (
+
+                    <Text style={[{fontSize:20},Style.paragraph]}>{(days ? days : []).join(", ")}, ...</Text>
+            )}
 
         </View>
     );
@@ -264,9 +273,13 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
             <View style={Style.vertical}>
                 <ActivityIndicator size={32} color={"white"} />
                 <View style={Style.navLeft}>
-                    <Pressable style={Style.buttonSecondary} onPress={onBack}>
-                        <Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Home</Text>
-                    </Pressable>
+                    <IconButton
+                        onPress={onBack}
+                        icon="house"
+                        buttonType="secondary"
+                        iconStyle="solid"
+                        text="Home"
+                    />
                 </View>
             </View>
         )
@@ -304,18 +317,23 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
 
 
             <View style={[{ marginTop: 30 }, { marginBottom: 30 }]}>
-                <Pressable style={Style.button} onPress={() => navigateToHolidaySetup()}>
-                    <Text style={Style.buttonText}>Manage Holidays</Text>
-                    <Text style={Style.buttonIconSm}>→</Text>
-                </Pressable>
             </View>
 
 
-
-            <View style={Style.navLeft}>
-                <Pressable style={Style.buttonSecondary} onPress={onBack}>
-                    <Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Home</Text>
-                </Pressable>
+            <View style={Style.navCenterSplit}>
+                <IconButton
+                    onPress={onBack}
+                    icon="house"
+                    buttonType="secondary"
+                    iconStyle="solid"
+                    text="Home"
+                />
+                <IconButton
+                    onPress={() => navigateToHolidaySetup()}
+                    icon="calendar-day"
+                    iconStyle="solid"
+                    text="Manage Holidays"
+                />
             </View>
 
 
@@ -335,8 +353,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#f0f0f0",
     },
     settingsChunk: {
-        borderBottomWidth: 1,
-        borderColor: 'white',
+        marginBottom: 40,
     },
 
     weekdayText: {
@@ -390,11 +407,18 @@ const styles = StyleSheet.create({
         color: "#333",
     },
     settingHeader: {
-        color: 'white',
-        fontSize: 22,
-        lineHeight: 30,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+
+        gap: 10,
+
         marginTop: 20,
         marginBottom: 10,
+    },
+    settingHeaderText: {
+        color: 'white',
+        fontSize: 28,
         fontWeight: 'bold',
     },
 });

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
 import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
+import { apiFetch, IconButton, BareButton } from '../util/utility';
 
 export interface WiFiCredentialsArguments
 {
@@ -30,9 +31,13 @@ export const WiFiCredentials = ({ onBack, onContinue, selectedNetwork, wifiPassw
 	{
 		return (
 			<View style={Style.nav}>
-				<Pressable style={Style.button} onPress={onBack}>
-					<Text style={Style.buttonText}>Back</Text>
-				</Pressable>
+				<IconButton
+					onPress={onBack}
+					icon="arrow-left"
+					buttonType="secondary"
+					iconStyle="solid"
+					text="Back"
+				/>
 			</View>
 		);
 	}
@@ -43,7 +48,7 @@ export const WiFiCredentials = ({ onBack, onContinue, selectedNetwork, wifiPassw
 			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
 			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 				<View style={Style.vertical}>
-					<Text style={Style.h2}>Password for: {selectedNetwork.ssid}</Text>
+					<Text style={Style.h3}>Password for: {selectedNetwork.ssid}</Text>
 
 					<View>
 						<View style={Style.simpleFlexRow}>
@@ -73,15 +78,22 @@ export const WiFiCredentials = ({ onBack, onContinue, selectedNetwork, wifiPassw
 						</View>
 					</View>
 					<View style={Style.navSpace}>
-						<Pressable style={Style.buttonSecondary} onPress={onBack}>
-							<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
-						</Pressable>
-						<Pressable
-							style={passwordGoodEnough ? Style.button : Style.buttonDisabled}
+
+						<IconButton
+							onPress={onBack}
+							icon="arrow-left"
+							buttonType="secondary"
+							iconStyle="solid"
+							text="Back"
+						/>
+						<IconButton
 							onPress={onContinue}
-							disabled={!passwordGoodEnough}>
-							<Text style={Style.buttonText}>Connect</Text><Text style={Style.buttonIconSm}>→</Text>
-						</Pressable>
+							icon="wifi"
+							buttonType={selectedNetwork ? "primary" : "disabled"}
+							iconStyle="solid"
+							text="Continue"
+						/>
+
 					</View>
 				</View>
 			</TouchableWithoutFeedback>

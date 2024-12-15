@@ -112,7 +112,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 			[BLEStatus.PoweredOff]: 'BLE is turned off',
 		};
 		return (
-			<View style={Style.centered}>
+			<View style={Style.vertical}>
 				<Text>{messages[status]}</Text>
 			</View>
 		);

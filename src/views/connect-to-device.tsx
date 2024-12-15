@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, View, Text, Pressable } from 'react-native';
 import { useBLESetup, ConnectionStatus } from '@particle/react-native-ble-setup-library';
 import { Style } from '../styles';
-import { ProgressDiagram } from '../util/utility';
+import { ProgressDiagram, apiFetch, IconButton, BareButton } from '../util/utility';
 
 export interface ConnectToDeviceArguments
 {
@@ -39,11 +39,15 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 		return (
 			<View style={Style.vertical}>
 				<Text style={Style.emoji}>🤔️</Text>
-				<Text style={Style.h2}>No device selected</Text>
+				<Text style={Style.h3}>No device selected</Text>
 				<View style={Style.nav}>
-					<Pressable style={Style.button} onPress={onBack}>
-						<Text style={Style.buttonText}>Back</Text>
-					</Pressable>
+					<IconButton
+						onPress={onBack}
+						icon="arrow-left"
+						buttonType="secondary"
+						iconStyle="solid"
+						text="Back"
+					/>
 				</View>
 			</View>
 		);
@@ -54,11 +58,15 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 		return (
 			<View style={Style.vertical}>
 				<Text style={Style.emoji}></Text>
-				<Text style={Style.h2}>Device disconnected</Text>
+				<Text style={Style.h3}>Device disconnected</Text>
 				<View style={Style.nav}>
-					<Pressable style={Style.button} onPress={onBack}>
-						<Text style={Style.buttonText}>Back</Text>
-					</Pressable>
+					<IconButton
+						onPress={onBack}
+						icon="arrow-left"
+						buttonType="secondary"
+						iconStyle="solid"
+						text="Back"
+					/>
 				</View>
 			</View>
 		);
@@ -69,7 +77,7 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 		return (
 			<View style={Style.vertical}>
 				<ProgressDiagram showLoader={true} numChecks={1} />
-				<Text style={Style.h2}>Connecting to Bindicator {setupCode}...</Text>
+				<Text style={Style.h3}>Connecting to Bindicator {setupCode}...</Text>
 			</View>
 		);
 	}
@@ -78,15 +86,22 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 	return (
 		<View style={Style.vertical}>
 			<ProgressDiagram numChecks={2} />
-			<Text style={Style.h2}>Connected to Bindicator {setupCode}!</Text>
+			<Text style={Style.h3}>Connected to BBBBB {setupCode}!</Text>
 
 			<View style={Style.navSpace}>
-				<Pressable style={Style.buttonSecondary} onPress={onBack}>
-					<Text style={Style.buttonIconSm}>←</Text><Text style={Style.buttonText}>Back</Text>
-				</Pressable>
-				<Pressable style={Style.button} onPress={onContinue}>
-					<Text style={Style.buttonText}>Continue</Text><Text style={Style.buttonIconSm}>→</Text>
-				</Pressable>
+				<IconButton
+					onPress={onBack}
+					icon="arrow-left"
+					iconStyle="solid"
+					buttonType="secondary"
+					text="Back"
+				/>
+				<IconButton
+					onPress={onContinue}
+					icon="arrow-right"
+					iconStyle="solid"
+					text="Set up WiFi"
+				/>
 			</View>
 
 		</View>
