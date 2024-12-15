@@ -175,7 +175,7 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
 
             <View style={styles.settingHeader}>
                 <Text style={styles.settingHeaderText}>{displayName}</Text>
-                <Text>{getIcon(iconName, 20,'solid',color)}</Text>
+                <Text>{getIcon(iconName, 20, 'solid', color)}</Text>
             </View>
             <WeekdayPicker
                 locked={bindicatorDeviceData.trash_schedule}
@@ -196,7 +196,7 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
             />
             {previewDays && (
 
-                    <Text style={[{fontSize:20},Style.paragraph]}>{(days ? days : []).join(", ")}, ...</Text>
+                <Text style={[{ fontSize: 20 }, Style.paragraph]}>{(days ? days : []).join(", ")}, ...</Text>
             )}
 
         </View>
@@ -295,7 +295,7 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
             <SettingsChunk
                 name="Trash"
                 displayName="Trash"
-                color="#1475f5"
+                color="#0965dc"
                 bindicatorDeviceData={bindicatorDeviceData}
                 previewDays={previewDays}
                 setSelectedCollectionDay={setSelectedTrashDay}
@@ -306,7 +306,7 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
             <SettingsChunk
                 name="Recycle"
                 displayName="Recycling"
-                color="#4caf50"
+                color="#46a049"
                 bindicatorDeviceData={bindicatorDeviceData}
                 previewDays={previewDays}
                 setSelectedCollectionDay={setSelectedRecycleDay}

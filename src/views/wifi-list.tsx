@@ -49,7 +49,7 @@ export const renderNetworkThunk = ({ selectedNetwork, setSelectedNetwork }: Rend
 				style={isSelected ? Style.listItemSelected : Style.listItem}
 				testID='button'
 				onPress={() => setSelectedNetwork(item)}>
-				<Text style={[{ fontFamily: 'bold' }, Style.listItemText]}>{`${item.ssid}`}</Text>
+				<Text style={[{ fontFamily: 'bold', fontSize: 20 }, Style.listItemText]}>{`${item.ssid}`}</Text>
 			</TouchableOpacity>
 		);
 	};

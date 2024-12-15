@@ -11,7 +11,7 @@ export const Style = StyleSheet.create({
 	},
 
 	vertical: {
-		backgroundColor: 'darkgray',
+		backgroundColor: 'black',
 
 
 		flex: 1,
@@ -234,6 +234,15 @@ export const Style = StyleSheet.create({
 	simpleFlexRow: {
 		display: 'flex',
 		flexDirection: 'row',
+		gap: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+
+	simpleFlexColumn: {
+		display: 'flex',
+		flexDirection: 'column',
 		gap: 5,
 		justifyContent: 'center',
 		alignItems: 'center',

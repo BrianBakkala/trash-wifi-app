@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, Text, ActivityIndicator, Pressable, StyleSheet, ScrollView } from 'react-native';
 import { Style } from '../styles';
 import { apiFetch, IconButton, BareButton } from '../util/utility';
+import { getIcon } from '../util/icons';
 import { bindicatorIdentifier } from './device-prefs';
 
 export interface HomeScreenArguments
@@ -89,7 +90,7 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs, on
 												<Text style={styles.bListItemText}>
 													{item.bindicator_name}
 												</Text>
-												<Text  >→</Text>
+												<Text  >{getIcon("angle-right")}</Text>
 											</Pressable>
 										</View>
 

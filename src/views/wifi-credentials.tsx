@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
 import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
+import { getIcon } from '../util/icons';
 import { apiFetch, IconButton, BareButton } from '../util/utility';
 
 export interface WiFiCredentialsArguments
@@ -66,8 +67,7 @@ export const WiFiCredentials = ({ onBack, onContinue, selectedNetwork, wifiPassw
 
 
 							<Pressable style={Style.toggleVisibilityButton} onPress={() => setPasswordVisible(!isPasswordVisible)}  >
-								<Image source={require('../../assets/visible.png')} style={[(isPasswordVisible ? { display: 'none' } : { display: 'flex' }), Style.visibilityIcon]} />
-								<Image source={require('../../assets/invisible.png')} style={[(isPasswordVisible ? { display: 'flex' } : { display: 'none' }), Style.visibilityIcon]} />
+								{getIcon((isPasswordVisible ? "eye-slash" : "eye"))}
 							</Pressable>
 
 

@@ -4,7 +4,6 @@ import { Style } from '../styles';
 import { getAPIAuth, APIAuthProps, getAPIEndpoint } from './auth';
 import { getIcon } from '../util/icons';
 
-
 const VERIFICATION_KEY_DELIMITER = ":: ::";
 
 export const ProgressDiagram = ({ numChecks = 0, showLoader = false }) =>
@@ -27,31 +26,32 @@ export const ProgressDiagram = ({ numChecks = 0, showLoader = false }) =>
 
 interface BaseButtonProps
 {
-    text: string;  // onPress is a function that doesn't take arguments and returns nothing
-    onPress?: () => void;  // onPress is a function that doesn't take arguments and returns nothing
-    preContent?: JSX.Element;  // preContent is optional, defaulting to a <Text /> element
-    postContent?: JSX.Element; // postContent is optional, defaulting to a <Text /> element
+    text: string;
+    onPress?: () => void;
+    preContent?: JSX.Element;
     buttonType?: "primary" | "secondary" | "disabled"
+    color?: string
 }
 
 const deadEle = (<Text style={{ display: 'none' }} />);
 
-const BaseButton = ({ text, onPress, preContent = deadEle, postContent = deadEle, buttonType }: BaseButtonProps) =>
+const BaseButton = ({ text, onPress, preContent = deadEle, buttonType, color = "#0090b0" }: BaseButtonProps) =>
 {
     return (
         <Pressable style={
-            buttonType === "secondary"
+            [(buttonType === "secondary"
                 ? buttonStyles.buttonSecondary
                 : buttonType === "disabled"
                     ? buttonStyles.buttonDisabled
-                    : buttonStyles.button
+                    : buttonStyles.button),
+            (buttonType !== "disabled" && buttonType !== "secondary" ? { backgroundColor: color } : {})]
         }
 
             onPress={buttonType !== "disabled" ? onPress : undefined}
         >
 
-                {preContent}
-                <Text style={buttonStyles.buttonText}>{text}</Text>
+            {preContent}
+            <Text style={buttonStyles.buttonText}>{text}</Text>
 
         </Pressable>
     );
@@ -76,12 +76,13 @@ interface IconButtonProps extends BaseButtonProps
 }
 
 export const IconButton = (
-    { text, icon, iconStyle = "regular",  onPress, buttonType }: IconButtonProps) =>
+    { text, icon, iconStyle = "regular", onPress, buttonType, color }: IconButtonProps) =>
 {
     return (
         <BaseButton
             buttonType={buttonType}
             text={text}
+            color={color}
             onPress={onPress}
             preContent={getIcon(icon, 12, iconStyle)}
         />
@@ -212,7 +213,6 @@ const buttonStyles = StyleSheet.create({
         paddingHorizontal: 18,
         borderRadius: 40,
         elevation: 3,
-        backgroundColor: '#0090b0',
         color: 'white',
         textAlign: 'center'
     },
