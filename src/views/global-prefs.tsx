@@ -178,7 +178,7 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
                 <Text>{getIcon(iconName, 20, 'solid', color)}</Text>
             </View>
             <WeekdayPicker
-                locked={bindicatorDeviceData.trash_schedule}
+                locked={bindicatorDeviceData[lowerName == 'trash' ? 'trash_schedule' : 'recycle_schedule']}
                 color={color}
                 onWeekdaySelect={async (day = "W") =>
                 {
@@ -186,7 +186,7 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
                 }}
             />
             <SchemePicker
-                locked={bindicatorDeviceData.trash_scheme} // Pass a locked value if applicable
+                locked={bindicatorDeviceData[lowerName == 'trash' ? 'trash_scheme' : 'recycle_scheme']} // Pass a locked value if applicable
                 color={color}
                 onFrequencySelect={(frequency = "weekly", startOption = "this") =>
                 {
