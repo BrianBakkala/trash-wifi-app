@@ -23,6 +23,7 @@ export interface bindicatorFirebaseDocument
     success?: string;
     monitoring_uuid?: string;
     bindicator_name?: string;
+    photon_id?: string;
     trash_on?: boolean;
     recycle_on?: boolean;
 }
@@ -71,14 +72,26 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack }: DevicePref
         newData: Partial<bindicatorFirebaseDocument>
     ) =>
     {
+        let body;
         if (!bindicatorDeviceData)
         {
             return;
         }
-        const body = {
-            monitoring_uuid: bindicatorDeviceData.monitoring_uuid,
-            ...newData
-        };
+        if (!bindicatorDeviceData.photon_id)
+        {
+            body = {
+                monitoring_uuid: bindicatorDeviceData.monitoring_uuid,
+                ...newData
+            };
+        }
+        else
+        {
+            body = {
+                photon_id: bindicatorDeviceData.photon_id,
+                ...newData
+            };
+        }
+
         apiFetch('update-bindicator-data', body)
 
         console.log("#", "Saving name.", body)
@@ -181,7 +194,8 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack }: DevicePref
             }
 
             {/* <Text style={Style.paragraph}>{JSON.stringify(bindicatorDeviceData)}</Text> */}
-
+            (
+            bindicatorDeviceData.photon_id &&
             <View style={[Style.simpleFlexColumn, { marginTop: 50 }]}>
                 <View style={(bindicatorDeviceData.trash_on ? styles.buttonOnGlowBlue : styles.buttonOffGlow)}>
                     <IconButton
@@ -202,11 +216,8 @@ export const DevicePrefs = ({ deviceUUID, deviceIdentifier, onBack }: DevicePref
                         color={(bindicatorDeviceData.recycle_on ? "#46a049" : "#0f2410")}
                     />
                 </View>
-
-
-
             </View>
-
+            )
 
 
             <View style={Style.navLeft}>
