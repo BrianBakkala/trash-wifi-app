@@ -186,7 +186,7 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
                 }}
             />
             <SchemePicker
-                locked={bindicatorDeviceData[lowerName == 'trash' ? 'trash_scheme' : 'recycle_scheme']} // Pass a locked value if applicable
+                locked={bindicatorDeviceData[lowerName == 'trash' ? 'trash_scheme' : 'recycle_scheme']}
                 color={color}
                 onFrequencySelect={(frequency = "weekly", startOption = "this") =>
                 {
