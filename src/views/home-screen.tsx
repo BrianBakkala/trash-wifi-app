@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, Text, ActivityIndicator, Pressable, StyleSheet, ScrollView } from 'react-native';
 import { Style } from '../styles';
-import { apiFetch, IconButton, BareButton } from '../util/utility';
+import { apiFetch, IconButton } from '../util/utility';
 import { getIcon } from '../util/icons';
 import { bindicatorIdentifier } from './device-prefs';
 

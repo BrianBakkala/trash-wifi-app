@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, TouchableOpacity, ActivityIndicator, Pressable, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet, ScrollView } from 'react-native';
 import { Style } from '../styles';
-import { apiFetch, IconButton, BareButton } from '../util/utility';
-import { bindicatorIdentifier } from './device-prefs';
+import { apiFetch, IconButton } from '../util/utility';
 
 export interface HolidaySetupArguments
 {

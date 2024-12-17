@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
+import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
 import { getIcon } from '../util/icons';
-import { apiFetch, IconButton, BareButton } from '../util/utility';
+import { IconButton } from '../util/utility';
 
 export interface WiFiCredentialsArguments
 {
