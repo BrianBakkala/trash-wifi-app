@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, View, Pressable, Text } from 'react-native';
 import { Style } from '../styles';
+import { apiFetch, IconButton, BareButton } from '../util/utility';
 
 export interface ErrorModalArguments
 {
@@ -23,10 +24,11 @@ export const ErrorModal = ({ visible, error, onClose }: ErrorModalArguments): Re
 				<Text style={Style.h3}>{error?.name}</Text>
 				<Text style={Style.modalBody}>{error?.message}.</Text>
 				<Text style={Style.modalBody}>{error?.message}Please try again.</Text>
-				<Pressable style={Style.button} onPress={onClose}>
-					<Text style={Style.buttonText}>Dismiss</Text>
-				</Pressable>
+				<BareButton
+					onPress={onClose}
+					text="Dismiss"
+				/>
 			</View>
 		</View>
 	</Modal>);
-};
+}; 

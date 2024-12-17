@@ -226,7 +226,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 				await disconnect();
 				setSelectedNetwork(undefined);
 				setWifiPassword(undefined);
-				setCurrentStep(SetupStep.EnterDeviceDetails);
+				setCurrentStep(SetupStep.HomeScreen);
 			}}
 			selectedNetwork={selectedNetwork}
 			wifiPassword={wifiPassword}

@@ -68,7 +68,14 @@ export const JoinWiFi = ({ deviceUUID, setupCode, onStartOver, onContinue, selec
 		<View style={Style.vertical}>
 			<ProgressDiagram numChecks={5} />
 			<Text style={Style.h3}>Successfully joined {selectedNetwork?.ssid}!</Text>
-			<View style={Style.navRight}>
+			<View style={Style.navCenterSplit}>
+				<IconButton
+					onPress={onStartOver}
+					icon="house"
+					buttonType="secondary"
+					iconStyle="solid"
+					text="Home"
+				/>
 				<IconButton
 					onPress={onContinue}
 					icon="calendar-days"

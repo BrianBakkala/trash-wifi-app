@@ -17,7 +17,7 @@ export interface bindicatorIdentifier
     monitoring_uuid?: string;
     verification_key?: string;
 }
-export interface bindicatorFirebaseDocument
+export interface householdFirebaseDocument
 {
     success: string;
 
@@ -26,6 +26,8 @@ export interface bindicatorFirebaseDocument
 
     recycle_schedule: string;
     recycle_scheme: string;
+
+    wife: boolean;
 }
 interface previewDaysObj
 {
@@ -36,12 +38,13 @@ interface previewDaysObj
 
 interface WeekdayPickerProps
 {
+    wife: boolean; // The currently selected weekday
     locked: string; // The currently selected weekday
     color: string;
     onWeekdaySelect?: (selectedDay: string) => void; // Callback to handle weekday selection
 }
 
-export const WeekdayPicker: React.FC<WeekdayPickerProps> = ({ locked, color, onWeekdaySelect }) =>
+export const WeekdayPicker: React.FC<WeekdayPickerProps> = ({ wife = false, locked, color, onWeekdaySelect }) =>
 {
     const weekdays = ["Su", "M", "T", "W", "Th", "F", "Sa"]
 
@@ -66,7 +69,7 @@ export const WeekdayPicker: React.FC<WeekdayPickerProps> = ({ locked, color, onW
                         locked === day && styles.lockedButton,
                         selectedDay === day && { backgroundColor: color },
                     ]}
-                    onPress={() => handlePress(day)}
+                    onPress={wife ? undefined : () => handlePress(day)}
                 >
                     <Text style={styles.weekdayText}>{day}</Text>
                 </TouchableOpacity>
@@ -76,10 +79,11 @@ export const WeekdayPicker: React.FC<WeekdayPickerProps> = ({ locked, color, onW
 };
 
 export const SchemePicker: React.FC<{
+    wife?: boolean; // Optional prop to lock the selection
     locked?: string; // Optional prop to lock the selection
     color: string,
     onFrequencySelect?: (frequency: string, startOption?: string) => void; // Callback for when a selection is made
-}> = ({ locked, color, onFrequencySelect }) =>
+}> = ({ wife = false, locked, color, onFrequencySelect }) =>
     {
         const frequencies = ["weekly", "biweekly"];
         const biweeklyStartOptions = ["this", "next"];
@@ -120,7 +124,7 @@ export const SchemePicker: React.FC<{
                                 locked === frequency && styles.lockedButton,
                                 selectedFrequency === frequency && { backgroundColor: color },
                             ]}
-                            onPress={() => handleFrequencyPress(frequency)}
+                            onPress={wife ? undefined : () => handleFrequencyPress(frequency)}
                         >
                             <Text style={styles.frequencyText}>{frequency}</Text>
                         </TouchableOpacity>
@@ -138,7 +142,7 @@ export const SchemePicker: React.FC<{
                                     styles.startOptionButton,
                                     selectedStartOption === option && { backgroundColor: color },
                                 ]}
-                                onPress={() => handleStartOptionPress(option)}
+                                onPress={wife ? undefined : () => handleStartOptionPress(option)}
                             >
                                 <Text style={styles.startOptionText}>Starting {option} week</Text>
                             </TouchableOpacity>
@@ -155,7 +159,7 @@ interface SettingsChunkProps
     name: string,
     displayName: string,
     color: string,
-    bindicatorDeviceData: bindicatorFirebaseDocument,
+    householdData: householdFirebaseDocument,
     previewDays: previewDaysObj | null | undefined
     setSelectedCollectionDay: (value: React.SetStateAction<string>) => void
     setSelectedCollectionScheme: (value: React.SetStateAction<string>) => void
@@ -164,7 +168,7 @@ interface SettingsChunkProps
 
 
 
-const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color, bindicatorDeviceData, previewDays, setSelectedCollectionDay, setSelectedCollectionScheme, setSelectedCollectionStartOption }) =>
+const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color, householdData, previewDays, setSelectedCollectionDay, setSelectedCollectionScheme, setSelectedCollectionStartOption }) =>
 {
     const lowerName = name.toLowerCase()
     const iconName = lowerName == "trash" ? "trash-can" : lowerName
@@ -178,7 +182,8 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
                 <Text>{getIcon(iconName, 20, 'solid', color)}</Text>
             </View>
             <WeekdayPicker
-                locked={bindicatorDeviceData[lowerName == 'trash' ? 'trash_schedule' : 'recycle_schedule']}
+                wife={householdData.wife}
+                locked={householdData[lowerName == 'trash' ? 'trash_schedule' : 'recycle_schedule']}
                 color={color}
                 onWeekdaySelect={async (day = "W") =>
                 {
@@ -186,7 +191,8 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
                 }}
             />
             <SchemePicker
-                locked={bindicatorDeviceData[lowerName == 'trash' ? 'trash_scheme' : 'recycle_scheme']}
+                wife={householdData.wife}
+                locked={householdData[lowerName == 'trash' ? 'trash_scheme' : 'recycle_scheme']}
                 color={color}
                 onFrequencySelect={(frequency = "weekly", startOption = "this") =>
                 {
@@ -208,7 +214,7 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
 
 export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: GlobalPrefsArguments): React.ReactElement => 
 {
-    const [bindicatorDeviceData, setBindicatorDeviceData] = useState<bindicatorFirebaseDocument | null>(null);
+    const [householdData, setBindicatorDeviceData] = useState<householdFirebaseDocument | null>(null);
     const [deviceLoading, setDeviceLoading] = useState(false); // Initially not loading
     const [error, setError] = useState<string | null>(null);
 
@@ -225,6 +231,9 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
     const [selectedRecycleDay, setSelectedRecycleDay] = useState("W");
     const [selectedRecycleScheme, setSelectedRecycleScheme] = useState("weekly");
     const [selectedRecycleStartOption, setSelectedRecycleStartOption] = useState<string>("this"); // For biweekly options
+
+    const [wifeDevice, setWifeDevice] = useState<boolean>(false);
+
 
 
     useEffect(() =>
@@ -267,7 +276,7 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
 
     }, [selectedTrashDay, selectedTrashScheme, selectedTrashStartOption, selectedRecycleDay, selectedRecycleScheme, selectedRecycleStartOption]);
 
-    if (!bindicatorDeviceData)
+    if (!householdData)
     {
         return (
             <View style={Style.vertical}>
@@ -296,7 +305,7 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
                 name="Trash"
                 displayName="Trash"
                 color="#0965dc"
-                bindicatorDeviceData={bindicatorDeviceData}
+                householdData={householdData}
                 previewDays={previewDays}
                 setSelectedCollectionDay={setSelectedTrashDay}
                 setSelectedCollectionScheme={setSelectedTrashScheme}
@@ -307,7 +316,7 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
                 name="Recycle"
                 displayName="Recycling"
                 color="#46a049"
-                bindicatorDeviceData={bindicatorDeviceData}
+                householdData={householdData}
                 previewDays={previewDays}
                 setSelectedCollectionDay={setSelectedRecycleDay}
                 setSelectedCollectionScheme={setSelectedRecycleScheme}
