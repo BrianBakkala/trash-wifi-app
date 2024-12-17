@@ -60,7 +60,7 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs, on
 
 			<View style={styles.bListWrapper}>
 				<View>
-					<Text style={[{ textAlign: 'center', fontFamily: 'bold' }, Style.h2]}>My BBBBBs</Text>
+					<Text style={[{ textAlign: 'center', fontFamily: 'bold' }, Style.h2]}>BBBBBs</Text>
 				</View>
 				<ScrollView>
 					<View  >
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
 	},
 
 	bListItemText: {
+		fontSize: 23,
 		color: 'white',
 	},
 
