@@ -80,16 +80,19 @@ export const WeekdayPicker: React.FC<WeekdayPickerProps> = ({ wife = false, lock
 
 export const SchemePicker: React.FC<{
     wife?: boolean; // Optional prop to lock the selection
-    locked?: string; // Optional prop to lock the selection
+    locked: string;
     color: string,
     onFrequencySelect?: (frequency: string, startOption?: string) => void; // Callback for when a selection is made
 }> = ({ wife = false, locked, color, onFrequencySelect }) =>
     {
         const frequencies = ["weekly", "biweekly"];
         const biweeklyStartOptions = ["this", "next"];
+        const mainScheme = locked.split(" ")[0];
+        const biweeklyOption = mainScheme == "biweekly" ? getWeekForBiweeklyScheme(locked.split(" ")[1]) : "";
 
-        const [selectedFrequency, setSelectedFrequency] = useState<string>(locked || "");
-        const [selectedStartOption, setSelectedStartOption] = useState<string>("");
+        const [selectedFrequency, setSelectedFrequency] = useState<string>(mainScheme || "");
+        const [selectedStartOption, setSelectedStartOption] = useState<string>(mainScheme == "biweekly" ? biweeklyOption : "");
+
 
         //button presses
         const handleFrequencyPress = (frequency: string) =>
@@ -115,7 +118,6 @@ export const SchemePicker: React.FC<{
         return (
             <View style={[styles.verticalContainer, { marginTop: 12 }]}>
                 <View style={styles.horizontalContainer}>
-                    {/* Frequency Options */}
                     {frequencies.map((frequency) => (
                         <TouchableOpacity
                             key={frequency}
@@ -131,8 +133,6 @@ export const SchemePicker: React.FC<{
                     ))}
                 </View>
 
-                {/* Biweekly Start Options */}
-                {/* {1 == 1 && ( */}
                 {selectedFrequency === "biweekly" && (
                     <View style={styles.horizontalContainer}>
                         {biweeklyStartOptions.map((option) => (
@@ -200,10 +200,10 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
                     setSelectedCollectionStartOption(startOption);
                 }}
             />
-            {previewDays && (
+            <Text style={[{ fontSize: 20 }, Style.paragraph]}>
+                {previewDays ? (days ? days : []).join(", ") + ", ..." : "..."}
+            </Text>
 
-                <Text style={[{ fontSize: 20 }, Style.paragraph]}>{(days ? days : []).join(", ")}, ...</Text>
-            )}
 
         </View>
     );
@@ -211,14 +211,52 @@ const SettingsChunk: React.FC<SettingsChunkProps> = ({ name, displayName, color,
 
 
 
+function getWeekNumber(date: Date)
+{
+    const startOfYear = new Date(date.getFullYear(), 0, 1);
+    const daysSinceStartOfYear = Math.floor((date.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
+    const weekNumber = Math.ceil((daysSinceStartOfYear + startOfYear.getDay() + 1) / 7);
+    return weekNumber;
+}
+
+function getWeekForBiweeklyScheme(firstSecondInput: string)
+{
+    const currentWeek = getWeekNumber(new Date());
+    const nextWeek = currentWeek + 1;
+
+    if (
+        (firstSecondInput === 'first' && currentWeek % 2 === 0) ||
+        (firstSecondInput === 'second' && currentWeek % 2 !== 0)
+    )
+    {
+        return 'this';
+    }
+
+    if (
+        (firstSecondInput === 'first' && nextWeek % 2 === 0) ||
+        (firstSecondInput === 'second' && nextWeek % 2 !== 0)
+    )
+    {
+        return 'next';
+    }
+
+    return ''; //should never happen unless input is invalid
+}
+
+
+
+
+
+
 
 export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: GlobalPrefsArguments): React.ReactElement => 
 {
-    const [householdData, setBindicatorDeviceData] = useState<householdFirebaseDocument | null>(null);
+    const [householdData, setHouseholdData] = useState<householdFirebaseDocument | null>(null);
     const [deviceLoading, setDeviceLoading] = useState(false); // Initially not loading
     const [error, setError] = useState<string | null>(null);
 
 
+    const [initialConfig, setInitialConfig] = useState(false);
     const [pulledSettings, setPulledSettings] = useState(false);
 
     const [previewLoading, setPreviewLoading] = useState(false); // Initially not loading
@@ -232,49 +270,74 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
     const [selectedRecycleScheme, setSelectedRecycleScheme] = useState("weekly");
     const [selectedRecycleStartOption, setSelectedRecycleStartOption] = useState<string>("this"); // For biweekly options
 
-    const [wifeDevice, setWifeDevice] = useState<boolean>(false);
-
-
 
     useEffect(() =>
     {
-        if (deviceUUID && !pulledSettings)
+        if (!deviceUUID || pulledSettings)
         {
-            console.log("#", "Pulling current settings", {
-                household_id: deviceUUID,
-            })
-            const response = apiFetch('get-global-settings',
-                {
-                    household_id: deviceUUID,
-                }
-                , setBindicatorDeviceData, setDeviceLoading, setError);
-            setPulledSettings(true)
-
+            return;
         }
+
+        console.log("#", "Pulling current settings", {
+            household_id: deviceUUID,
+        })
+        const response = apiFetch('get-global-settings',
+            {
+                household_id: deviceUUID,
+            }
+            , setHouseholdData, setDeviceLoading, setError);
+        setPulledSettings(true)
+
+
 
     }, []);
 
     useEffect(() =>
     {
-        if (deviceUUID)
+        if (!initialConfig || !deviceUUID)
         {
-            const body = {
-                device_uuid: deviceUUID,
-
-                trash_day: selectedTrashDay,
-                trash_scheme: selectedTrashScheme,
-                trash_start_option: selectedTrashStartOption,
-                recycle_day: selectedRecycleDay,
-                recycle_scheme: selectedRecycleScheme,
-                recycle_start_option: selectedRecycleStartOption,
-            }
-            console.log("#", "Saving settings", body)
-
-            const response = apiFetch('save-settings', body
-                , setPreviewDays, setPreviewLoading, setError);
+            return;
         }
 
+        const body = {
+            device_uuid: deviceUUID,
+
+            trash_day: selectedTrashDay,
+            trash_scheme: selectedTrashScheme,
+            trash_start_option: selectedTrashStartOption,
+            recycle_day: selectedRecycleDay,
+            recycle_scheme: selectedRecycleScheme,
+            recycle_start_option: selectedRecycleStartOption,
+        }
+        console.log("#", "Saving settings", body)
+
+        const response = apiFetch('save-settings', body
+            , setPreviewDays, setPreviewLoading, setError);
+
     }, [selectedTrashDay, selectedTrashScheme, selectedTrashStartOption, selectedRecycleDay, selectedRecycleScheme, selectedRecycleStartOption]);
+
+    useEffect(() =>
+    {
+        if (!householdData || initialConfig)
+        {
+            return;
+        }
+
+
+        const mainTrashScheme = householdData.trash_scheme.split(" ")[0];
+        const biweeklyTrashOption = mainTrashScheme == "biweekly" ? getWeekForBiweeklyScheme(householdData.trash_scheme.split(" ")[1]) : "";
+        setSelectedTrashDay(householdData.trash_schedule)
+        setSelectedTrashScheme(householdData.trash_scheme)
+        setSelectedTrashStartOption(mainTrashScheme == "biweekly" ? biweeklyTrashOption : "")
+
+        const mainRecycleScheme = householdData.recycle_scheme.split(" ")[0];
+        const biweeklyRecycleOption = mainRecycleScheme == "biweekly" ? getWeekForBiweeklyScheme(householdData.recycle_scheme.split(" ")[1]) : "";
+        setSelectedRecycleDay(householdData.recycle_schedule)
+        setSelectedRecycleScheme(householdData.recycle_scheme)
+        setSelectedRecycleStartOption(mainRecycleScheme == "biweekly" ? biweeklyRecycleOption : "")
+        setInitialConfig(true)
+
+    }, [householdData]);
 
     if (!householdData)
     {
@@ -294,11 +357,11 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
         )
     }
 
-
     return (
         <View style={Style.vertical}>
             {deviceLoading && <ActivityIndicator size="large" color="#ffffff" />}
             {error && <Text style={Style.error}>{error}</Text>}
+
 
 
             <SettingsChunk

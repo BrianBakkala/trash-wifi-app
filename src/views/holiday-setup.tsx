@@ -13,6 +13,7 @@ export interface HolidaySetupArguments
 interface HolidayList
 {
     holidays: Hobject[]
+    wife: boolean
 }
 interface Hobject
 {
@@ -25,7 +26,7 @@ interface Hobject
 
 export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): React.ReactElement => 
 {
-    const [holidayData, setHolidayData] = useState<HolidayList>({ holidays: [] });
+    const [holidayData, setHolidayData] = useState<HolidayList>({ holidays: [], wife: false });
     const [loading, setLoading] = useState(false); // Initially not loading
     const [error, setError] = useState<string | null>(null);
     const [pulledHolidays, setPulledHolidays] = useState<boolean>(false);
@@ -125,7 +126,7 @@ export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): Rea
                                     styles.holidayButton,
                                     selectedHolidays.includes(holiday.name) && styles.selectedHoliday,
                                 ]}
-                                onPress={() => handlePress(holiday.name)}
+                                onPress={holidayData.wife ? undefined : () => handlePress(holiday.name)}
                             >
                                 <Text style={[styles.holidayText, { fontWeight: "bold" }]}>
                                     {holiday.name}
