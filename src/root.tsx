@@ -168,8 +168,8 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	} else if (currentStep === SetupStep.EnterDeviceDetails)
 	{
 		step = <DeviceDetails
-			setupCode="052BF8"
-			// setupCode={setupCode}
+			// setupCode="052BF8"
+			setupCode={setupCode}
 			onBack={() => setCurrentStep(SetupStep.HomeScreen)}
 			setSetupCode={setSetupCode}
 			mobileSecret="AAAAAAAAAAAAAAA"
@@ -181,7 +181,6 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 	} else if (currentStep === SetupStep.LookForDevice)
 	{
 		step = <LookForDevice
-			// setupCode="052BF8"
 			setupCode={setupCode}
 			onBack={() => setCurrentStep(SetupStep.EnterDeviceDetails)}
 			onContinue={() => setCurrentStep(SetupStep.ConnectToDevice)}
@@ -221,6 +220,7 @@ export const Root: React.FC<{ defaultCurrentStep?: SetupStep }> = ({
 			setupCode={setupCode}
 			deviceUUID={deviceUUID}
 			onContinue={() => { setCurrentStep(SetupStep.GlobalPrefs); }}
+			onError={() => { setCurrentStep(SetupStep.WiFiCredentials); }}
 			onStartOver={async () =>
 			{
 				await disconnect();

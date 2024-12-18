@@ -21,8 +21,7 @@ export const ErrorModal = ({ visible, error, onClose }: ErrorModalArguments): Re
 	>
 		<View style={Style.modalBackground}>
 			<View style={Style.modal}>
-				<Text style={Style.h3}>{error?.name}</Text>
-				<Text style={Style.modalBody}>{error?.message}.</Text>
+				<Text style={Style.h2}>{error?.name}</Text>
 				<Text style={Style.modalBody}>{error?.message}Please try again.</Text>
 				<BareButton
 					onPress={onClose}

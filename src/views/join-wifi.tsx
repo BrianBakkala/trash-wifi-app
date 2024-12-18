@@ -11,33 +11,55 @@ export interface JoinWiFiArguments
 	setupCode: string,
 	onStartOver: () => void,
 	onContinue: () => void,
+	onError: () => void,
 	selectedNetwork?: INetwork,
 	wifiPassword?: string
 }
 
-export const JoinWiFi = ({ deviceUUID, setupCode, onStartOver, onContinue, selectedNetwork, wifiPassword }: JoinWiFiArguments): React.ReactElement =>
+export const JoinWiFi = ({ deviceUUID, setupCode, onStartOver, onContinue, onError, selectedNetwork, wifiPassword }: JoinWiFiArguments): React.ReactElement =>
 {
-	const { isJoiningWiFiNetwork, joinWiFiNetwork } = useBLESetup();
-	const [hasJoined, setHasJoined] = useState(false);
-	const [responseData, setResponseData] = useState(null);
+	const { isJoiningWiFiNetwork, joinWiFiNetwork, error, connectionStatus } = useBLESetup();
+
+	const [startJoined, setStartJoined] = useState(false);
+	const [hasFetched, setHasFetched] = useState(false); //ensure only one post-provision request
+
+	const [fetchData, setFetchData] = useState(null);
 	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
+	const [fetchError, setFetchError] = useState<string | null>(null);
+
 
 	useEffect(() =>
 	{
 		// Trigger WiFi join process when the component is mounted
 		if (!isJoiningWiFiNetwork && selectedNetwork)
 		{
-			joinWiFiNetwork(selectedNetwork, wifiPassword);
+			joinWiFiNetwork(selectedNetwork, wifiPassword)
+			setStartJoined(true)
+
 		}
 	}, [selectedNetwork, wifiPassword]);
 
 	useEffect(() =>
 	{
-		// Check if the connection process is completed and call a function ONCE
-		if (!isJoiningWiFiNetwork && selectedNetwork && !hasJoined)
+		if (!!error)
 		{
-			setHasJoined(true);
+			//catch errors joining network. wrong password, etc.
+			onError()
+		}
+
+	}, [error]);
+
+	useEffect(() =>
+	{
+
+		if (
+			startJoined && selectedNetwork //connection has been attempted
+			&& !isJoiningWiFiNetwork //done joining
+			&& !error //no errors
+			&& !hasFetched //this effect hasn't been triggered before
+		)
+		{
+			setHasFetched(true);
 
 			console.log("#", "Initiating fetch...")
 
@@ -47,12 +69,13 @@ export const JoinWiFi = ({ deviceUUID, setupCode, onStartOver, onContinue, selec
 					device_uuid: deviceUUID,
 					verification_key: createVerificationKey(selectedNetwork.ssid, setupCode),
 				},
-				setResponseData,
+				setFetchData,
 				setLoading,
-				setError
+				setFetchError
 			);
 		}
-	}, [isJoiningWiFiNetwork, selectedNetwork, hasJoined]);
+	}, [isJoiningWiFiNetwork]);
+
 
 	if (isJoiningWiFiNetwork)
 	{
