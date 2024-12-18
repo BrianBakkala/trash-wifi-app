@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, TouchableOpacity, TextInput, Text, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
+import { View, TextInput, Text, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { Style } from '../styles';
-import { apiFetch, IconButton, BareButton } from '../util/utility';
+import { apiFetch, IconButton } from '../util/utility';
 import { getIcon } from '../util/icons';
 
 

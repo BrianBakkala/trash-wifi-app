@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Image, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Image, Text, TextInput,  KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Style } from '../styles';
-import { apiFetch, IconButton, BareButton } from '../util/utility';
+import {  IconButton } from '../util/utility';
 
 export interface DeviceDetailsArguments
 {

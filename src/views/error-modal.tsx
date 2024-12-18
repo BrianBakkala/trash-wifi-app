@@ -1,7 +1,7 @@
 import React from 'react';
-import { Modal, View, Pressable, Text } from 'react-native';
+import { Modal, View, Text } from 'react-native';
 import { Style } from '../styles';
-import { apiFetch, IconButton, BareButton } from '../util/utility';
+import { BareButton } from '../util/utility';
 
 export interface ErrorModalArguments
 {

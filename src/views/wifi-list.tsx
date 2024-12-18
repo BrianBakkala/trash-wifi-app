@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, View, Text, Pressable, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useBLESetup } from '@particle/react-native-ble-setup-library';
 import { INetwork } from '@particle/device-control-ble-setup-library';
 import { Style } from '../styles';
-import { ProgressDiagram, apiFetch, IconButton, BareButton } from '../util/utility';
+import { ProgressDiagram, IconButton } from '../util/utility';
 
 export interface ListNetworksArguments
 {

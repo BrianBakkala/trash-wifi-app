@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, View, Text, Pressable } from 'react-native';
 import { useBLESetup } from '@particle/react-native-ble-setup-library';
 import { Style } from '../styles';
-import { ProgressDiagram, apiFetch, IconButton, BareButton, IconHeading } from '../util/utility';
-import { getIcon } from '../util/icons';
+import { ProgressDiagram, IconButton, IconHeading } from '../util/utility';
 
 export interface LookForDeviceArguments
 {
