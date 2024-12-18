@@ -60,14 +60,14 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs, on
 
 			<View style={styles.bListWrapper}>
 				<View>
-					<Text style={[{ textAlign: 'center', fontFamily: 'bold' }, Style.h2]}>BBBBBs</Text>
+					<Text style={[{ textAlign: 'center', fontFamily: 'bold' }, Style.h2]}>Bindicators</Text>
 				</View>
 				<ScrollView>
 					<View  >
 
 						{loading && <ActivityIndicator size="large" color="#ffffff" />}
 
-						{!loading && bindicatorCount == 0 && <Text style={Style.paragraphText}>No BBBBBs found.</Text>}
+						{!loading && bindicatorCount == 0 && <Text style={Style.paragraphText}>No Bindicators found.</Text>}
 
 						{error && <Text style={styles.errorText}>{error}</Text>}
 					</View>
@@ -84,7 +84,7 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs, on
 										<View key={index}  >
 											<Pressable style={styles.bListItem} onPress={() => onNavigateToDevicePrefs(identifier)}>
 												<Image
-													source={require('../../assets/bindicator_censored.png')}
+													source={require('../../assets/bindicator.png')}
 													style={Style.smallBindicatorImage}
 												/>
 												<Text style={styles.bListItemText}>
@@ -130,7 +130,7 @@ export const HomeScreen = ({ deviceUUID, onContinue, onNavigateToDevicePrefs, on
 					onPress={onContinue}
 					icon="plus"
 					iconStyle="solid"
-					text="New BBBBB"
+					text="New Bindicator"
 				/>
 			</View>
 		</View >

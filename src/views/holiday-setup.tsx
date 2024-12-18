@@ -32,6 +32,7 @@ export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): Rea
     const [addedCurrentHolidays, setAddedCurrentHolidays] = useState<boolean>(false);
     const [selectedHolidays, setSelectedHolidays] = useState<string[]>([]);
 
+
     const handlePress = (item: string) =>
     {
         setSelectedHolidays((prev: string[]) =>
@@ -69,7 +70,9 @@ export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): Rea
     {
         if (deviceUUID && !pulledHolidays)
         {
-            console.log("#", "Pulling holiday data")
+            console.log("#", "Pulling holiday data", {
+                device_uuid: deviceUUID
+            })
             const response = apiFetch('get-holiday-data',
                 {
                     device_uuid: deviceUUID
@@ -92,6 +95,8 @@ export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): Rea
                     .filter(x => x.is_selected)
                     .map(x => x.name)
             )
+            console.log(holidayData.holidays)
+
             setAddedCurrentHolidays(true)
         }
 
@@ -108,6 +113,8 @@ export const HolidaySetup = ({ deviceUUID, onBack }: HolidaySetupArguments): Rea
             </View>
         )
     }
+
+    console.log(selectedHolidays)
 
     return (
         <View style={Style.vertical}>

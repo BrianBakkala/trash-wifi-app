@@ -86,7 +86,7 @@ export const ConnectToDevice = ({ mobileSecret, setupCode, onBack, onContinue }:
 	return (
 		<View style={Style.vertical}>
 			<ProgressDiagram numChecks={2} />
-			<Text style={Style.h3}>Connected to BBBBB {setupCode}!</Text>
+			<Text style={Style.h3}>Connected to Bindicator {setupCode}!</Text>
 
 			<View style={Style.navSpace}>
 				<IconButton

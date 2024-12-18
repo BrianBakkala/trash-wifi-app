@@ -35,7 +35,7 @@ export const LookForDevice = ({ setupCode, onBack, onContinue }: LookForDeviceAr
 		return (
 			<View style={Style.vertical}>
 				<ProgressDiagram numChecks={1} />
-				<Text style={Style.h3}>Found BBBBB {setupCode}!</Text>
+				<Text style={Style.h3}>Found Bindicator {setupCode}!</Text>
 				<View style={Style.navSpace}>
 					<IconButton
 						onPress={onBack}
@@ -58,7 +58,7 @@ export const LookForDevice = ({ setupCode, onBack, onContinue }: LookForDeviceAr
 		return (
 			<View style={Style.vertical}>
 				<IconHeading icon="xmark" />
-				<Text style={Style.h3}>  BBBBB {setupCode} not found</Text>
+				<Text style={Style.h3}>  Bindicator {setupCode} not found</Text>
 				<View>
 					<IconButton
 						onPress={retry}

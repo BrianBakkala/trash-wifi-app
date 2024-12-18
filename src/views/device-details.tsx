@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Image, Text, TextInput,  KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Image, Text, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Style } from '../styles';
-import {  IconButton } from '../util/utility';
+import { IconButton } from '../util/utility';
 
 export interface DeviceDetailsArguments
 {
@@ -25,13 +25,13 @@ export const DeviceDetails = ({ setupCode, setSetupCode, mobileSecret, setMobile
 				<View style={Style.vertical}>
 
 					<Image
-						source={require('../../assets/bindicator_censored.png')}
+						source={require('../../assets/bindicator.png')}
 						style={Style.mainBindicatorImage}
 					/>
 
 					<View style={Style.paragraph}>
 
-						<Text style={Style.paragraphText}>Please enter the setup code found on the label on the back of the BBBBB.</Text>
+						<Text style={Style.paragraphText}>Please enter the setup code found on the label on the back of the Bindicator.</Text>
 
 					</View>
 

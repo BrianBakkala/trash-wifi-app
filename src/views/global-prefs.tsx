@@ -278,9 +278,7 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
             return;
         }
 
-        console.log("#", "Pulling current settings", {
-            household_id: deviceUUID,
-        })
+        console.log("#", "Pulling current settings")
         const response = apiFetch('get-global-settings',
             {
                 household_id: deviceUUID,
@@ -301,6 +299,7 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
 
         const body = {
             device_uuid: deviceUUID,
+            wife: householdData?.wife,
 
             trash_day: selectedTrashDay,
             trash_scheme: selectedTrashScheme,
@@ -309,7 +308,7 @@ export const GlobalPrefs = ({ deviceUUID, onBack, navigateToHolidaySetup }: Glob
             recycle_scheme: selectedRecycleScheme,
             recycle_start_option: selectedRecycleStartOption,
         }
-        console.log("#", "Saving settings", body)
+        console.log("#", "Saving settings")
 
         const response = apiFetch('save-settings', body
             , setPreviewDays, setPreviewLoading, setError);
