@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 export const Style = StyleSheet.create({
+
+
 	centered: {
 		flex: 1,
 		justifyContent: 'center',
@@ -9,14 +11,20 @@ export const Style = StyleSheet.create({
 	},
 
 	vertical: {
+		backgroundColor: 'black',
+
+
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'column',
 		width: '100%',
-		backgroundColor:'gray',
-		color:'white'
+		fontFamily: 'Inter',
+		color: 'white'
 	},
+
+
+
 	modalBackground: {
 		flex: 1,
 		justifyContent: 'center',
@@ -43,29 +51,82 @@ export const Style = StyleSheet.create({
 		marginBottom: 20,
 		textAlign: 'center'
 	},
+
+
+
+
 	nav: {
 		bottom: 20,
 		position: 'absolute',
-		flex: 1,
+		display: 'flex',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		flexDirection: 'row',
+		width: '100%'
+
+	},
+
+	navSpace: {
+		bottom: 20,
+		position: 'absolute',
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		flexDirection: 'row',
+		width: '100%'
+
+	},
+
+	navCenter: {
+		bottom: 20,
+		position: 'absolute',
+		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row',
+		width: '100%'
+
 	},
-	leftNav: {
+	navCenterSplit: {
 		bottom: 20,
 		position: 'absolute',
-		display:'flex',
-		flexDirection:'row',
+		display: 'flex',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		flexDirection: 'row',
+		width: '100%'
+
+	},
+	navLeft: {
+		bottom: 20,
+		position: 'absolute',
+		display: 'flex',
+		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
 
 		padding: 20,
-		width:'100%'
+		width: '100%'
 	},
-	button: {
-		display:'flex',
+	navRight: {
+		bottom: 20,
+		position: 'absolute',
+		display: 'flex',
 		flexDirection: 'row',
-		gap:10,
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+
+		padding: 20,
+		width: '100%'
+	},
+
+
+
+
+	toggleVisibilityButton: {
+		display: 'flex',
+		flexDirection: 'row',
+		gap: 10,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingVertical: 12,
@@ -73,63 +134,21 @@ export const Style = StyleSheet.create({
 		marginHorizontal: 8,
 		borderRadius: 4,
 		elevation: 3,
-		backgroundColor: '#0090b0',
+		backgroundColor: 'transparent',
 		color: 'white'
 	},
-	buttonSecondary: {
-		display:'flex',
-		flexDirection: 'row',
-		gap:10,
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 12,
-		paddingHorizontal: 16,
-		marginHorizontal: 8,
-		borderRadius: 4,
-		elevation: 3,
-		backgroundColor: 'black',
-		color: 'white'
+
+
+
+	visibilityIcon: {
+		width: 33,
+		height: 20,
 	},
-	buttonIcon: {
-		fontSize:35,
-		lineHeight:30,
-		color: 'white'
-	},
-	buttonIconLg: {
-		fontSize:30,
-		color: 'white'
-	},
-	buttonIconMd: {
-		fontSize:25,
-		lineHeight:30,
-		color: 'white'
-	},
-	buttonIconSm: {
-		fontSize:20,
-		lineHeight:30,
-		color: 'white'
-	},
-	buttonDisabled: {
-		display:'flex',
-		flexDirection: 'row',
-		gap:10,
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 12,
-		paddingHorizontal: 16,
-		marginHorizontal: 8,
-		borderRadius: 4,
-		elevation: 3,
-		backgroundColor: '#ccc',
-		color: 'white'
-	},
-	buttonText: {
-		fontSize: 16,
-		lineHeight: 21,
-		fontWeight: 'bold',
-		letterSpacing: 0.25,
-		color: 'white',
-	},
+
+
+
+
+
 	input: {
 		height: 40,
 		width: 200,
@@ -137,34 +156,109 @@ export const Style = StyleSheet.create({
 		borderWidth: 1,
 		borderRadius: 4,
 		padding: 10,
-		color:'white',
-		borderColor:'white',
+		fontSize: 18,
+		color: 'white',
+		borderColor: 'white',
 	},
+
+
+
+
+	inputNoMargin: {
+		height: 40,
+		width: 200,
+		borderWidth: 1,
+		borderRadius: 4,
+		padding: 10,
+		color: 'white',
+		borderColor: 'white',
+	},
+
+
+
+
 	paragraph: {
-		color:'white', 
+		color: 'white',
 		marginBottom: 30,
+		fontFamily: 'Inter',
 		marginTop: 30,
+		textAlign: 'center',
+		width: '85%',
 
 	},
-	label: {
-		color:'white', 
+	paragraphText: {
+		color: 'white',
+		fontFamily: 'Inter',
+		fontSize: 20,
+		textAlign: 'center'
+
 	},
+	headerParagraph: {
+		color: 'white',
+		fontFamily: 'Inter',
+		width: '85%',
+		marginBottom: 30,
+	},
+
+
+	label: {
+		color: '#0090b0',
+		fontSize: 18,
+		fontWeight: 'bold',
+
+
+	},
+
+
+
 	h2: {
-		color:'white',
-		fontSize: 22,
+		color: '#0090b0',
+		fontSize: 28,
 		lineHeight: 30,
 		marginTop: 20,
-		fontWeight:'bold',
+		fontFamily: 'Inter',
+		fontWeight: 'bold',
 		marginBottom: 20,
 	},
+
+	h3: {
+		color: 'white',
+		fontSize: 24,
+		lineHeight: 30,
+		marginTop: 20,
+		fontFamily: 'Inter',
+		fontWeight: 'bold',
+		marginBottom: 20,
+	},
+
+	simpleFlexRow: {
+		display: 'flex',
+		flexDirection: 'row',
+		gap: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+
+	simpleFlexColumn: {
+		display: 'flex',
+		flexDirection: 'column',
+		gap: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+
+
+
+
 	emoji: {
 		fontSize: 96,
 		marginBottom: 20
 	},
-	indicatorIcons: {
-		fontSize:40, 
-		color:'white'
-	},
+
+
+
 	list: {
 		flex: 1,
 		alignSelf: 'stretch',
@@ -173,34 +267,48 @@ export const Style = StyleSheet.create({
 		color: 'white'
 	},
 	listItem: {
-		display:'flex',
-		flexDirection:'row',
-		justifyContent:'center',
-		alignItems:'center',
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
 		padding: 10,
 		fontSize: 18,
 		color: 'white'
 	},
 	listItemSelected: {
-		display:'flex',
-		flexDirection:'row',
-		justifyContent:'center',
-		alignItems:'center',
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
 		padding: 10,
 		fontSize: 18,
-		borderRadius:4,
+		borderRadius: 4,
 		backgroundColor: '#005c70',
-		color:'white',
+		color: 'white',
 	},
 	listItemText: {
 		color: 'white'
 	},
-	displayNone:{
-		display:'none'
+
+
+
+
+	displayNone: {
+		display: 'none'
 	},
-	image:{
-		height:400,
-		width:170,
-		margin:10
-	}
+	mainBindicatorImage: {
+		height: 100,
+		margin: 10,
+		resizeMode: 'contain'
+	},
+	smallBindicatorImage: {
+		height: 30,
+		width: 30,
+		resizeMode: 'contain'
+	},
+
+	error: {
+		color: 'red'
+	},
+
 });
